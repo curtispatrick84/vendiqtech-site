@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VendiQ — Beta Portal</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231A1D16'/><text x='4' y='24' font-family='sans-serif' font-weight='800' font-size='22' fill='%23BAEF5B'>iQ</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --lime:        #BAEF5B;
+    --lime-dark:   #8FC93A;
+    --charcoal:    #1A1D16;
+    --ink:         #2C3025;
+    --slate:       #4A5240;
+    --warm-white:  #F5F7F0;
+    --pale:        #E8EDE0;
+    --coral:       #FF5C35;
+    --border-dark: rgba(255,255,255,0.09);
+  }
+
+  body {
+    background: var(--charcoal);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--warm-white);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── GATE (password screen) ── */
+  .gate {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    position: relative;
+  }
+
+  .gate::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(186,239,91,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .gate-card {
+    position: relative;
+    background: var(--ink);
+    border: 1px solid var(--border-dark);
+    border-radius: 20px;
+    padding: 48px 44px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    animation: fadeUp 0.6s ease-out both;
+  }
+
+  .gate-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.8rem;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+
+  .gate-logo em { color: var(--lime); font-style: normal; }
+
+  .gate-badge {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    background: var(--lime);
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+  }
+
+  .gate-text {
+    font-size: 0.88rem;
+    color: var(--slate);
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  .gate-input-wrap {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .gate-input {
+    width: 100%;
+    background: var(--charcoal);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 14px 48px 14px 16px;
+    color: var(--warm-white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .gate-input:focus {
+    border-color: var(--lime);
+    box-shadow: 0 0 0 3px rgba(186,239,91,0.12);
+  }
+
+  .gate-input.error {
+    border-color: var(--coral);
+    box-shadow: 0 0 0 3px rgba(255,92,53,0.12);
+    animation: shake 0.4s ease-out;
+  }
+
+  .gate-submit {
+    width: 100%;
+    background: var(--lime);
+    color: var(--charcoal);
+    border: none;
+    padding: 14px 24px;
+    border-radius: 100px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .gate-submit:hover {
+    background: var(--lime-dark);
+    transform: translateY(-1px);
+  }
+
+  .gate-error-msg {
+    font-size: 0.78rem;
+    color: var(--coral);
+    margin-top: 14px;
+    min-height: 20px;
+    transition: opacity 0.2s;
+  }
+
+  .gate-back {
+    display: block;
+    margin-top: 24px;
+    font-size: 0.78rem;
+    color: var(--slate);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .gate-back:hover { color: var(--lime-dark); }
+
+  /* ── PORTAL (authenticated content) ── */
+  .portal {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  .portal.visible { display: flex; }
+  .gate.hidden { display: none; }
+
+  .portal-nav {
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: fadeDown 0.6s ease-out both;
+  }
+
+  .portal-nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
+    color: var(--warm-white);
+    text-decoration: none;
+  }
+
+  .portal-nav-logo em { color: var(--lime); font-style: normal; }
+
+  .portal-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .portal-badge {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: rgba(186,239,91,0.12);
+    color: var(--lime);
+    border: 1px solid rgba(186,239,91,0.25);
+  }
+
+  .portal-logout {
+    font-size: 0.75rem;
+    color: var(--slate);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .portal-logout:hover { color: var(--coral); }
+
+  .portal-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 48px 80px;
+    text-align: center;
+    animation: fadeUp 0.6s 0.15s ease-out both;
+  }
+
+  .portal-eyebrow {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--lime-dark);
+    margin-bottom: 16px;
+  }
+
+  .portal-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 20px;
+  }
+
+  .portal-title span { color: var(--lime); }
+
+  .portal-desc {
+    font-size: 1rem;
+    color: var(--slate);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  .portal-card {
+    background: var(--ink);
+    border: 1px solid var(--border-dark);
+    border-radius: 16px;
+    padding: 36px 40px;
+    max-width: 520px;
+    width: 100%;
+    text-align: left;
+  }
+
+  .portal-card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--warm-white);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .portal-card-title .dot {
+    width: 8px; height: 8px;
+    background: var(--lime);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .portal-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-dark);
+    font-size: 0.85rem;
+  }
+
+  .portal-item:last-child { border-bottom: none; }
+
+  .portal-item-label { color: var(--pale); flex: 1; }
+
+  .portal-item-status {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+
+  .status-soon {
+    background: rgba(242,201,76,0.12);
+    color: var(--gold);
+    border: 1px solid rgba(242,201,76,0.25);
+  }
+
+  .status-live {
+    background: rgba(186,239,91,0.12);
+    color: var(--lime);
+    border: 1px solid rgba(186,239,91,0.25);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(186,239,91,0.4); }
+    50%      { opacity: 0.7; box-shadow: 0 0 0 6px rgba(186,239,91,0); }
+  }
+
+  @media (max-width: 640px) {
+    .gate-card { padding: 36px 28px; }
+    .portal-nav { padding: 24px; }
+    .portal-body { padding: 24px 24px 56px; }
+    .portal-card { padding: 28px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── PASSWORD GATE ── -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="gate-logo">Vend<em>iQ</em></div>
+    <div class="gate-badge">Beta Access</div>
+    <p class="gate-text">Early access for beta operators. Enter the code provided by your VendiQ contact to continue.</p>
+    <form id="gate-form" onsubmit="return handleLogin(event)">
+      <div class="gate-input-wrap">
+        <input
+          class="gate-input"
+          id="gate-password"
+          type="password"
+          placeholder="Access code"
+          autocomplete="off"
+          autofocus
+        >
+      </div>
+      <button type="submit" class="gate-submit">Enter Beta Portal</button>
+      <div class="gate-error-msg" id="gate-error"></div>
+    </form>
+    <a href="/" class="gate-back">&larr; Back to vendiqtech.com</a>
+  </div>
+</div>
+
+<!-- ── PORTAL CONTENT ── -->
+<div class="portal" id="portal">
+  <nav class="portal-nav">
+    <a href="/" class="portal-nav-logo">Vend<em>iQ</em></a>
+    <div class="portal-nav-right">
+      <div class="portal-badge">Beta</div>
+      <a class="portal-logout" onclick="handleLogout()">Sign Out</a>
+    </div>
+  </nav>
+
+  <div class="portal-body">
+    <div class="portal-eyebrow">Operator Beta &mdash; Alpha Testing</div>
+    <h1 class="portal-title">You're <span>early</span>.</h1>
+    <p class="portal-desc">We're deploying the first retrofit kits with a small group of operators. The platform modules below are rolling out as we validate hardware in the field. You'll get access here as each one goes live.</p>
+
+    <div class="portal-card">
+      <div class="portal-card-title"><span class="dot"></span>Platform Modules</div>
+      <div class="portal-item">
+        <span class="portal-item-label">Cashless Transaction Feed</span>
+        <span class="portal-item-status status-soon">In Development</span>
+      </div>
+      <div class="portal-item">
+        <span class="portal-item-label">Revenue Dashboard</span>
+        <span class="portal-item-status status-soon">In Development</span>
+      </div>
+      <div class="portal-item">
+        <span class="portal-item-label">Inventory &amp; Stock Alerts</span>
+        <span class="portal-item-status status-soon">In Development</span>
+      </div>
+      <div class="portal-item">
+        <span class="portal-item-label">Device Provisioning</span>
+        <span class="portal-item-status status-soon">In Development</span>
+      </div>
+      <div class="portal-item">
+        <span class="portal-item-label">Route Optimizer</span>
+        <span class="portal-item-status status-soon">Planned</span>
+      </div>
+      <div class="portal-item">
+        <span class="portal-item-label">Fleet Analytics &amp; Reporting</span>
+        <span class="portal-item-status status-soon">Planned</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var KEY = 'vendiq_beta_auth';
+
+  if (sessionStorage.getItem(KEY) === '1') {
+    showPortal();
+  }
+
+  function handleLogin(e) {
+    e.preventDefault();
+    var input = document.getElementById('gate-password');
+    var error = document.getElementById('gate-error');
+
+    if (input.value === 'atlas1!') {
+      sessionStorage.setItem(KEY, '1');
+      showPortal();
+    } else {
+      input.classList.add('error');
+      error.textContent = 'Invalid access code. Try again.';
+      setTimeout(function() { input.classList.remove('error'); }, 500);
+      input.value = '';
+      input.focus();
+    }
+    return false;
+  }
+
+  function handleLogout() {
+    sessionStorage.removeItem(KEY);
+    document.getElementById('portal').classList.remove('visible');
+    document.getElementById('gate').classList.remove('hidden');
+    document.getElementById('gate-password').value = '';
+    document.getElementById('gate-error').textContent = '';
+  }
+
+  function showPortal() {
+    document.getElementById('gate').classList.add('hidden');
+    document.getElementById('portal').classList.add('visible');
+  }
+
+  window.handleLogin = handleLogin;
+  window.handleLogout = handleLogout;
+})();
+</script>
+
+</body>
+</html>

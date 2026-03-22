@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VendiQ — Legacy Vending, Revitalized.</title>
+<meta name="description" content="One plug-in device gives your vending machines cashless payments, real-time inventory tracking, and revenue reporting. No replacements needed. Starting at $399.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231A1D16'/><text x='4' y='24' font-family='sans-serif' font-weight='800' font-size='22' fill='%23BAEF5B'>iQ</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --lime:        #BAEF5B;
+    --lime-dark:   #8FC93A;
+    --charcoal:    #1A1D16;
+    --ink:         #2C3025;
+    --slate:       #4A5240;
+    --warm-white:  #F5F7F0;
+    --pale:        #E8EDE0;
+    --coral:       #FF5C35;
+    --gold:        #F2C94C;
+    --border-dark: rgba(255,255,255,0.09);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--charcoal);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--warm-white);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND ATMOSPHERE ── */
+  .bg-glow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .bg-glow::before {
+    content: '';
+    position: absolute;
+    top: -20vh; right: -10vw;
+    width: 70vw; height: 70vw;
+    max-width: 800px; max-height: 800px;
+    background: radial-gradient(circle, rgba(186,239,91,0.07) 0%, transparent 60%);
+    animation: drift 20s ease-in-out infinite alternate;
+  }
+
+  .bg-glow::after {
+    content: '';
+    position: absolute;
+    bottom: -10vh; left: -15vw;
+    width: 50vw; height: 50vw;
+    max-width: 600px; max-height: 600px;
+    background: radial-gradient(circle, rgba(143,201,58,0.05) 0%, transparent 60%);
+    animation: drift 25s ease-in-out infinite alternate-reverse;
+  }
+
+  @keyframes drift {
+    0%   { transform: translate(0, 0); }
+    100% { transform: translate(40px, -30px); }
+  }
+
+  /* ── GRID TEXTURE ── */
+  .grid-texture {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.025;
+    background-image:
+      linear-gradient(rgba(186,239,91,1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(186,239,91,1) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  /* ── LAYOUT ── */
+  .page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: fadeDown 0.8s ease-out both;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.6rem;
+    letter-spacing: -0.5px;
+    color: var(--warm-white);
+    text-decoration: none;
+  }
+
+  .logo em { color: var(--lime); font-style: normal; }
+
+  .nav-badge {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    background: var(--lime);
+    padding: 5px 14px;
+    border-radius: 100px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 48px 80px;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--lime-dark);
+    margin-bottom: 24px;
+    animation: fadeUp 0.7s 0.2s ease-out both;
+  }
+
+  .hero-eyebrow .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--lime);
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(186,239,91,0.4); }
+    50%      { opacity: 0.7; box-shadow: 0 0 0 6px rgba(186,239,91,0); }
+  }
+
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--warm-white);
+    margin-bottom: 32px;
+    animation: fadeUp 0.7s 0.35s ease-out both;
+  }
+
+  .hero-title span { color: var(--lime); }
+
+  .hero-desc {
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    color: var(--pale);
+    max-width: 580px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+    animation: fadeUp 0.7s 0.5s ease-out both;
+    opacity: 0.9;
+  }
+
+  .hero-desc strong {
+    color: var(--warm-white);
+    font-weight: 500;
+  }
+
+  /* ── CTA ROW ── */
+  .cta-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.7s 0.65s ease-out both;
+  }
+
+  .btn-primary {
+    background: var(--lime);
+    color: var(--charcoal);
+    border: none;
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: var(--lime-dark);
+    transform: translateY(-2px);
+  }
+
+  .btn-primary svg { transition: transform 0.2s; }
+  .btn-primary:hover svg { transform: translateX(3px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--warm-white);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .btn-secondary:hover {
+    border-color: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.04);
+  }
+
+  /* ── FEATURES STRIP ── */
+  .features {
+    padding: 0 48px 64px;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    animation: fadeUp 0.7s 0.8s ease-out both;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border-dark);
+    border: 1px solid var(--border-dark);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .feature {
+    background: var(--ink);
+    padding: 32px 28px;
+    transition: background 0.3s;
+  }
+
+  .feature:hover { background: #323828; }
+
+  .feature-icon {
+    width: 36px; height: 36px;
+    background: rgba(186,239,91,0.1);
+    border: 1px solid rgba(186,239,91,0.2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    color: var(--lime);
+  }
+
+  .feature h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--warm-white);
+    margin-bottom: 8px;
+  }
+
+  .feature p {
+    font-size: 0.82rem;
+    color: var(--slate);
+    line-height: 1.6;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 1px solid var(--border-dark);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--warm-white);
+  }
+
+  .footer-logo em { color: var(--lime); font-style: normal; }
+
+  .footer-tagline {
+    font-size: 0.68rem;
+    color: var(--slate);
+    letter-spacing: 0.08em;
+  }
+
+  .footer-right {
+    font-size: 0.68rem;
+    color: var(--slate);
+    letter-spacing: 0.06em;
+    text-align: right;
+  }
+
+  .footer-right a {
+    color: var(--lime-dark);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-right a:hover { color: var(--lime); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav { padding: 24px; }
+    .hero { padding: 0 24px 56px; }
+    .features { padding: 0 24px 48px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+    .footer-right { text-align: left; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-title { font-size: 2.6rem; }
+    .cta-row { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="grid-texture"></div>
+
+<div class="page">
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="/" class="logo">Vend<em>iQ</em></a>
+    <div class="nav-badge">Coming Soon</div>
+  </nav>
+
+  <!-- HERO -->
+  <main class="hero">
+    <div class="hero-eyebrow"><span class="dot"></span>Pre-Orders Opening Soon</div>
+    <h1 class="hero-title">One device.<br>Three <span>upgrades</span>.</h1>
+    <p class="hero-desc">
+      VendiQ is a single plug-in retrofit kit that adds <strong>cashless payments, real-time inventory tracking, and revenue reporting</strong> to the vending machines you already own. Competitors charge $350&ndash;$500 for a card reader that does nothing else. We do more, for less.
+    </p>
+    <div class="cta-row">
+      <a href="mailto:hello@vendiqtech.com" class="btn-primary">
+        Join the Waitlist
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8h9M8.5 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="/beta" class="btn-secondary">Beta Portal</a>
+    </div>
+  </main>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 11h2M12 7.5a1 1 0 11-2 0 1 1 0 012 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Accept Every Payment</h3>
+        <p>Built-in NFC and EMV reader. Credit, debit, Apple Pay, Google Pay, and tap-to-pay &mdash; all from one device. Operators report 25&ndash;35% revenue lift after going cashless.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2v14M2 9h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="9" r="3" stroke="currentColor" stroke-width="1.5"/><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5" opacity="0.4"/></svg>
+        </div>
+        <h3>Stop Driving Blind</h3>
+        <p>Real-time inventory by slot, sales velocity, and low-stock alerts pushed to your phone. Know exactly what's selling and what's sitting before you leave the warehouse.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 13l4-4 3 3 5-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>See Your Profit Clearly</h3>
+        <p>Cash and cashless revenue across every machine, in one dashboard. Daily, weekly, and monthly reports. No spreadsheets, no guesswork.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-left">
+      <div class="footer-logo">Vend<em>iQ</em></div>
+      <div class="footer-tagline">Legacy Vending, Revitalized.</div>
+    </div>
+    <div class="footer-right">
+      &copy; 2026 VendiQ Inc. &mdash; <a href="mailto:hello@vendiqtech.com">hello@vendiqtech.com</a>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
