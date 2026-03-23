@@ -1,97 +1,89 @@
 #!/usr/bin/env bash
 # ─────────────────────────────────────────────────────────────
 # VendiQ Site — Droplet Deploy Script
-# Run this on your Digital Ocean droplet as root (or with sudo).
 #
-# Usage:
-#   chmod +x deploy.sh
+# First-time setup (fresh droplet):
+#   sudo ./deploy.sh --init
+#
+# Subsequent deploys:
 #   sudo ./deploy.sh
 # ─────────────────────────────────────────────────────────────
 set -euo pipefail
 
 DOMAIN="vendiqtech.com"
 EMAIL="hello@vendiqtech.com"
-IMAGE="ghcr.io/curtispatrick84/vendiq-site:1.4.0"
-CONTAINER="vendiq"
+REPO_DIR="/opt/vendiqtech-site"
 
-echo "==> Installing certbot..."
-apt-get update -qq
-apt-get install -y -qq certbot
+# ── Check for .env ──
+if [ ! -f "$REPO_DIR/.env" ]; then
+  echo "ERROR: $REPO_DIR/.env not found."
+  echo "Copy .env.example to .env and fill in your SMTP credentials."
+  exit 1
+fi
 
-echo "==> Pulling container image..."
-docker pull "$IMAGE"
+# ── First-time init (certbot + SSL) ──
+if [ "${1:-}" = "--init" ]; then
+  echo "==> First-time setup: installing certbot..."
+  apt-get update -qq
+  apt-get install -y -qq certbot
 
-# ── STEP 1: Start with HTTP-only config to serve ACME challenges ──
-echo "==> Starting container in HTTP-only mode for cert provisioning..."
+  mkdir -p /var/www/certbot /etc/letsencrypt
 
-# Stop existing container if running
-docker stop "$CONTAINER" 2>/dev/null || true
-docker rm "$CONTAINER" 2>/dev/null || true
+  echo "==> Starting nginx in HTTP-only mode for cert provisioning..."
+  cd "$REPO_DIR"
+  docker compose up --build -d api
+  docker compose run -d --name vendiq-certbot-nginx \
+    -p 80:80 \
+    -v /var/www/certbot:/var/www/certbot:ro \
+    nginx sh -c "cp /etc/nginx/conf.d/vendiq-init.conf.disabled /etc/nginx/conf.d/vendiq-init.conf && rm /etc/nginx/conf.d/vendiq.conf && nginx -g 'daemon off;'"
 
-# Create host directories for certbot
-mkdir -p /var/www/certbot
-mkdir -p /etc/letsencrypt
+  sleep 3
 
-docker run -d \
-  --name "$CONTAINER" \
-  -p 80:80 \
-  -v /var/www/certbot:/var/www/certbot:ro \
-  --restart unless-stopped \
-  "$IMAGE" \
-  sh -c "cp /etc/nginx/conf.d/vendiq-init.conf.disabled /etc/nginx/conf.d/vendiq-init.conf && rm /etc/nginx/conf.d/vendiq.conf && nginx -g 'daemon off;'"
+  echo "==> Requesting SSL certificate from Let's Encrypt..."
+  certbot certonly --webroot \
+    -w /var/www/certbot \
+    -d "$DOMAIN" \
+    -d "www.$DOMAIN" \
+    --email "$EMAIL" \
+    --agree-tos \
+    --non-interactive
 
-# Give nginx a moment to start
-sleep 3
+  echo "==> Stopping cert provisioning container..."
+  docker stop vendiq-certbot-nginx 2>/dev/null || true
+  docker rm vendiq-certbot-nginx 2>/dev/null || true
 
-# ── STEP 2: Get SSL certificate ──
-echo "==> Requesting SSL certificate from Let's Encrypt..."
-certbot certonly --webroot \
-  -w /var/www/certbot \
-  -d "$DOMAIN" \
-  -d "www.$DOMAIN" \
-  --email "$EMAIL" \
-  --agree-tos \
-  --non-interactive
-
-# ── STEP 3: Restart with full SSL config ──
-echo "==> Restarting container with SSL..."
-docker stop "$CONTAINER"
-docker rm "$CONTAINER"
-
-docker run -d \
-  --name "$CONTAINER" \
-  -p 80:80 \
-  -p 443:443 \
-  -v /etc/letsencrypt:/etc/letsencrypt:ro \
-  -v /var/www/certbot:/var/www/certbot:ro \
-  --restart unless-stopped \
-  "$IMAGE"
-
-# ── STEP 4: Set up auto-renewal ──
-echo "==> Configuring certificate auto-renewal..."
-
-# Create renewal hook that reloads nginx in the container
-mkdir -p /etc/letsencrypt/renewal-hooks/deploy
-cat > /etc/letsencrypt/renewal-hooks/deploy/reload-vendiq.sh << 'HOOK'
+  echo "==> Configuring certificate auto-renewal..."
+  mkdir -p /etc/letsencrypt/renewal-hooks/deploy
+  cat > /etc/letsencrypt/renewal-hooks/deploy/reload-vendiq.sh << 'HOOK'
 #!/usr/bin/env bash
-docker exec vendiq nginx -s reload 2>/dev/null || true
+cd /opt/vendiqtech-site && docker compose exec nginx nginx -s reload 2>/dev/null || true
 HOOK
-chmod +x /etc/letsencrypt/renewal-hooks/deploy/reload-vendiq.sh
+  chmod +x /etc/letsencrypt/renewal-hooks/deploy/reload-vendiq.sh
 
-# Ensure certbot timer is enabled (installed by default on most distros)
-systemctl enable certbot.timer 2>/dev/null || true
-systemctl start certbot.timer 2>/dev/null || true
+  systemctl enable certbot.timer 2>/dev/null || true
+  systemctl start certbot.timer 2>/dev/null || true
 
-# Verify renewal works
-echo "==> Testing certificate renewal (dry run)..."
-certbot renew --dry-run
+  echo "==> Testing certificate renewal (dry run)..."
+  certbot renew --dry-run
+fi
+
+# ── Deploy ──
+echo "==> Deploying VendiQ..."
+cd "$REPO_DIR"
+
+echo "==> Building and starting services..."
+docker compose down 2>/dev/null || true
+docker compose up --build -d
+
+echo "==> Cleaning up old images..."
+docker image prune -f
 
 echo ""
 echo "════════════════════════════════════════════════════"
 echo "  VendiQ is live!"
 echo "  https://$DOMAIN"
-echo "  https://www.$DOMAIN"
 echo ""
-echo "  SSL auto-renewal: active (certbot.timer)"
-echo "  Container: docker logs $CONTAINER"
+echo "  Services:  docker compose -f $REPO_DIR/docker-compose.yml ps"
+echo "  API logs:  docker compose -f $REPO_DIR/docker-compose.yml logs api"
+echo "  Nginx:     docker compose -f $REPO_DIR/docker-compose.yml logs nginx"
 echo "════════════════════════════════════════════════════"
