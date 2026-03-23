@@ -19,8 +19,11 @@
     --warm-white:  #F5F7F0;
     --pale:        #E8EDE0;
     --coral:       #FF5C35;
+    --gold:        #F2C94C;
     --border-dark: rgba(255,255,255,0.09);
   }
+
+  html { scroll-behavior: smooth; }
 
   body {
     background: var(--charcoal);
@@ -29,6 +32,16 @@
     line-height: 1.6;
     min-height: 100vh;
     overflow-x: hidden;
+  }
+
+  /* ── LOGO ICON ── */
+  .logo-icon {
+    display: inline-block;
+    width: 1.4em;
+    height: 1.3em;
+    vertical-align: -0.3em;
+    margin-right: 0.15em;
+    color: var(--lime);
   }
 
   /* ── GATE (password screen) ── */
@@ -64,15 +77,6 @@
     animation: fadeUp 0.6s ease-out both;
   }
 
-  .logo-icon {
-    display: inline-block;
-    width: 1.4em;
-    height: 1.3em;
-    vertical-align: -0.3em;
-    margin-right: 0.15em;
-    color: var(--lime);
-  }
-
   .gate-logo {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
@@ -103,10 +107,7 @@
     line-height: 1.6;
   }
 
-  .gate-input-wrap {
-    position: relative;
-    margin-bottom: 16px;
-  }
+  .gate-input-wrap { position: relative; margin-bottom: 16px; }
 
   .gate-input {
     width: 100%;
@@ -121,10 +122,7 @@
     transition: border-color 0.2s, box-shadow 0.2s;
   }
 
-  .gate-input:focus {
-    border-color: var(--lime);
-    box-shadow: 0 0 0 3px rgba(186,239,91,0.12);
-  }
+  .gate-input:focus { border-color: var(--lime); box-shadow: 0 0 0 3px rgba(186,239,91,0.12); }
 
   .gate-input.error {
     border-color: var(--coral);
@@ -146,18 +144,9 @@
     transition: background 0.2s, transform 0.2s;
   }
 
-  .gate-submit:hover {
-    background: var(--lime-dark);
-    transform: translateY(-1px);
-  }
+  .gate-submit:hover { background: var(--lime-dark); transform: translateY(-1px); }
 
-  .gate-error-msg {
-    font-size: 0.78rem;
-    color: var(--coral);
-    margin-top: 14px;
-    min-height: 20px;
-    transition: opacity 0.2s;
-  }
+  .gate-error-msg { font-size: 0.78rem; color: var(--coral); margin-top: 14px; min-height: 20px; }
 
   .gate-back {
     display: block;
@@ -170,13 +159,8 @@
 
   .gate-back:hover { color: var(--lime-dark); }
 
-  /* ── PORTAL (authenticated content) ── */
-  .portal {
-    display: none;
-    min-height: 100vh;
-    flex-direction: column;
-  }
-
+  /* ── PORTAL ── */
+  .portal { display: none; flex-direction: column; }
   .portal.visible { display: flex; }
   .gate.hidden { display: none; }
 
@@ -199,11 +183,7 @@
 
   .portal-nav-logo em { color: var(--lime); font-style: normal; }
 
-  .portal-nav-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
+  .portal-nav-right { display: flex; align-items: center; gap: 16px; }
 
   .portal-badge {
     font-size: 0.6rem;
@@ -228,12 +208,10 @@
   .portal-logout:hover { color: var(--coral); }
 
   .portal-body {
-    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 32px 48px 80px;
+    padding: 64px 48px 40px;
     text-align: center;
     animation: fadeUp 0.6s 0.15s ease-out both;
   }
@@ -274,6 +252,7 @@
     max-width: 520px;
     width: 100%;
     text-align: left;
+    margin-bottom: 36px;
   }
 
   .portal-card-title {
@@ -304,7 +283,6 @@
   }
 
   .portal-item:last-child { border-bottom: none; }
-
   .portal-item-label { color: var(--pale); flex: 1; }
 
   .portal-item-status {
@@ -327,6 +305,415 @@
     color: var(--lime);
     border: 1px solid rgba(186,239,91,0.25);
   }
+
+  /* ── APPLY CTA ── */
+  .apply-cta {
+    background: var(--lime);
+    color: var(--charcoal);
+    border: none;
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .apply-cta:hover { background: var(--lime-dark); transform: translateY(-2px); }
+  .apply-cta svg { transition: transform 0.2s; }
+  .apply-cta:hover svg { transform: translateY(3px); }
+
+  /* ── SECTION DIVIDER ── */
+  .portal-divider {
+    width: 100%;
+    max-width: 680px;
+    margin: 40px auto;
+    border: none;
+    border-top: 1px solid var(--border-dark);
+  }
+
+  /* ── APPLICATION FORM SECTION ── */
+  .apply-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px 80px;
+  }
+
+  .apply-hero {
+    width: 100%;
+    max-width: 680px;
+    margin-bottom: 48px;
+    text-align: center;
+  }
+
+  .apply-hero h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+    color: var(--warm-white);
+  }
+
+  .apply-hero h2 span { color: var(--lime); }
+
+  .apply-hero p { font-size: 0.95rem; color: var(--slate); line-height: 1.6; max-width: 480px; margin: 0 auto; }
+
+  .progress-wrap { width: 100%; max-width: 680px; margin-bottom: 32px; }
+  .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+
+  .progress-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  .progress-count { font-size: 0.78rem; color: var(--slate); }
+  .progress-track { height: 3px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--lime-dark);
+    border-radius: 100px;
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+    width: 20%;
+  }
+
+  /* ── FORM CARD ── */
+  .form-card {
+    width: 100%;
+    max-width: 680px;
+    background: var(--ink);
+    border-radius: 24px;
+    border: 1px solid var(--border-dark);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .form-card::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(186,239,91,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .step { display: none; animation: fadeStep 0.35s ease forwards; }
+  .step.active { display: block; }
+
+  @keyframes fadeStep {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+    color: var(--warm-white);
+  }
+
+  .step-desc { font-size: 0.82rem; color: var(--slate); margin-bottom: 32px; line-height: 1.5; }
+
+  .field-group { display: flex; flex-direction: column; gap: 20px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .field { display: flex; flex-direction: column; gap: 7px; }
+
+  .form-card label { font-size: 0.78rem; font-weight: 600; color: var(--pale); letter-spacing: 0.02em; }
+  .form-card label .req { color: var(--lime); margin-left: 2px; }
+
+  .form-card input[type="text"],
+  .form-card input[type="email"],
+  .form-card input[type="tel"],
+  .form-card select,
+  .form-card textarea {
+    background: var(--charcoal);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--warm-white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+
+  .form-card input::placeholder,
+  .form-card textarea::placeholder { color: rgba(255,255,255,0.2); }
+
+  .form-card input:focus,
+  .form-card select:focus,
+  .form-card textarea:focus {
+    border-color: var(--lime);
+    box-shadow: 0 0 0 3px rgba(186,239,91,0.12);
+  }
+
+  .form-card select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234A5240' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  .form-card select option { background: var(--ink); }
+  .form-card textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+
+  .check-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--charcoal);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 11px 14px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+
+  .check-item:hover { border-color: rgba(186,239,91,0.3); }
+  .check-item input[type="checkbox"] { display: none; }
+
+  .check-box {
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  .check-item input:checked ~ .check-box { background: var(--lime); border-color: var(--lime); }
+
+  .check-item input:checked ~ .check-box::after {
+    content: '';
+    width: 5px; height: 9px;
+    border: 2px solid var(--charcoal);
+    border-top: none; border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+    display: block;
+  }
+
+  .check-item input:checked ~ .check-label { color: var(--lime); }
+  .check-item:has(input:checked) { border-color: rgba(186,239,91,0.4); background: rgba(186,239,91,0.05); }
+  .check-label { font-size: 0.83rem; color: var(--pale); }
+
+  .radio-group { display: flex; flex-direction: column; gap: 8px; }
+
+  .radio-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--charcoal);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    user-select: none;
+  }
+
+  .radio-item:hover { border-color: rgba(186,239,91,0.3); }
+  .radio-item input { display: none; }
+
+  .radio-dot {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  .radio-item input:checked ~ .radio-dot { border-color: var(--lime); background: var(--lime); }
+
+  .radio-item input:checked ~ .radio-dot::after {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--charcoal);
+    display: block;
+  }
+
+  .radio-item:has(input:checked) { border-color: rgba(186,239,91,0.4); background: rgba(186,239,91,0.05); }
+  .radio-item:has(input:checked) .radio-label { color: var(--lime); }
+  .radio-label { font-size: 0.88rem; color: var(--pale); }
+  .radio-grid { display: grid; gap: 8px; }
+
+  .hint { font-size: 0.72rem; color: var(--slate); margin-top: 4px; }
+  .form-divider { height: 1px; background: var(--border-dark); margin: 28px 0; }
+
+  .section-label-light {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--lime-dark);
+    margin-bottom: 8px;
+  }
+
+  .deposit-callout {
+    background: rgba(186,239,91,0.07);
+    border: 1.5px solid rgba(186,239,91,0.25);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+
+  .deposit-callout h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: var(--warm-white);
+    margin-bottom: 8px;
+  }
+
+  .deposit-callout p { font-size: 0.8rem; color: var(--pale); line-height: 1.65; }
+
+  .deposit-callout ul {
+    margin: 10px 0 0 16px;
+    display: flex; flex-direction: column; gap: 5px;
+    list-style: disc;
+    font-size: 0.8rem; color: var(--pale); line-height: 1.65;
+  }
+
+  .deposit-callout ul li .keep { color: var(--lime); }
+
+  .btn-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 36px;
+    gap: 12px;
+  }
+
+  .btn-back {
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    color: var(--pale);
+    padding: 12px 24px;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .btn-back:hover { border-color: rgba(255,255,255,0.3); color: var(--warm-white); }
+
+  .btn-next {
+    background: var(--lime);
+    border: none;
+    color: var(--charcoal);
+    padding: 13px 32px;
+    border-radius: 100px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  .btn-next:hover { background: var(--lime-dark); transform: translateY(-1px); }
+  .btn-next svg { transition: transform 0.15s; }
+  .btn-next:hover svg { transform: translateX(3px); }
+
+  .error-msg { font-size: 0.75rem; color: var(--coral); margin-top: 5px; display: none; }
+  .field.has-error input,
+  .field.has-error select,
+  .field.has-error textarea { border-color: var(--coral) !important; }
+  .field.has-error .error-msg { display: block; }
+
+  .confirmation { display: none; flex-direction: column; align-items: center; text-align: center; padding: 20px 0; }
+  .confirmation.active { display: flex; animation: fadeStep 0.4s ease forwards; }
+
+  .confirm-icon {
+    width: 72px; height: 72px;
+    background: rgba(186,239,91,0.12);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 24px;
+    border: 2px solid rgba(186,239,91,0.3);
+    color: var(--lime);
+  }
+
+  .confirmation h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.8rem;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+    color: var(--warm-white);
+  }
+
+  .confirmation h2 span { color: var(--lime); }
+
+  .confirmation .conf-p {
+    font-size: 0.92rem;
+    color: var(--pale);
+    opacity: 0.75;
+    max-width: 400px;
+    line-height: 1.65;
+    margin-bottom: 32px;
+  }
+
+  .confirm-details {
+    background: var(--charcoal);
+    border-radius: 14px;
+    padding: 20px 28px;
+    width: 100%;
+    max-width: 420px;
+    text-align: left;
+    border: 1px solid var(--border-dark);
+    margin-bottom: 28px;
+  }
+
+  .confirm-details h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 14px;
+  }
+
+  .confirm-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border-dark);
+  }
+
+  .confirm-row:last-child { border-bottom: none; }
+  .confirm-row .key { color: var(--slate); }
+  .confirm-row .val { color: var(--warm-white); font-weight: 500; text-align: right; max-width: 60%; }
 
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
@@ -355,8 +742,12 @@
   @media (max-width: 640px) {
     .gate-card { padding: 36px 28px; }
     .portal-nav { padding: 24px; }
-    .portal-body { padding: 24px 24px 56px; }
+    .portal-body { padding: 40px 24px 24px; }
     .portal-card { padding: 28px 24px; }
+    .form-card { padding: 28px 22px; }
+    .field-row { grid-template-columns: 1fr; }
+    .check-grid { grid-template-columns: 1fr; }
+    .apply-section { padding: 0 20px 56px; }
   }
 </style>
 </head>
@@ -370,14 +761,7 @@
     <p class="gate-text">Early access for beta operators. Enter the code provided by your VendiQ contact to continue.</p>
     <form id="gate-form" onsubmit="return handleLogin(event)">
       <div class="gate-input-wrap">
-        <input
-          class="gate-input"
-          id="gate-password"
-          type="password"
-          placeholder="Access code"
-          autocomplete="off"
-          autofocus
-        >
+        <input class="gate-input" id="gate-password" type="password" placeholder="Access code" autocomplete="off" autofocus>
       </div>
       <button type="submit" class="gate-submit">Enter Beta Portal</button>
       <div class="gate-error-msg" id="gate-error"></div>
@@ -428,22 +812,342 @@
         <span class="portal-item-status status-soon">Planned</span>
       </div>
     </div>
+
+    <a href="#apply" class="apply-cta">
+      Apply for Beta Program
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+
+  <hr class="portal-divider">
+
+  <!-- ── APPLICATION FORM ── -->
+  <div class="apply-section" id="apply">
+    <div class="apply-hero">
+      <h2>Be the first to <span>shape</span> the future of vending.</h2>
+      <p>We're looking for owner/operators to pilot VendiQ across a variety of machines. Takes about 3 minutes to apply.</p>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span class="progress-label" id="stepLabel">Step 1 of 5 — Contact Info</span>
+        <span class="progress-count" id="stepCount">20%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <div class="form-card">
+
+      <!-- STEP 1 -->
+      <div class="step active" id="step1">
+        <div class="step-title">Let's start with you.</div>
+        <div class="step-desc">Basic contact info so we can follow up with next steps.</div>
+        <div class="field-group">
+          <div class="field-row">
+            <div class="field" id="f-firstName">
+              <label>First Name <span class="req">*</span></label>
+              <input type="text" id="firstName" placeholder="Jane">
+              <span class="error-msg">Please enter your first name.</span>
+            </div>
+            <div class="field" id="f-lastName">
+              <label>Last Name <span class="req">*</span></label>
+              <input type="text" id="lastName" placeholder="Smith">
+              <span class="error-msg">Please enter your last name.</span>
+            </div>
+          </div>
+          <div class="field" id="f-email">
+            <label>Email Address <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="jane@example.com">
+            <span class="error-msg">Please enter a valid email.</span>
+          </div>
+          <div class="field">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="(503) 555-0100">
+          </div>
+          <div class="field-row">
+            <div class="field" id="f-city">
+              <label>City <span class="req">*</span></label>
+              <input type="text" id="city" placeholder="Portland">
+              <span class="error-msg">Please enter your city.</span>
+            </div>
+            <div class="field" id="f-state">
+              <label>State <span class="req">*</span></label>
+              <select id="state">
+                <option value="">— Select —</option>
+                <option>AL</option><option>AK</option><option>AZ</option><option>AR</option>
+                <option>CA</option><option>CO</option><option>CT</option><option>DE</option>
+                <option>FL</option><option>GA</option><option>HI</option><option>ID</option>
+                <option>IL</option><option>IN</option><option>IA</option><option>KS</option>
+                <option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+                <option>MA</option><option>MI</option><option>MN</option><option>MS</option>
+                <option>MO</option><option>MT</option><option>NE</option><option>NV</option>
+                <option>NH</option><option>NJ</option><option>NM</option><option>NY</option>
+                <option>NC</option><option>ND</option><option>OH</option><option>OK</option>
+                <option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+                <option>SD</option><option>TN</option><option>TX</option><option>UT</option>
+                <option>VT</option><option>VA</option><option>WA</option><option>WV</option>
+                <option>WI</option><option>WY</option>
+              </select>
+              <span class="error-msg">Please select your state.</span>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-next" id="btn-1-next">Machine Info <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step" id="step2">
+        <div class="step-title">Tell us about your machines.</div>
+        <div class="step-desc">We need a variety of makes and models — your details help us confirm compatibility.</div>
+        <div class="field-group">
+          <div class="field" id="f-makes">
+            <label>Machine Make(s) &amp; Model(s) <span class="req">*</span></label>
+            <textarea id="makes" placeholder="e.g. Crane 167, AMS 39-VUE, Dixie Narco 5591..."></textarea>
+            <span class="hint">List all makes/models you'd consider enrolling. Separate with commas.</span>
+            <span class="error-msg">Please list at least one machine make/model.</span>
+          </div>
+          <div class="field-row">
+            <div class="field" id="f-machineCount">
+              <label>Total Machines You Own <span class="req">*</span></label>
+              <select id="machineCount">
+                <option value="">— Select —</option>
+                <option>1–5</option><option>6–15</option><option>16–30</option><option>31–50</option><option>50+</option>
+              </select>
+              <span class="error-msg">Please select a range.</span>
+            </div>
+            <div class="field" id="f-betaCount">
+              <label>Machines Available for Beta <span class="req">*</span></label>
+              <select id="betaCount">
+                <option value="">— Select —</option>
+                <option>1</option><option>2–3</option><option>4–5</option><option>6+</option>
+              </select>
+              <span class="error-msg">Please select a number.</span>
+            </div>
+          </div>
+          <div class="field" id="f-machineAge">
+            <label>Average Machine Age <span class="req">*</span></label>
+            <select id="machineAge">
+              <option value="">— Select —</option>
+              <option>Less than 5 years</option><option>5–10 years</option>
+              <option>10–15 years</option><option>15–20 years</option><option>20+ years</option>
+            </select>
+            <span class="error-msg">Please select machine age.</span>
+          </div>
+          <div class="field">
+            <label>Vending Type (select all that apply)</label>
+            <div class="check-grid">
+              <label class="check-item"><input type="checkbox" name="vendType" value="Snack"><div class="check-box"></div><span class="check-label">Snack</span></label>
+              <label class="check-item"><input type="checkbox" name="vendType" value="Beverage"><div class="check-box"></div><span class="check-label">Beverage</span></label>
+              <label class="check-item"><input type="checkbox" name="vendType" value="Combo"><div class="check-box"></div><span class="check-label">Combo</span></label>
+              <label class="check-item"><input type="checkbox" name="vendType" value="Specialty/Other"><div class="check-box"></div><span class="check-label">Specialty / Other</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-back" id="btn-2-back">&#8592; Back</button>
+          <button class="btn-next" id="btn-2-next">Payment &amp; Location <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step" id="step3">
+        <div class="step-title">Payment &amp; placement details.</div>
+        <div class="step-desc">Helps us understand where VendiQ will need to perform.</div>
+        <div class="field-group">
+          <div class="field" id="f-paymentType">
+            <label>Current Payment Setup <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-item"><input type="radio" name="paymentType" value="Cash only"><div class="radio-dot"></div><span class="radio-label">Cash only</span></label>
+              <label class="radio-item"><input type="radio" name="paymentType" value="Cashless only"><div class="radio-dot"></div><span class="radio-label">Cashless only</span></label>
+              <label class="radio-item"><input type="radio" name="paymentType" value="Mixed"><div class="radio-dot"></div><span class="radio-label">Mixed — some cash, some cashless</span></label>
+            </div>
+            <span class="error-msg">Please select your current payment setup.</span>
+          </div>
+          <div class="form-divider"></div>
+          <div class="field">
+            <label>Placement Types (select all that apply)</label>
+            <div class="check-grid">
+              <label class="check-item"><input type="checkbox" name="placement" value="Office/Corporate"><div class="check-box"></div><span class="check-label">Office / Corporate</span></label>
+              <label class="check-item"><input type="checkbox" name="placement" value="Warehouse/Industrial"><div class="check-box"></div><span class="check-label">Warehouse / Industrial</span></label>
+              <label class="check-item"><input type="checkbox" name="placement" value="School/University"><div class="check-box"></div><span class="check-label">School / University</span></label>
+              <label class="check-item"><input type="checkbox" name="placement" value="Gym/Recreation"><div class="check-box"></div><span class="check-label">Gym / Recreation</span></label>
+              <label class="check-item"><input type="checkbox" name="placement" value="Healthcare"><div class="check-box"></div><span class="check-label">Healthcare</span></label>
+              <label class="check-item"><input type="checkbox" name="placement" value="Other"><div class="check-box"></div><span class="check-label">Other</span></label>
+            </div>
+          </div>
+          <div class="field" id="f-environment">
+            <label>Placement Environment <span class="req">*</span></label>
+            <div class="radio-group radio-grid" style="grid-template-columns:1fr 1fr 1fr;">
+              <label class="radio-item"><input type="radio" name="environment" value="Indoor"><div class="radio-dot"></div><span class="radio-label">Indoor</span></label>
+              <label class="radio-item"><input type="radio" name="environment" value="Outdoor"><div class="radio-dot"></div><span class="radio-label">Outdoor</span></label>
+              <label class="radio-item"><input type="radio" name="environment" value="Both"><div class="radio-dot"></div><span class="radio-label">Both</span></label>
+            </div>
+            <span class="error-msg">Please select an environment.</span>
+          </div>
+          <div class="field" id="f-traffic">
+            <label>Estimated Daily Foot Traffic per Machine <span class="req">*</span></label>
+            <select id="traffic">
+              <option value="">— Select —</option>
+              <option>Under 50</option><option>50–150</option><option>150–300</option>
+              <option>300–500</option><option>500+</option>
+            </select>
+            <span class="error-msg">Please select a traffic estimate.</span>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-back" id="btn-3-back">&#8592; Back</button>
+          <button class="btn-next" id="btn-3-next">Tech &amp; Commitment <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step" id="step4">
+        <div class="step-title">Tech comfort &amp; commitment.</div>
+        <div class="step-desc">We want beta testers who are ready to engage — this helps us find the right fit.</div>
+        <div class="field-group">
+          <div class="field" id="f-techComfort">
+            <label>How comfortable are you setting up new hardware? <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-item"><input type="radio" name="techComfort" value="Very comfortable"><div class="radio-dot"></div><span class="radio-label">Very comfortable — I handle installs myself</span></label>
+              <label class="radio-item"><input type="radio" name="techComfort" value="Somewhat comfortable"><div class="radio-dot"></div><span class="radio-label">Somewhat — I can follow instructions</span></label>
+              <label class="radio-item"><input type="radio" name="techComfort" value="Not very comfortable"><div class="radio-dot"></div><span class="radio-label">Not very — I'd need hands-on support</span></label>
+            </div>
+            <span class="error-msg">Please select your comfort level.</span>
+          </div>
+          <div class="field" id="f-deviceType">
+            <label>Primary Device <span class="req">*</span></label>
+            <div class="radio-group radio-grid" style="grid-template-columns:1fr 1fr 1fr;">
+              <label class="radio-item"><input type="radio" name="deviceType" value="iPhone (iOS)"><div class="radio-dot"></div><span class="radio-label">iPhone (iOS)</span></label>
+              <label class="radio-item"><input type="radio" name="deviceType" value="Android"><div class="radio-dot"></div><span class="radio-label">Android</span></label>
+              <label class="radio-item"><input type="radio" name="deviceType" value="Both"><div class="radio-dot"></div><span class="radio-label">Both</span></label>
+            </div>
+            <span class="error-msg">Please select your device.</span>
+          </div>
+          <div class="field">
+            <label>Do you use any vending management software?</label>
+            <select id="vms">
+              <option value="">— Select —</option>
+              <option>No — I manage manually</option>
+              <option>Parlevel</option><option>Cantaloupe / Seed</option>
+              <option>VendSoft</option><option>Other</option>
+            </select>
+          </div>
+          <div class="field" id="f-readiness">
+            <label>How soon could you have a machine ready? <span class="req">*</span></label>
+            <select id="readiness">
+              <option value="">— Select —</option>
+              <option>Within 1 week</option><option>2–4 weeks</option>
+              <option>1–2 months</option><option>Just exploring for now</option>
+            </select>
+            <span class="error-msg">Please select a timeframe.</span>
+          </div>
+          <div class="field">
+            <label>Willing to share before/after revenue data?</label>
+            <div class="radio-group radio-grid" style="grid-template-columns:1fr 1fr 1fr;">
+              <label class="radio-item"><input type="radio" name="revenueShare" value="Yes"><div class="radio-dot"></div><span class="radio-label">Yes</span></label>
+              <label class="radio-item"><input type="radio" name="revenueShare" value="Maybe"><div class="radio-dot"></div><span class="radio-label">Maybe</span></label>
+              <label class="radio-item"><input type="radio" name="revenueShare" value="No"><div class="radio-dot"></div><span class="radio-label">No</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-back" id="btn-4-back">&#8592; Back</button>
+          <button class="btn-next" id="btn-4-next">Final Step <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step" id="step5">
+        <div class="step-title">Almost there — last few questions.</div>
+        <div class="step-desc">Your open-ended answers are the most valuable part. Don't hold back.</div>
+        <div class="field-group">
+          <div class="field">
+            <label>What's your biggest frustration with your current setup?</label>
+            <textarea id="frustration" placeholder="e.g. Losing sales because customers don't carry cash, no visibility into inventory..."></textarea>
+          </div>
+          <div class="field">
+            <label>Have you tried any cashless or smart upgrade solutions before?</label>
+            <textarea id="priorSolutions" placeholder="If yes, what worked or didn't work?"></textarea>
+          </div>
+          <div class="field">
+            <label>Anything else you'd want us to know?</label>
+            <textarea id="anythingElse" placeholder="Open floor — tell us whatever feels relevant."></textarea>
+          </div>
+          <div class="field">
+            <label>How did you hear about VendiQ?</label>
+            <select id="referral">
+              <option value="">— Select —</option>
+              <option>Word of mouth</option><option>Social media</option>
+              <option>Trade show / event</option><option>Online search</option>
+              <option>Email outreach</option><option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-divider"></div>
+
+          <div class="field" id="f-deposit">
+            <span class="section-label-light">Pilot Program Terms</span>
+            <div class="deposit-callout">
+              <h4>$199 Fully Refundable Device Deposit</h4>
+              <p>Selected beta testers will be asked to place a <strong>$199 refundable deposit</strong> to reserve their VendiQ device. At the end of the pilot program, you can:</p>
+              <ul>
+                <li><strong class="keep">Keep it</strong> — apply your deposit toward the device at a significant discount off early adopter and retail pricing.</li>
+                <li><strong>Return it</strong> — send the device back and receive your full $199 back, no questions asked.</li>
+              </ul>
+            </div>
+            <label class="check-item" style="background:var(--charcoal);border-color:rgba(255,255,255,0.1);">
+              <input type="checkbox" id="depositAck">
+              <div class="check-box"></div>
+              <span class="check-label" style="font-size:0.82rem;line-height:1.45;">I understand that if selected, a <strong>$199 fully refundable deposit</strong> may be required to participate in the beta program.</span>
+            </label>
+            <span class="error-msg">Please acknowledge the deposit terms to continue.</span>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-back" id="btn-5-back">&#8592; Back</button>
+          <button class="btn-next" id="btn-5-submit" style="padding:13px 36px;">Submit Application <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+
+      <!-- CONFIRMATION -->
+      <div class="confirmation" id="confirmation">
+        <div class="confirm-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M6 16l7 7 13-13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2>You're in the <span>queue!</span></h2>
+        <p class="conf-p">Thanks for applying to the VendiQ beta program. We'll review your application and reach out within 3–5 business days.</p>
+        <div class="confirm-details">
+          <h4>Your Submission Summary</h4>
+          <div class="confirm-row"><span class="key">Name</span><span class="val" id="c-name">—</span></div>
+          <div class="confirm-row"><span class="key">Email</span><span class="val" id="c-email">—</span></div>
+          <div class="confirm-row"><span class="key">Location</span><span class="val" id="c-location">—</span></div>
+          <div class="confirm-row"><span class="key">Machines for Beta</span><span class="val" id="c-betaCount">—</span></div>
+          <div class="confirm-row"><span class="key">Machine Age</span><span class="val" id="c-age">—</span></div>
+          <div class="confirm-row"><span class="key">Payment Setup</span><span class="val" id="c-payment">—</span></div>
+          <div class="confirm-row"><span class="key">Readiness</span><span class="val" id="c-readiness">—</span></div>
+        </div>
+        <p style="font-size:0.78rem;color:var(--slate);opacity:0.7;">Questions? Reach us at <strong style="color:var(--lime);">hello@vendiqtech.com</strong></p>
+      </div>
+
+    </div>
   </div>
 </div>
 
 <script>
 (function() {
+  /* ── AUTH GATE ── */
   var KEY = 'vendiq_beta_auth';
 
-  if (sessionStorage.getItem(KEY) === '1') {
-    showPortal();
-  }
+  if (sessionStorage.getItem(KEY) === '1') showPortal();
 
   function handleLogin(e) {
     e.preventDefault();
     var input = document.getElementById('gate-password');
     var error = document.getElementById('gate-error');
-
     if (input.value === 'atlas1!') {
       sessionStorage.setItem(KEY, '1');
       showPortal();
@@ -472,6 +1176,110 @@
 
   window.handleLogin = handleLogin;
   window.handleLogout = handleLogout;
+
+  /* ── STEP FORM ── */
+  var currentStep = 1;
+  var totalSteps = 5;
+
+  var stepLabels = [
+    'Step 1 of 5 \u2014 Contact Info',
+    'Step 2 of 5 \u2014 Machine Info',
+    'Step 3 of 5 \u2014 Payment & Location',
+    'Step 4 of 5 \u2014 Tech & Commitment',
+    'Step 5 of 5 \u2014 Final Questions'
+  ];
+
+  function g(id) { return document.getElementById(id); }
+  function setError(id) { var el = g(id); if (el) el.classList.add('has-error'); }
+  function clearError(id) { var el = g(id); if (el) el.classList.remove('has-error'); }
+
+  function updateProgress(step) {
+    var pct = Math.round((step / totalSteps) * 100);
+    g('progressFill').style.width = pct + '%';
+    g('stepLabel').textContent = stepLabels[step - 1];
+    g('stepCount').textContent = pct + '%';
+  }
+
+  function validate(step) {
+    var valid = true;
+    if (step === 1) {
+      ['firstName','lastName','city'].forEach(function(fid) {
+        var el = g(fid);
+        if (!el || !el.value.trim()) { setError('f-' + fid); valid = false; }
+        else clearError('f-' + fid);
+      });
+      var email = g('email');
+      if (!email || !email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) { setError('f-email'); valid = false; }
+      else clearError('f-email');
+      var state = g('state');
+      if (!state || !state.value) { setError('f-state'); valid = false; }
+      else clearError('f-state');
+    }
+    if (step === 2) {
+      var makes = g('makes');
+      if (!makes || !makes.value.trim()) { setError('f-makes'); valid = false; }
+      else clearError('f-makes');
+      ['machineCount','betaCount','machineAge'].forEach(function(fid) {
+        var el = g(fid);
+        if (!el || !el.value) { setError('f-' + fid); valid = false; }
+        else clearError('f-' + fid);
+      });
+    }
+    if (step === 3) {
+      if (!document.querySelector('input[name="paymentType"]:checked')) { setError('f-paymentType'); valid = false; } else clearError('f-paymentType');
+      if (!document.querySelector('input[name="environment"]:checked')) { setError('f-environment'); valid = false; } else clearError('f-environment');
+      var traffic = g('traffic');
+      if (!traffic || !traffic.value) { setError('f-traffic'); valid = false; } else clearError('f-traffic');
+    }
+    if (step === 4) {
+      if (!document.querySelector('input[name="techComfort"]:checked')) { setError('f-techComfort'); valid = false; } else clearError('f-techComfort');
+      if (!document.querySelector('input[name="deviceType"]:checked')) { setError('f-deviceType'); valid = false; } else clearError('f-deviceType');
+      var readiness = g('readiness');
+      if (!readiness || !readiness.value) { setError('f-readiness'); valid = false; } else clearError('f-readiness');
+    }
+    if (step === 5) {
+      var deposit = g('depositAck');
+      if (!deposit || !deposit.checked) { setError('f-deposit'); valid = false; } else clearError('f-deposit');
+    }
+    return valid;
+  }
+
+  function goTo(from, to) {
+    g('step' + from).classList.remove('active');
+    g('step' + to).classList.add('active');
+    currentStep = to;
+    updateProgress(to);
+    var formCard = document.querySelector('.form-card');
+    if (formCard) formCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function submitForm() {
+    if (!validate(5)) return;
+    g('c-name').textContent = g('firstName').value + ' ' + g('lastName').value;
+    g('c-email').textContent = g('email').value;
+    g('c-location').textContent = g('city').value + ', ' + g('state').value;
+    g('c-betaCount').textContent = g('betaCount').value;
+    g('c-age').textContent = g('machineAge').value;
+    var pmt = document.querySelector('input[name="paymentType"]:checked');
+    g('c-payment').textContent = pmt ? pmt.value : '—';
+    g('c-readiness').textContent = g('readiness').value;
+    g('step5').classList.remove('active');
+    g('confirmation').classList.add('active');
+    g('progressFill').style.width = '100%';
+    g('stepLabel').textContent = 'Application Complete';
+    g('stepCount').textContent = '100%';
+    document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  g('btn-1-next').addEventListener('click', function() { if (validate(1)) goTo(1, 2); });
+  g('btn-2-back').addEventListener('click', function() { goTo(2, 1); });
+  g('btn-2-next').addEventListener('click', function() { if (validate(2)) goTo(2, 3); });
+  g('btn-3-back').addEventListener('click', function() { goTo(3, 2); });
+  g('btn-3-next').addEventListener('click', function() { if (validate(3)) goTo(3, 4); });
+  g('btn-4-back').addEventListener('click', function() { goTo(4, 3); });
+  g('btn-4-next').addEventListener('click', function() { if (validate(4)) goTo(4, 5); });
+  g('btn-5-back').addEventListener('click', function() { goTo(5, 4); });
+  g('btn-5-submit').addEventListener('click', submitForm);
 })();
 </script>
 
