@@ -1,0 +1,32 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes: []
+    depends_on:
+      api:
+        condition: service_healthy
+    command: >
+      sh -c "cp /etc/nginx/conf.d/vendiq-init.conf.disabled /etc/nginx/conf.d/vendiq-init.conf
+      && rm /etc/nginx/conf.d/vendiq.conf
+      && nginx -g 'daemon off;'"
+
+  api:
+    build:
+      context: ./api
+    env_file: .env
+    volumes:
+      - api-data:/app/data
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  api-data:

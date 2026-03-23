@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VendiQ — Machine Compatibility</title>
+<meta name="description" content="Check if your vending machine is compatible with VendiQ. 91 models verified across snack, beverage, combo, and specialty machines.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231A1D16'/><text x='4' y='24' font-family='sans-serif' font-weight='800' font-size='22' fill='%23BAEF5B'>iQ</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --lime: #BAEF5B; --lime-dark: #8FC93A; --charcoal: #1A1D16; --ink: #2C3025;
+    --slate: #4A5240; --warm-white: #F5F7F0; --pale: #E8EDE0; --coral: #FF5C35;
+    --gold: #F2C94C; --border-dark: rgba(255,255,255,0.09);
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--charcoal); font-family: 'DM Sans', sans-serif; color: var(--warm-white); line-height: 1.6; }
+
+  .logo-icon { display: inline-block; width: 1.4em; height: 1.3em; vertical-align: -0.3em; margin-right: 0.15em; color: var(--lime); }
+
+  /* Nav */
+  .nav { padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; }
+  .logo-wrap { display: flex; flex-direction: column; gap: 3px; text-decoration: none; }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.6rem; letter-spacing: -0.5px; color: var(--warm-white); line-height: 1; }
+  .logo em { color: var(--lime); font-style: normal; }
+  .logo-tagline { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.12em; color: var(--slate); }
+  .nav-links { display: flex; gap: 16px; align-items: center; }
+  .nav-link { font-size: 0.82rem; color: var(--slate); text-decoration: none; transition: color 0.15s; }
+  .nav-link:hover { color: var(--warm-white); }
+
+  /* Hero */
+  .compat-hero { max-width: 900px; margin: 0 auto; padding: 40px 48px 48px; text-align: center; }
+  .compat-hero h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 16px; }
+  .compat-hero h1 span { color: var(--lime); }
+  .compat-hero p { font-size: 1rem; color: var(--slate); max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+
+  /* Stats */
+  .stats { display: flex; justify-content: center; gap: 40px; margin-bottom: 48px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; color: var(--lime); line-height: 1; }
+  .stat-label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin-top: 4px; }
+
+  /* Checker */
+  .checker { max-width: 560px; margin: 0 auto 64px; padding: 0 48px; }
+  .checker-card { background: var(--ink); border: 1px solid var(--border-dark); border-radius: 20px; padding: 36px 32px; }
+  .checker-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--warm-white); margin-bottom: 6px; }
+  .checker-desc { font-size: 0.82rem; color: var(--slate); margin-bottom: 24px; }
+  .checker-field { margin-bottom: 16px; display: flex; flex-direction: column; gap: 7px; }
+  .checker-field label { font-size: 0.78rem; font-weight: 600; color: var(--pale); }
+  .checker-field select, .checker-field input {
+    background: var(--charcoal); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 10px;
+    padding: 12px 14px; color: var(--warm-white); font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    outline: none; width: 100%; -webkit-appearance: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .checker-field select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234A5240' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .checker-field select option { background: var(--ink); }
+  .checker-field input:focus, .checker-field select:focus { border-color: var(--lime); box-shadow: 0 0 0 3px rgba(186,239,91,0.12); }
+  .checker-field input::placeholder { color: rgba(255,255,255,0.2); }
+  .checker-btn { width: 100%; background: var(--lime); color: var(--charcoal); border: none; padding: 14px 24px; border-radius: 100px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: background 0.15s; margin-top: 8px; }
+  .checker-btn:hover { background: var(--lime-dark); }
+
+  /* Result */
+  .checker-result { display: none; margin-top: 24px; padding: 24px; border-radius: 14px; text-align: center; animation: fadeIn 0.3s ease; }
+  .checker-result.visible { display: block; }
+  .checker-result.compat { background: rgba(186,239,91,0.08); border: 1.5px solid rgba(186,239,91,0.25); }
+  .checker-result.upgrade { background: rgba(242,201,76,0.08); border: 1.5px solid rgba(242,201,76,0.25); }
+  .checker-result.incompat { background: rgba(255,92,53,0.08); border: 1.5px solid rgba(255,92,53,0.25); }
+  .checker-result.unknown { background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1); }
+  .result-icon { font-size: 2rem; margin-bottom: 8px; }
+  .result-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
+  .result-desc { font-size: 0.82rem; color: var(--pale); line-height: 1.6; margin-bottom: 16px; }
+  .result-cta { display: inline-block; padding: 10px 24px; border-radius: 100px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.82rem; text-decoration: none; cursor: pointer; border: none; transition: background 0.15s; }
+  .result-cta.primary { background: var(--lime); color: var(--charcoal); }
+  .result-cta.primary:hover { background: var(--lime-dark); }
+  .result-cta.secondary { background: transparent; color: var(--warm-white); border: 1.5px solid rgba(255,255,255,0.15); }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Table section */
+  .table-section { max-width: 1100px; margin: 0 auto; padding: 0 48px 80px; }
+  .table-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+  .table-header h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; }
+  .table-filter { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-btn { background: var(--ink); border: 1px solid var(--border-dark); color: var(--pale); padding: 6px 14px; border-radius: 100px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; cursor: pointer; transition: all 0.15s; }
+  .filter-btn:hover { border-color: rgba(186,239,91,0.3); }
+  .filter-btn.active { background: var(--lime); color: var(--charcoal); border-color: var(--lime); }
+
+  .compat-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .compat-table thead th {
+    font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--slate); padding: 12px 14px; text-align: left;
+    border-bottom: 1px solid var(--border-dark); position: sticky; top: 0; background: var(--charcoal); z-index: 1;
+  }
+  .compat-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.1s; }
+  .compat-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+  .compat-table td { padding: 10px 14px; color: var(--pale); vertical-align: middle; }
+  .compat-table td:first-child { color: var(--warm-white); font-weight: 500; }
+  .cat-row td { padding: 14px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lime-dark); background: rgba(186,239,91,0.04); border-bottom: 1px solid var(--border-dark); }
+
+  .badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; }
+  .badge-yes { background: rgba(186,239,91,0.12); color: var(--lime); border: 1px solid rgba(186,239,91,0.25); }
+  .badge-upgrade { background: rgba(242,201,76,0.12); color: var(--gold); border: 1px solid rgba(242,201,76,0.25); }
+  .badge-no { background: rgba(255,92,53,0.12); color: var(--coral); border: 1px solid rgba(255,92,53,0.25); }
+
+  /* Footer */
+  .footer { border-top: 1px solid var(--border-dark); padding: 32px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--warm-white); }
+  .footer-logo em { color: var(--lime); font-style: normal; }
+  .footer-right { font-size: 0.68rem; color: var(--slate); }
+  .footer-right a { color: var(--lime-dark); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .nav { padding: 24px; }
+    .compat-hero { padding: 24px 24px 32px; }
+    .checker { padding: 0 24px; }
+    .table-section { padding: 0 16px 56px; }
+    .compat-table { font-size: 0.75rem; }
+    .compat-table th, .compat-table td { padding: 8px 8px; }
+    .footer { padding: 24px; }
+    .stats { gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="logo-wrap">
+    <div class="logo"><svg class="logo-icon" viewBox="0 6 100 58" fill="currentColor"><path fill-rule="evenodd" d="M3,35Q50,-18 97,35Q50,88 3,35ZM12,35Q50,-5 88,35Q50,75 12,35Z"/><path fill-rule="evenodd" d="M50,14A21,21 0 1,1 50,56A21,21 0 1,1 50,14ZM50,19A16,16 0 1,1 50,51A16,16 0 1,1 50,19Z"/><path d="M47,21C48,32 53,34 57,35C53,36 48,38 47,49C46,38 41,36 37,35C41,34 46,32 47,21Z"/><path d="M57,23C57.5,27 60,27.5 62,28C60,28.5 57.5,29 57,33C56.5,29 54,28.5 52,28C54,27.5 56.5,27 57,23Z"/></svg>Vend<em>iQ</em></div>
+    <div class="logo-tagline">Legacy Vending, Revitalized.</div>
+  </a>
+  <div class="nav-links">
+    <a href="/" class="nav-link">Home</a>
+    <a href="/beta" class="nav-link">Beta Portal</a>
+  </div>
+</nav>
+
+<div class="compat-hero">
+  <h1>Is your machine <span>compatible</span>?</h1>
+  <p>VendiQ works with machines that have MDB and/or DEX interfaces. We've verified 91 models across every major manufacturer.</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">76</div><div class="stat-label">Fully Compatible</div></div>
+    <div class="stat"><div class="stat-num">6</div><div class="stat-label">With Upgrade</div></div>
+    <div class="stat"><div class="stat-num">9</div><div class="stat-label">Not Compatible</div></div>
+  </div>
+</div>
+
+<!-- Checker wizard -->
+<div class="checker">
+  <div class="checker-card">
+    <div class="checker-title">Quick Compatibility Check</div>
+    <div class="checker-desc">Select your manufacturer and model to find out instantly.</div>
+    <div class="checker-field">
+      <label>Manufacturer</label>
+      <select id="checkMfg" onchange="updateModels()">
+        <option value="">— Select manufacturer —</option>
+      </select>
+    </div>
+    <div class="checker-field">
+      <label>Model / Series</label>
+      <select id="checkModel" onchange="clearResult()">
+        <option value="">— Select model —</option>
+      </select>
+    </div>
+    <button class="checker-btn" onclick="checkCompat()">Check Compatibility</button>
+    <div class="checker-result" id="checkerResult">
+      <div class="result-icon" id="resultIcon"></div>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-desc" id="resultDesc"></div>
+      <div id="resultCta"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Full table -->
+<div class="table-section">
+  <div class="table-header">
+    <h2>Full Compatibility List</h2>
+    <div class="table-filter">
+      <button class="filter-btn active" onclick="filterTable('all',this)">All</button>
+      <button class="filter-btn" onclick="filterTable('Snack',this)">Snack</button>
+      <button class="filter-btn" onclick="filterTable('Beverage',this)">Beverage</button>
+      <button class="filter-btn" onclick="filterTable('Combo',this)">Combo</button>
+      <button class="filter-btn" onclick="filterTable('Specialty/Other',this)">Specialty</button>
+    </div>
+  </div>
+  <div style="overflow-x:auto;border-radius:14px;border:1px solid var(--border-dark);">
+    <table class="compat-table" id="compatTable">
+      <thead>
+        <tr>
+          <th>Manufacturer</th>
+          <th>Model / Series</th>
+          <th>Model #</th>
+          <th>Category</th>
+          <th>MDB</th>
+          <th>DEX</th>
+          <th>VendiQ</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-logo"><svg class="logo-icon" viewBox="0 6 100 58" fill="currentColor"><path fill-rule="evenodd" d="M3,35Q50,-18 97,35Q50,88 3,35ZM12,35Q50,-5 88,35Q50,75 12,35Z"/><path fill-rule="evenodd" d="M50,14A21,21 0 1,1 50,56A21,21 0 1,1 50,14ZM50,19A16,16 0 1,1 50,51A16,16 0 1,1 50,19Z"/><path d="M47,21C48,32 53,34 57,35C53,36 48,38 47,49C46,38 41,36 37,35C41,34 46,32 47,21Z"/><path d="M57,23C57.5,27 60,27.5 62,28C60,28.5 57.5,29 57,33C56.5,29 54,28.5 52,28C54,27.5 56.5,27 57,23Z"/></svg>Vend<em>iQ</em></div>
+  <div class="footer-right">&copy; 2026 VendiQ Inc. &mdash; <a href="mailto:hello@vendiqtech.com">hello@vendiqtech.com</a></div>
+</footer>
+
+<script>
+var MACHINES=[
+{m:"AMS",s:"Sensit Snack / AMS35/39",n:"AMS35/39-XXX",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"AMS",s:"The Outsider Snack",n:"AMS39-640",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"AMS",s:"Healthy Vend",n:"AMS35/39-XXX",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Automatic Products (APi)",s:"110 Series Snackshop",n:"111, 112, 113",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes with Upgrade"},
+{m:"Automatic Products (APi)",s:"120 Series Snackshop",n:"121-129",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Automatic Products (APi)",s:"Premier 130 Series",n:"131, 132, 133",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Automatic Products (APi)",s:"Premiere 930 Series",n:"931, 932, 933",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Automatic Products (APi)",s:"Studio Series",n:"Studio SL, Studio ST",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Automatic Products (APi)",s:"Snackshop 6000/7000 Series",n:"6000, 6000XL, 7000",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes with Upgrade"},
+{m:"Automatic Products (APi)",s:"LCM Series",n:"LCM (All)",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes with Upgrade"},
+{m:"Crane/National/GPL",s:"Snack Center 1 (147)",n:"147",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes with Upgrade"},
+{m:"Crane/National/GPL",s:"Snack Center 2 (148)",n:"148",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes with Upgrade"},
+{m:"Crane/National/GPL",s:"Snack Center 1 (157)",n:"157",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Snack Center 2 (158)",n:"158",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Snackvendor 1 GPL (159)",n:"159",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Snackvendor 2 GPL (160)",n:"160",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Snack Center 1 (167)",n:"167",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Snack Center 2 (168)",n:"168",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"GPL Polyvend 500/600",n:"172, 173",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Food King GPL (425)",n:"425",c:"Snack",mdb:"No",dex:"No",v:"No"},
+{m:"Crane/National/GPL",s:"Model 528",n:"528",c:"Snack",mdb:"No",dex:"No",v:"No"},
+{m:"Crane/National/GPL",s:"All Temp Outdoor Snack",n:"721",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"TC Outdoor Snack Vendor GPL",n:"725",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Sensit III",n:"",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Fastcorp",s:"Frito Lay / Multibrand",n:"A400, FL350, VFS702, F600",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Seaga / Vendtronics",s:"Envision Freezer / DT2100",n:"DT2100",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"USI/Wittern",s:"Lance 3W Glassfront (MDB)",n:"3053",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"USI/Wittern",s:"Lance 4W Glassfront (MDB)",n:"3054",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"USI/Wittern",s:"3W/4W/5W Refrig Round Front",n:"3063, 3064, 3065",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"USI/Wittern",s:"3W/4W/5W Ambient Round Front",n:"3066, 3067, 3068",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"USI/Wittern",s:"3W/4W/5W Refer Round Front II",n:"3115, 3116, 3117",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"USI/Wittern",s:"GF12 II Glassfront",n:"3120",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"USI/Wittern",s:"4W Pro Series (68\" Cabinet)",n:"3127",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"USI/Wittern",s:"GVC1/GVC2 Controller Series",n:"3503-3511",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"USI/Wittern",s:"Snack Mart II",n:"2097, 2098, 2099",c:"Snack",mdb:"No",dex:"No",v:"No"},
+{m:"USI/Wittern",s:"Snack Mart III",n:"3013-3026",c:"Snack",mdb:"No",dex:"No",v:"No"},
+{m:"USI/Wittern",s:"Snack Mart IIIA Series",n:"3013A, 3014A, 3015A",c:"Snack",mdb:"No",dex:"No",v:"No"},
+{m:"USI/Wittern",s:"GF19/GF25/GF35 (older)",n:"3030, 3036, 3076, 3141",c:"Snack",mdb:"No",dex:"No",v:"No"},
+{m:"USI/Wittern",s:"Round Front Hostess / 3062",n:"3062",c:"Snack",mdb:"No",dex:"No",v:"No"},
+{m:"USI/Wittern",s:"Horizon Series",n:"3085, 3091, 3095",c:"Snack",mdb:"No",dex:"No",v:"No"},
+{m:"USI/Wittern",s:"GF24 Club Snack",n:"3113, 3114",c:"Snack",mdb:"No",dex:"No",v:"No"},
+{m:"USI/Wittern",s:"Coke Snack 4W/5W Lance Style",n:"3142, 3143, 3148, 3149",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"USI/Wittern",s:"Super Vendor / Horizon II 3W",n:"3129, 3130",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"USI/Wittern",s:"5W Glassfront Hostess Style",n:"3078",c:"Snack",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"AMS",s:"The Milk Machine",n:"AMS35/39-XXX",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Refreshment Center 1-4",n:"484-498, 780-798",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Chilled Refreshment Center 2/3",n:"487-489, 787-788",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Dixie-Narco",s:"Can Drink Vendors (older)",n:"168-440",c:"Beverage",mdb:"Yes",dex:"No",v:"Yes with Upgrade"},
+{m:"Dixie-Narco",s:"BevMax 3500 / Baby BevMax",n:"3500",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Dixie-Narco",s:"BevMax 5000",n:"5000",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Dixie-Narco",s:"BevMax Coke (5500)",n:"5500",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Dixie-Narco",s:"BevMax II (5800)",n:"5800",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Dixie-Narco",s:"HVV Pepsi (720)",n:"720",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Dixie-Narco",s:"E-Model Series",n:"276E, 501E, 501T, 600E",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Royal Vendors",s:"Merlin 3/4 Series",n:"542, 640, 650, 768, 780",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Royal Vendors",s:"GII/GIII Coca-Cola",n:"550, 660, 804",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Royal Vendors",s:"EZ Vendor",n:"480",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Royal Vendors",s:"Royal Vision Vendor",n:"500",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Royal Vendors",s:"RVV500 / VV500 Glass Front",n:"400",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Royal Vendors",s:"Merlin Red Bull (372)",n:"372",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Sanden Vendo America",s:"Soft Drink Vendor",n:"475, 480",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Sanden Vendo America",s:"VEC 5.1 Pepsi / VEC 5.2 Coke",n:"511, 540",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Sanden Vendo America",s:"Univendor II / II-A",n:"570, 601",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Sanden Vendo America",s:"VMAX Series",n:"576, 720, 840",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Sanden Vendo America",s:"V-21 / HVV Pepsi Series",n:"621, 721, 821",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Sanden Vendo America",s:"VUE Glass Front",n:"30, 40",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Seaga / Vendtronics",s:"Bottle Vendor BV3100",n:"BV3100",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Seaga / Vendtronics",s:"Vendtronics VC4000 Drink",n:"VC4000",c:"Beverage",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"AMS",s:"Visi-Combo / Outsider Visi-Combo",n:"AMS35/39, AMS39-VC",c:"Combo",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"AMS",s:"Bottle & Food Combo",n:"AMS39-BF",c:"Combo",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Automatic Products (APi)",s:"A La Carte Combo",n:"310, 960, 965",c:"Combo",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Snack Combo II / GPL Snackcombo 3",n:"474-476, 490, 492, 493",c:"Combo",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"GPL Snackcombo 3 (Fresh Brew)",n:"492, 493",c:"Combo",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Refreshment Center 4 (expanded)",n:"497, 498",c:"Combo",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"USI/Wittern",s:"2Z Snack Dual Zone",n:"3193, 3194, 3195",c:"Combo",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Jofemar",s:"Vision ES Plus / Ice Plus",n:"JIC",c:"Combo",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"AMS",s:"The Visi-Diner (Food)",n:"AMS35/39 Food",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"AMS",s:"3-A-Day (Milk/Dairy)",n:"AMS 3-A-Day",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Automatic Products (APi)",s:"Revolution Cold Food Carousel",n:"962",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Shoppertron Cold Food Carousel",n:"430, 431, 432",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Chilled Snack Center (Frozen)",n:"764, 765",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Crane/National/GPL",s:"Food Center / Food King (428/429)",n:"428, 429",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Dixie-Narco",s:"Confectionery Hershey DN700CV",n:"DN700CV",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Fastcorp",s:"Frozen Food / Ice Cream Vendor",n:"OD820, F820",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Fastcorp",s:"Food Court Express / Cool Escape",n:"Z400",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Jofemar",s:"Jofemar Ice Plus Frozen",n:"JIC",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Jofemar",s:"Multiplus Bubblefront Snack",n:"",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Sanden Vendo America",s:"M&M / Mars Confectionery",n:"669",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"Seaga / Vendtronics",s:"Multi Functional Vendor VC3000",n:"VC3000",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"},
+{m:"USI/Wittern",s:"Bait MDB CD16",n:"3037 Bait C",c:"Specialty/Other",mdb:"Yes",dex:"Yes",v:"Yes"}
+];
+
+// Build checker dropdowns
+var mfgs=[...new Set(MACHINES.map(function(x){return x.m}))].sort();
+var mfgSel=document.getElementById('checkMfg');
+mfgs.forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;mfgSel.appendChild(o);});
+
+function updateModels(){
+  var sel=document.getElementById('checkModel');
+  sel.innerHTML='<option value="">— Select model —</option>';
+  var mfg=document.getElementById('checkMfg').value;
+  if(!mfg)return;
+  var models=MACHINES.filter(function(x){return x.m===mfg});
+  models.forEach(function(x,i){var o=document.createElement('option');o.value=i;o.textContent=x.s+(x.n?' ('+x.n+')':'');sel.appendChild(o);});
+  clearResult();
+}
+
+function clearResult(){document.getElementById('checkerResult').classList.remove('visible','compat','upgrade','incompat','unknown');}
+
+function checkCompat(){
+  var mfg=document.getElementById('checkMfg').value;
+  var modelIdx=document.getElementById('checkModel').value;
+  var r=document.getElementById('checkerResult');
+  var icon=document.getElementById('resultIcon');
+  var title=document.getElementById('resultTitle');
+  var desc=document.getElementById('resultDesc');
+  var cta=document.getElementById('resultCta');
+  r.className='checker-result visible';
+
+  if(!mfg){r.classList.add('unknown');icon.textContent='🔍';title.textContent='Select a manufacturer';desc.textContent='Choose your machine manufacturer and model above.';cta.innerHTML='';return;}
+  if(modelIdx===''){
+    r.classList.add('unknown');icon.textContent='🔍';title.textContent='Select a model';desc.textContent='Choose a specific model to check compatibility.';cta.innerHTML='';return;
+  }
+
+  var models=MACHINES.filter(function(x){return x.m===mfg});
+  var machine=models[parseInt(modelIdx)];
+  if(!machine){r.classList.add('unknown');icon.textContent='❓';title.textContent='Model not found';desc.textContent='Contact us for a manual compatibility check.';cta.innerHTML='';return;}
+
+  if(machine.v==='Yes'){
+    r.classList.add('compat');
+    icon.textContent='✅';
+    title.textContent='Fully Compatible!';
+    title.style.color='var(--lime)';
+    desc.textContent=machine.s+' is fully compatible with VendiQ. MDB and DEX confirmed.';
+    cta.innerHTML='<button class="result-cta primary" onclick="window.location.href=\'/\';setTimeout(function(){if(window.openWaitlist)window.openWaitlist();},500);">Join the Waitlist →</button>';
+  } else if(machine.v==='Yes with Upgrade'){
+    r.classList.add('upgrade');
+    icon.textContent='⚠️';
+    title.textContent='Compatible with Upgrade';
+    title.style.color='var(--gold)';
+    desc.textContent=machine.s+' is compatible but may require a board or firmware upgrade. We can help with that.';
+    cta.innerHTML='<button class="result-cta primary" onclick="window.location.href=\'/\';setTimeout(function(){if(window.openWaitlist)window.openWaitlist();},500);">Join the Waitlist →</button>';
+  } else {
+    r.classList.add('incompat');
+    icon.textContent='❌';
+    title.textContent='Not Compatible';
+    title.style.color='var(--coral)';
+    desc.textContent=machine.s+' does not have MDB or DEX interfaces. Subscribe to our mailing list — we\'re working on support for more machines.';
+    cta.innerHTML='<a href="mailto:hello@vendiqtech.com?subject=Mailing%20List%20-%20Future%20Compatibility&body=Hi%20VendiQ,%0A%0AI%20have%20a%20'+encodeURIComponent(machine.s)+'.%20Please%20add%20me%20to%20your%20mailing%20list%20for%20future%20compatibility%20updates." class="result-cta secondary">Subscribe for Updates</a>';
+  }
+}
+
+// Build table
+var categories=["Snack","Beverage","Combo","Specialty/Other"];
+var catLabels={"Snack":"Snack Machines","Beverage":"Beverage Machines","Combo":"Combo Machines","Specialty/Other":"Specialty / Other"};
+var tbody=document.getElementById('tableBody');
+
+function badgeFor(v){
+  if(v==='Yes')return'<span class="badge badge-yes">Compatible</span>';
+  if(v==='Yes with Upgrade')return'<span class="badge badge-upgrade">With Upgrade</span>';
+  return'<span class="badge badge-no">Not Compatible</span>';
+}
+function yesNo(v){return v==='Yes'?'<span style="color:var(--lime)">✓</span>':'<span style="color:var(--coral)">✗</span>';}
+
+function renderTable(filter){
+  tbody.innerHTML='';
+  categories.forEach(function(cat){
+    if(filter!=='all'&&filter!==cat)return;
+    var rows=MACHINES.filter(function(x){return x.c===cat});
+    if(!rows.length)return;
+    var cr=document.createElement('tr');cr.className='cat-row';cr.setAttribute('data-cat',cat);
+    cr.innerHTML='<td colspan="7">'+catLabels[cat]+' ('+rows.length+')</td>';
+    tbody.appendChild(cr);
+    rows.forEach(function(x){
+      var tr=document.createElement('tr');tr.setAttribute('data-cat',cat);
+      tr.innerHTML='<td>'+x.m+'</td><td>'+x.s+'</td><td>'+x.n+'</td><td>'+x.c+'</td><td>'+yesNo(x.mdb)+'</td><td>'+yesNo(x.dex)+'</td><td>'+badgeFor(x.v)+'</td>';
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+function filterTable(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderTable(cat);
+}
+
+renderTable('all');
+</script>
+</body>
+</html>

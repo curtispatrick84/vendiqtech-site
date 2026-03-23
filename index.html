@@ -99,6 +99,13 @@
     animation: fadeDown 0.8s ease-out both;
   }
 
+  .logo-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    text-decoration: none;
+  }
+
   .logo {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
@@ -106,9 +113,17 @@
     letter-spacing: -0.5px;
     color: var(--warm-white);
     text-decoration: none;
+    line-height: 1;
   }
 
   .logo em { color: var(--lime); font-style: normal; }
+
+  .logo-tagline {
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--slate);
+  }
 
   .logo-icon {
     display: inline-block;
@@ -186,12 +201,24 @@
 
   .hero-title span { color: var(--lime); }
 
+  .hero-mission {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--lime-dark);
+    max-width: 580px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    animation: fadeUp 0.7s 0.45s ease-out both;
+  }
+
   .hero-desc {
     font-size: clamp(1rem, 1.8vw, 1.2rem);
     color: var(--pale);
     max-width: 580px;
     line-height: 1.7;
-    margin-bottom: 48px;
+    margin-bottom: 12px;
     animation: fadeUp 0.7s 0.5s ease-out both;
     opacity: 0.9;
   }
@@ -199,6 +226,22 @@
   .hero-desc strong {
     color: var(--warm-white);
     font-weight: 500;
+  }
+
+  .hero-highlight {
+    display: block;
+    margin-top: 8px;
+    font-size: clamp(1.05rem, 1.9vw, 1.3rem);
+    font-weight: 600 !important;
+    color: var(--lime) !important;
+  }
+
+  .hero-footnote {
+    font-size: 0.75rem;
+    color: var(--slate);
+    margin-bottom: 48px;
+    animation: fadeUp 0.7s 0.55s ease-out both;
+    font-style: italic;
   }
 
   /* ── CTA ROW ── */
@@ -380,6 +423,212 @@
     .hero-title { font-size: 2.6rem; }
     .cta-row { flex-direction: column; align-items: flex-start; }
   }
+
+  /* ── WAITLIST MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: modalFadeIn 0.25s ease;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  @keyframes modalFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .modal {
+    background: var(--ink);
+    border: 1px solid var(--border-dark);
+    border-radius: 24px;
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    animation: fadeUp 0.3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 18px; right: 18px;
+    background: none;
+    border: none;
+    color: var(--slate);
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.15s;
+  }
+
+  .modal-close:hover { color: var(--warm-white); }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.3px;
+    color: var(--warm-white);
+    margin-bottom: 6px;
+  }
+
+  .modal-title span { color: var(--lime); }
+
+  .modal-desc {
+    font-size: 0.85rem;
+    color: var(--slate);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  .wl-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 18px;
+  }
+
+  .wl-field label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--pale);
+    letter-spacing: 0.02em;
+  }
+
+  .wl-field label .req { color: var(--lime); margin-left: 2px; }
+
+  .wl-field input,
+  .wl-field select {
+    background: var(--charcoal);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--warm-white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .wl-field input::placeholder { color: rgba(255,255,255,0.2); }
+
+  .wl-field input:focus,
+  .wl-field select:focus {
+    border-color: var(--lime);
+    box-shadow: 0 0 0 3px rgba(186,239,91,0.12);
+  }
+
+  .wl-field select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234A5240' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  .wl-field select option { background: var(--ink); }
+
+  .wl-field.has-error input,
+  .wl-field.has-error select { border-color: var(--coral) !important; }
+
+  .wl-error {
+    font-size: 0.72rem;
+    color: var(--coral);
+    margin-top: 2px;
+    display: none;
+  }
+
+  .wl-field.has-error .wl-error { display: block; }
+
+  .wl-submit {
+    width: 100%;
+    background: var(--lime);
+    color: var(--charcoal);
+    border: none;
+    padding: 14px 24px;
+    border-radius: 100px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+    margin-top: 8px;
+  }
+
+  .wl-submit:hover { background: var(--lime-dark); transform: translateY(-1px); }
+  .wl-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .wl-server-error {
+    font-size: 0.82rem;
+    color: var(--coral);
+    text-align: center;
+    margin-top: 12px;
+    display: none;
+  }
+
+  .wl-confirmation {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 12px 0;
+  }
+
+  .wl-confirmation.visible { display: flex; }
+
+  .wl-confirm-icon {
+    width: 64px; height: 64px;
+    background: rgba(186,239,91,0.12);
+    border: 2px solid rgba(186,239,91,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: var(--lime);
+  }
+
+  .wl-confirmation h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--warm-white);
+    margin-bottom: 10px;
+  }
+
+  .wl-confirmation h3 span { color: var(--lime); }
+
+  .wl-confirmation p {
+    font-size: 0.88rem;
+    color: var(--pale);
+    opacity: 0.75;
+    line-height: 1.6;
+    max-width: 360px;
+    margin-bottom: 24px;
+  }
+
+  .wl-confirmation .wl-compat-link {
+    font-size: 0.78rem;
+    color: var(--lime-dark);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .wl-confirmation .wl-compat-link:hover { color: var(--lime); }
+
+  @media (max-width: 480px) {
+    .modal { padding: 32px 24px; }
+  }
 </style>
 </head>
 <body>
@@ -390,7 +639,10 @@
 <div class="page">
   <!-- NAV -->
   <nav class="nav">
-    <a href="/" class="logo"><svg class="logo-icon" viewBox="0 6 100 58" fill="currentColor"><path fill-rule="evenodd" d="M3,35Q50,-18 97,35Q50,88 3,35ZM12,35Q50,-5 88,35Q50,75 12,35Z"/><path fill-rule="evenodd" d="M50,14A21,21 0 1,1 50,56A21,21 0 1,1 50,14ZM50,19A16,16 0 1,1 50,51A16,16 0 1,1 50,19Z"/><path d="M47,21C48,32 53,34 57,35C53,36 48,38 47,49C46,38 41,36 37,35C41,34 46,32 47,21Z"/><path d="M57,23C57.5,27 60,27.5 62,28C60,28.5 57.5,29 57,33C56.5,29 54,28.5 52,28C54,27.5 56.5,27 57,23Z"/></svg>Vend<em>iQ</em></a>
+    <a href="/" class="logo-wrap">
+      <div class="logo"><svg class="logo-icon" viewBox="0 6 100 58" fill="currentColor"><path fill-rule="evenodd" d="M3,35Q50,-18 97,35Q50,88 3,35ZM12,35Q50,-5 88,35Q50,75 12,35Z"/><path fill-rule="evenodd" d="M50,14A21,21 0 1,1 50,56A21,21 0 1,1 50,14ZM50,19A16,16 0 1,1 50,51A16,16 0 1,1 50,19Z"/><path d="M47,21C48,32 53,34 57,35C53,36 48,38 47,49C46,38 41,36 37,35C41,34 46,32 47,21Z"/><path d="M57,23C57.5,27 60,27.5 62,28C60,28.5 57.5,29 57,33C56.5,29 54,28.5 52,28C54,27.5 56.5,27 57,23Z"/></svg>Vend<em>iQ</em></div>
+      <div class="logo-tagline">Legacy Vending, Revitalized.</div>
+    </a>
     <div class="nav-badge">Coming Soon</div>
   </nav>
 
@@ -398,14 +650,17 @@
   <main class="hero">
     <div class="hero-eyebrow"><span class="dot"></span>Pre-Orders Opening Soon</div>
     <h1 class="hero-title">One device.<br>Three <span>upgrades</span>.</h1>
+    <p class="hero-mission">Legacy Vending, Revitalized. Smart hardware + software platform converting legacy vending machines into connected, data-driven revenue engines.</p>
     <p class="hero-desc">
-      VendiQ is a single plug-in retrofit kit that adds <strong>cashless payments, real-time inventory tracking, and revenue reporting</strong> to the vending machines you already own. Competitors charge $350&ndash;$500 for a card reader that does nothing else. We do more, for less.
+      VendiQ is a single plug-in retrofit kit that adds <strong>cashless payments, real-time inventory tracking, and revenue reporting</strong> to the vending machines you already own.* Competitors charge $350&ndash;$500 for a card reader that does nothing else.<br><strong class="hero-highlight">We do more, for less.</strong>
     </p>
+    <p class="hero-footnote">*Machines require MDB and/or DEX for compatibility</p>
     <div class="cta-row">
-      <a href="mailto:hello@vendiqtech.com" class="btn-primary">
+      <button class="btn-primary" onclick="openWaitlist()">
         Join the Waitlist
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8h9M8.5 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
+      </button>
+      <a href="/compatibility" class="btn-secondary">Check Compatibility</a>
       <a href="/beta" class="btn-secondary">Beta Portal</a>
     </div>
   </main>
@@ -448,6 +703,168 @@
     </div>
   </footer>
 </div>
+
+<!-- ── WAITLIST MODAL ── -->
+<div class="modal-overlay" id="waitlistModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeWaitlist()" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+
+    <!-- FORM -->
+    <div id="wlForm">
+      <div class="modal-title">Interested? <span>Join our waitlist.</span></div>
+      <div class="modal-desc">Be first in line when VendiQ launches. We'll keep you updated on availability and early access.</div>
+
+      <div class="wl-field" id="wl-email">
+        <label>Email Address <span class="req">*</span></label>
+        <input type="email" id="wlEmail" placeholder="operator@example.com">
+        <span class="wl-error">Please enter a valid email address.</span>
+      </div>
+      <div class="wl-field" id="wl-name">
+        <label>First Name <span class="req">*</span></label>
+        <input type="text" id="wlName" placeholder="Jane">
+        <span class="wl-error">Please enter your first name.</span>
+      </div>
+      <div class="wl-field">
+        <label>I am a...</label>
+        <select id="wlRole">
+          <option value="">— Select —</option>
+          <option>Vending Operator</option>
+          <option>Route Driver / Technician</option>
+          <option>Distributor</option>
+          <option>Location Owner</option>
+          <option>Just Curious</option>
+        </select>
+      </div>
+      <div class="wl-field">
+        <label>Number of Machines</label>
+        <select id="wlMachines">
+          <option value="">— Select —</option>
+          <option>1–5</option>
+          <option>6–15</option>
+          <option>16–50</option>
+          <option>50+</option>
+        </select>
+      </div>
+      <div class="wl-field">
+        <label>How did you hear about us?</label>
+        <select id="wlReferral">
+          <option value="">— Select —</option>
+          <option>Word of mouth</option>
+          <option>Social media</option>
+          <option>Online search</option>
+          <option>Trade show / event</option>
+          <option>Email outreach</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <button class="wl-submit" id="wlSubmit" onclick="submitWaitlist()">Join the Waitlist</button>
+      <div class="wl-server-error" id="wlServerError"></div>
+    </div>
+
+    <!-- CONFIRMATION -->
+    <div class="wl-confirmation" id="wlConfirmation">
+      <div class="wl-confirm-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M5 14l6 6 12-12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>You're on the <span>list!</span></h3>
+      <p>Thanks for your interest in VendiQ. We'll reach out soon with updates on availability and early access pricing.</p>
+      <a href="/beta" class="wl-compat-link">Check machine compatibility &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var modal = document.getElementById('waitlistModal');
+
+  window.openWaitlist = function() {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    var emailInput = document.getElementById('wlEmail');
+    if (emailInput) setTimeout(function() { emailInput.focus(); }, 100);
+  };
+
+  window.closeWaitlist = function() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  // Close on overlay click
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) closeWaitlist();
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeWaitlist();
+  });
+
+  window.submitWaitlist = async function() {
+    var email = document.getElementById('wlEmail');
+    var name = document.getElementById('wlName');
+    var role = document.getElementById('wlRole');
+    var machines = document.getElementById('wlMachines');
+    var referral = document.getElementById('wlReferral');
+    var btn = document.getElementById('wlSubmit');
+    var serverErr = document.getElementById('wlServerError');
+
+    // Clear errors
+    document.querySelectorAll('.wl-field').forEach(function(f) { f.classList.remove('has-error'); });
+    serverErr.style.display = 'none';
+
+    // Validate
+    var valid = true;
+    if (!email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      document.getElementById('wl-email').classList.add('has-error');
+      valid = false;
+    }
+    if (!name.value.trim()) {
+      document.getElementById('wl-name').classList.add('has-error');
+      valid = false;
+    }
+    if (!valid) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    try {
+      var res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email.value.trim(),
+          first_name: name.value.trim(),
+          role: role.value || 'Not specified',
+          machine_count: machines.value || 'Not specified',
+          referral_source: referral.value || null
+        })
+      });
+
+      var data = await res.json();
+
+      if (res.ok) {
+        document.getElementById('wlForm').style.display = 'none';
+        document.getElementById('wlConfirmation').classList.add('visible');
+      } else if (res.status === 409) {
+        serverErr.textContent = 'This email is already on the waitlist — we\'ll be in touch!';
+        serverErr.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Join the Waitlist';
+      } else {
+        throw new Error(data.detail || 'Something went wrong');
+      }
+    } catch (err) {
+      serverErr.textContent = 'Something went wrong. Please try again or email hello@vendiqtech.com';
+      serverErr.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Join the Waitlist';
+    }
+  };
+})();
+</script>
 
 </body>
 </html>
