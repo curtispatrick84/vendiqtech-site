@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 70" fill="#BAEF5B">
+  <!-- Eye border (outer almond minus inner cutout) -->
+  <path fill-rule="evenodd" d="
+    M 3,35 Q 50,-3 97,35 Q 50,73 3,35 Z
+    M 19,35 Q 50,13 81,35 Q 50,57 19,35 Z
+  "/>
+  <!-- Iris ring (outer circle minus inner cutout) -->
+  <path fill-rule="evenodd" d="
+    M 50,17 A 18,18 0 1,1 50,53 A 18,18 0 1,1 50,17 Z
+    M 50,23 A 12,12 0 1,1 50,47 A 12,12 0 1,1 50,23 Z
+  "/>
+  <!-- Large sparkle (contained within inner iris circle) -->
+  <path d="
+    M 47,25
+    C 48,33 53,34 56,35
+    C 53,36 48,37 47,45
+    C 46,37 41,36 38,35
+    C 41,34 46,33 47,25 Z
+  "/>
+  <!-- Small sparkle (upper-right, inside inner iris circle) -->
+  <path d="
+    M 56,26
+    C 56.5,28.5 59,29 60.5,29.5
+    C 59,30 56.5,30.5 56,33
+    C 55.5,30.5 53,30 51.5,29.5
+    C 53,29 55.5,28.5 56,26 Z
+  "/>
+</svg>

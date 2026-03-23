@@ -64,6 +64,15 @@
     animation: fadeUp 0.6s ease-out both;
   }
 
+  .logo-icon {
+    display: inline-block;
+    width: 1.4em;
+    height: 1em;
+    vertical-align: -0.1em;
+    margin-right: 0.15em;
+    color: var(--lime);
+  }
+
   .gate-logo {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
@@ -356,7 +365,7 @@
 <!-- ── PASSWORD GATE ── -->
 <div class="gate" id="gate">
   <div class="gate-card">
-    <div class="gate-logo">Vend<em>iQ</em></div>
+    <div class="gate-logo"><svg class="logo-icon" viewBox="0 0 100 70" fill="currentColor"><path fill-rule="evenodd" d="M3,35Q50,-3 97,35Q50,73 3,35ZM19,35Q50,13 81,35Q50,57 19,35Z"/><path fill-rule="evenodd" d="M50,17A18,18 0 1,1 50,53A18,18 0 1,1 50,17ZM50,23A12,12 0 1,1 50,47A12,12 0 1,1 50,23Z"/><path d="M47,25C48,33 53,34 56,35C53,36 48,37 47,45C46,37 41,36 38,35C41,34 46,33 47,25Z"/><path d="M56,26C56.5,28.5 59,29 60.5,29.5C59,30 56.5,30.5 56,33C55.5,30.5 53,30 51.5,29.5C53,29 55.5,28.5 56,26Z"/></svg>Vend<em>iQ</em></div>
     <div class="gate-badge">Beta Access</div>
     <p class="gate-text">Early access for beta operators. Enter the code provided by your VendiQ contact to continue.</p>
     <form id="gate-form" onsubmit="return handleLogin(event)">
@@ -380,7 +389,7 @@
 <!-- ── PORTAL CONTENT ── -->
 <div class="portal" id="portal">
   <nav class="portal-nav">
-    <a href="/" class="portal-nav-logo">Vend<em>iQ</em></a>
+    <a href="/" class="portal-nav-logo"><svg class="logo-icon" viewBox="0 0 100 70" fill="currentColor"><path fill-rule="evenodd" d="M3,35Q50,-3 97,35Q50,73 3,35ZM19,35Q50,13 81,35Q50,57 19,35Z"/><path fill-rule="evenodd" d="M50,17A18,18 0 1,1 50,53A18,18 0 1,1 50,17ZM50,23A12,12 0 1,1 50,47A12,12 0 1,1 50,23Z"/><path d="M47,25C48,33 53,34 56,35C53,36 48,37 47,45C46,37 41,36 38,35C41,34 46,33 47,25Z"/><path d="M56,26C56.5,28.5 59,29 60.5,29.5C59,30 56.5,30.5 56,33C55.5,30.5 53,30 51.5,29.5C53,29 55.5,28.5 56,26Z"/></svg>Vend<em>iQ</em></a>
     <div class="portal-nav-right">
       <div class="portal-badge">Beta</div>
       <a class="portal-logout" onclick="handleLogout()">Sign Out</a>

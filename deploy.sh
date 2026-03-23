@@ -11,7 +11,7 @@ set -euo pipefail
 
 DOMAIN="vendiqtech.com"
 EMAIL="hello@vendiqtech.com"
-IMAGE="ghcr.io/curtispatrick84/vendiq-site:1.1.0"
+IMAGE="ghcr.io/curtispatrick84/vendiq-site:1.2.0"
 CONTAINER="vendiq"
 
 echo "==> Installing certbot..."
