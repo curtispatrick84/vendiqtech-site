@@ -298,12 +298,27 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);lin
 @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(186,239,91,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(186,239,91,0)}}
 
 @media(max-width:768px){
-  .sidebar{display:none}
+  .sidebar{position:fixed;left:0;top:52px;bottom:0;z-index:100;background:#22261c;transform:translateX(-100%);transition:transform .25s ease;pointer-events:none}
+  .sidebar.mobile-open{transform:translateX(0);pointer-events:auto}
+  .sidebar.collapsed{transform:translateX(-100%);pointer-events:none}
   .stat-strip{grid-template-columns:1fr 1fr}
   .machine-grid{grid-template-columns:1fr}
-  .mc-stats{grid-template-columns:repeat(3,1fr)}
+  .mc-3stats{grid-template-columns:repeat(3,1fr)}
   .main{padding:16px}
-  .slot-grid{grid-template-columns:repeat(auto-fill,minmax(60px,1fr))}
+  .detail-grid4{grid-template-columns:1fr 1fr}
+  .ms-2col{grid-template-columns:1fr}
+  .ms-detail{grid-template-columns:1fr}
+  .ms-header{flex-wrap:wrap}
+  .ms-actions{width:100%;justify-content:flex-start;margin-top:8px}
+  .slot-row{flex-direction:column}
+  .slot-row-slots{flex-wrap:wrap}
+  .slot{min-width:70px;flex:1 1 70px}
+  .topnav-tag{display:none}
+  .topnav-select{display:none}
+  .page-header{flex-direction:column;align-items:flex-start}
+  .earnings-summary{grid-template-columns:1fr 1fr}
+  .earnings-val{font-size:1.3rem}
+  .chart-controls{flex-wrap:wrap}
 }
 </style>
 </head>
@@ -314,7 +329,7 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);lin
   <div class="gate-card">
     <div class="gate-logo">Vend<em>iQ</em></div>
     <div class="gate-badge">Fleet Demo</div>
-    <p class="gate-text">See VendiQ in action. Enter the demo access code to explore a live fleet dashboard.</p>
+    <p class="gate-text">See VendiQ in action. Enter the demo access code to explore a sample fleet dashboard with mock data.</p>
     <form onsubmit="return handleDemoLogin(event)">
       <input class="gate-input" id="demoPass" type="password" placeholder="Access code" autocomplete="off" autofocus>
       <button type="submit" class="gate-submit">Launch Demo</button>
@@ -352,8 +367,8 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);lin
   <div class="app-body">
     <div class="sidebar">
       <div class="sb-summary">
-        <div class="sb-stat"><span class="lab">Today's Revenue</span><span class="val lime">$187.50</span></div>
-        <div class="sb-stat"><span class="lab">Total Vends</span><span class="val">72</span></div>
+        <div class="sb-stat"><span class="lab">Today's Revenue</span><span class="val lime" id="sb-revenue">—</span></div>
+        <div class="sb-stat"><span class="lab">Total Vends</span><span class="val" id="sb-vends">—</span></div>
         <div class="sb-stat"><span class="lab">Fleet Online</span><span class="val">5 / 5</span></div>
       </div>
       <div class="sb-section">
@@ -473,8 +488,13 @@ function showApp(){document.getElementById('gate').classList.add('hidden');docum
 window.toggleSidebar=function(){
   var sb=document.querySelector('.sidebar');
   var icon=document.getElementById('sidebarIcon');
-  sb.classList.toggle('collapsed');
-  icon.classList.toggle('collapsed');
+  if(window.innerWidth<=768){
+    sb.classList.toggle('mobile-open');
+    icon.classList.toggle('collapsed',!sb.classList.contains('mobile-open'));
+  }else{
+    sb.classList.toggle('collapsed');
+    icon.classList.toggle('collapsed');
+  }
 };
 
 window.toggleTheme=function(){
@@ -846,6 +866,21 @@ MOCK_SITES['Riverside Office Park']=genSiteData(65,24,['2026-02-20','2026-03-10'
 MOCK_SITES['Central Fitness Center']=genSiteData(50,17,['2026-02-25','2026-03-12']);
 
 var RANGES=[{label:'1D',days:1},{label:'3D',days:3},{label:'7D',days:7},{label:'1M',days:30},{label:'3M',days:90}];
+
+// Populate sidebar with today's totals from mock data
+(function(){
+  var today=new Date().toISOString().slice(0,10);
+  var tRev=0,tVends=0;
+  Object.values(MOCK_SITES).forEach(function(site){
+    site.daily.forEach(function(d){
+      if(d.date===today){tRev+=d.total_revenue;tVends+=d.total_vends;}
+    });
+  });
+  var sbRev=document.getElementById('sb-revenue');
+  var sbVends=document.getElementById('sb-vends');
+  if(sbRev) sbRev.textContent='$'+tRev.toFixed(2);
+  if(sbVends) sbVends.textContent=tVends;
+})();
 
 function CustomTooltip(p){
   if(!p.active||!p.payload||!p.payload.length)return null;
