@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VendiQ — Fleet Manager Demo</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231A1D16'/><text x='4' y='24' font-family='sans-serif' font-weight='800' font-size='22' fill='%23BAEF5B'>iQ</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --lime:#BAEF5B;--lime-dark:#8FC93A;--charcoal:#1A1D16;--ink:#2C3025;
+  --slate:#4A5240;--warm-white:#F5F7F0;--pale:#E8EDE0;--coral:#FF5C35;
+  --gold:#F2C94C;--border:rgba(255,255,255,0.08);
+  --bg:#1A1D16;--surface:#2C3025;--text:#F5F7F0;--text2:#8a9480;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);line-height:1.6;min-height:100vh}
+
+/* ── GATE ── */
+.gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px}
+.gate-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px 44px;width:100%;max-width:420px;text-align:center;animation:fadeUp .6s ease both}
+.gate-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;letter-spacing:-.5px;margin-bottom:8px}
+.gate-logo em{color:var(--lime);font-style:normal}
+.gate-badge{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--charcoal);background:var(--lime);padding:4px 12px;border-radius:100px;margin-bottom:28px}
+.gate-text{font-size:.88rem;color:var(--slate);margin-bottom:28px;line-height:1.6}
+.gate-input{width:100%;background:var(--charcoal);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 16px;color:var(--warm-white);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;margin-bottom:16px;transition:border-color .2s,box-shadow .2s}
+.gate-input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(186,239,91,.12)}
+.gate-input.error{border-color:var(--coral);animation:shake .4s ease-out}
+.gate-submit{width:100%;background:var(--lime);color:var(--charcoal);border:none;padding:14px 24px;border-radius:100px;font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;transition:background .2s}
+.gate-submit:hover{background:var(--lime-dark)}
+.gate-error{font-size:.78rem;color:var(--coral);margin-top:14px;min-height:20px}
+.gate-back{display:block;margin-top:24px;font-size:.78rem;color:var(--slate);text-decoration:none}
+.gate-back:hover{color:var(--lime-dark)}
+.gate.hidden{display:none}
+
+/* ── APP SHELL ── */
+.app{display:none;flex-direction:column;min-height:100vh}
+.app.visible{display:flex}
+
+.topnav{height:52px;background:#1e2218;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0}
+.topnav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--text);text-decoration:none}
+.topnav-logo em{color:var(--lime);font-style:normal}
+.topnav-tag{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text2)}
+.topnav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.topnav-pill{display:flex;align-items:center;gap:6px;font-size:.7rem;font-weight:600;color:var(--lime);background:rgba(186,239,91,.08);padding:4px 12px;border-radius:100px;border:1px solid rgba(186,239,91,.15)}
+.topnav-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--lime-dark);box-shadow:0 0 6px var(--lime-dark);animation:pulse 2s ease-in-out infinite}
+.demo-badge{font-size:.55rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--charcoal);background:var(--gold);padding:3px 10px;border-radius:100px}
+
+.topnav-select{background:var(--surface);border:1px solid var(--border);color:var(--text2);padding:5px 28px 5px 10px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.72rem;outline:none;cursor:pointer;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%234A5240' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center}
+.topnav-select:focus{border-color:var(--lime)}
+.topnav-select option{background:var(--surface)}
+
+.theme-toggle{background:none;border:1px solid var(--border);color:var(--text2);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:all .15s}
+.theme-toggle:hover{border-color:rgba(255,255,255,.2);color:var(--text)}
+
+.sidebar-toggle{background:none;border:none;color:var(--text2);cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:all .15s}
+.sidebar-toggle:hover{color:var(--text);background:rgba(255,255,255,.06)}
+.sidebar-toggle-icon{transition:transform .2s}
+.sidebar-toggle-chevron{transition:transform .2s;transform-origin:10px 8px}
+.sidebar-toggle-icon.collapsed .sidebar-toggle-chevron{transform:rotate(180deg)}
+
+.app-body{display:flex;flex:1;overflow:hidden}
+.sidebar{transition:margin-left .25s ease,opacity .25s ease}
+.sidebar.collapsed{margin-left:-210px;opacity:0;pointer-events:none}
+
+/* ── SIDEBAR ── */
+.sidebar{width:210px;background:#22261c;border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0;padding:16px 12px}
+.sb-summary{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px}
+.sb-stat{display:flex;justify-content:space-between;font-size:.75rem;padding:4px 0}
+.sb-stat .lab{color:var(--text2)}
+.sb-stat .val{font-weight:600;color:var(--text)}
+.sb-stat .val.lime{color:var(--lime)}
+.sb-section{margin-bottom:16px}
+.sb-section-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text2);padding:0 8px;margin-bottom:8px}
+.sb-link{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-size:.78rem;color:var(--text2);text-decoration:none;cursor:pointer;transition:all .12s}
+.sb-link:hover,.sb-link.active{background:rgba(186,239,91,.06);color:var(--text)}
+.sb-link.active{border-left:2px solid var(--lime);color:var(--lime)}
+.sb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sb-dot.online{background:var(--lime-dark);box-shadow:0 0 4px var(--lime-dark)}
+.sb-badge{margin-left:auto;font-size:.55rem;font-weight:700;padding:2px 7px;border-radius:100px}
+.sb-badge.warn{background:rgba(242,201,76,.12);color:var(--gold);border:1px solid rgba(242,201,76,.2)}
+.sb-badge.alert{background:rgba(255,92,53,.12);color:var(--coral);border:1px solid rgba(255,92,53,.2)}
+
+/* ── MAIN CONTENT ── */
+.main{flex:1;overflow-y:auto;padding:24px}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px}
+.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;letter-spacing:-.3px}
+.page-sub{font-size:.72rem;color:var(--text2)}
+
+/* ── STAT STRIP ── */
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:var(--surface);border-radius:12px;border:1px solid var(--border);padding:18px 20px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:12px 12px 0 0}
+.sc-lime::before{background:var(--lime)}
+.sc-green::before{background:var(--lime-dark)}
+.sc-coral::before{background:var(--coral)}
+.sc-gold::before{background:var(--gold)}
+.stat-num{font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;line-height:1;margin-bottom:5px}
+.sc-lime .stat-num{color:var(--lime)}
+.sc-green .stat-num{color:var(--lime-dark)}
+.sc-coral .stat-num{color:var(--coral)}
+.sc-gold .stat-num{color:var(--gold)}
+.stat-lbl{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text2)}
+
+/* ── EARNINGS CARD ── */
+.earnings-card{background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:20px;margin-bottom:20px}
+.card-label{font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--lime-dark);margin-bottom:14px}
+.chart-range-row{display:flex;align-items:center;gap:4px;margin-bottom:14px;flex-wrap:wrap}
+.chart-range-spacer{flex:1}
+.chart-range-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text2);padding:4px 10px;border-radius:6px;font-size:.65rem;font-weight:600;cursor:pointer;transition:all .12s}
+.chart-range-btn:hover{border-color:rgba(186,239,91,.3)}
+.chart-range-btn.active{background:var(--lime-dark);color:var(--charcoal);border-color:var(--lime-dark)}
+.earnings-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.earnings-item{padding:0 20px;border-right:1px solid var(--border)}
+.earnings-item:first-child{padding-left:0}
+.earnings-item:last-child{padding-right:0;border-right:none}
+.earnings-val{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;color:var(--text);line-height:1;margin-bottom:3px}
+.chart-controls{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.chart-toggles{display:flex;gap:2px;background:rgba(255,255,255,.03);border-radius:8px;padding:2px;border:1px solid var(--border)}
+.chart-toggle-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text2);padding:3px 9px;border-radius:4px;font-size:.675rem;font-weight:600;cursor:pointer;transition:all .15s}
+.chart-toggle-btn:hover{background:rgba(255,255,255,.08)}
+.chart-toggle-btn.active{background:var(--text);border-color:var(--text);color:var(--bg)}
+.chart-toggle-fill.active{background:var(--gold);border-color:var(--gold);color:var(--charcoal)}
+.chart-wrap{position:relative;margin-bottom:4px;padding-left:44px}
+.chart-grid{position:absolute;top:0;left:44px;right:0;bottom:0;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}
+.chart-grid-line{border-top:1px dashed rgba(255,255,255,.06);position:relative}
+.chart-grid-line .y-label{position:absolute;left:-40px;top:-7px;font-size:.6rem;color:var(--text2);font-variant-numeric:tabular-nums;width:36px;text-align:right}
+.bar-chart{display:flex;align-items:flex-end;gap:3px;height:180px;position:relative}
+.bar-group{flex:1;display:flex;gap:1px;align-items:flex-end;height:100%}
+.bar{flex:1;border-radius:2px 2px 0 0;min-width:2px;transition:all .25s ease;position:relative;cursor:pointer}
+.bar:hover{filter:brightness(1.2)}
+.bar.rev{background:var(--lime-dark)}
+.bar.profit{background:var(--lime)}
+.bar-chart-labels{display:flex;justify-content:space-between;padding:6px 0 0 40px;font-size:.58rem;color:var(--text2)}
+.leaderboard{margin-top:16px;border-top:1px solid var(--border);padding-top:14px}
+.leaderboard-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;margin-bottom:10px}
+.leaderboard-table{width:100%;border-collapse:collapse;font-size:.75rem}
+.leaderboard-table th{text-align:left;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);padding:6px 8px;border-bottom:1px solid var(--border)}
+.leaderboard-table th.num{text-align:right}
+.leaderboard-table td{padding:6px 8px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--text2)}
+.leaderboard-table td.num{text-align:right;font-variant-numeric:tabular-nums}
+.leaderboard-table td.rank{color:var(--text2);font-weight:600;width:24px;text-align:center}
+.leaderboard-table td.profit{color:var(--lime)}
+.lb-product{display:flex;align-items:center;gap:8px}
+.lb-img{width:28px;height:28px;border-radius:4px;flex-shrink:0;background:var(--surface)}
+.btn-refresh{background:var(--lime);color:var(--charcoal);border:none;padding:8px 16px;border-radius:100px;font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;transition:background .15s}
+.btn-refresh:hover{background:var(--lime-dark)}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem}
+
+/* ── MACHINE GRID ── */
+.machine-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
+.machine-card{background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:20px;transition:transform .15s;cursor:pointer;overflow:hidden}
+.machine-card:hover{transform:translateY(-2px)}
+
+.mc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
+.mc-status{display:inline-flex;align-items:center;gap:5px;font-size:.6rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--lime-dark);background:rgba(186,239,91,.06);padding:3px 8px;border-radius:4px;border:1px solid rgba(186,239,91,.12)}
+.mc-status .dot{width:7px;height:7px;border-radius:50%;background:var(--lime-dark);box-shadow:0 0 5px var(--lime-dark)}
+.mc-img{width:44px;height:44px;background:rgba(255,255,255,.04);border-radius:6px;border:1px solid var(--border)}
+.mc-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:2px}
+.mc-hostname{font-size:.65rem;color:var(--text2);margin-bottom:12px;font-family:monospace}
+
+/* Fill bar */
+.fill-wrap{margin-bottom:12px}
+.fill-label{display:flex;justify-content:space-between;align-items:center;font-size:.68rem;margin-bottom:5px}
+.fill-label .lab{color:var(--text2)}
+.fill-label .pct{font-weight:700;color:var(--lime)}
+.fill-bar{height:8px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden}
+.fill-bar-inner{height:100%;border-radius:100px;transition:width .5s ease}
+.fill-ok{background:linear-gradient(90deg,var(--lime-dark),var(--lime))}
+.fill-warn{background:linear-gradient(90deg,var(--gold),#e6c344)}
+.fill-low{background:linear-gradient(90deg,var(--coral),#ff7b5e)}
+
+/* 3-col stats: Empty / Low Stock / Total */
+.mc-3stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:12px;font-size:.7rem}
+.mc-3stat{text-align:center}
+.mc-3stat .lab{font-size:.58rem;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.mc-3stat .num{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem}
+.mc-3stat .num.coral{color:var(--coral)}
+.mc-3stat .num.gold{color:var(--gold)}
+
+/* Fill info row */
+.mc-fill-info{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-bottom:12px;font-size:.7rem;padding:8px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.mc-fill-item{text-align:center}
+.mc-fill-item .lab{font-size:.55rem;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.mc-fill-item .val{font-weight:600;font-size:.78rem}
+.mc-fill-item .val.lime{color:var(--lime)}
+
+/* Revenue mini chart (line-style with CSS) */
+.mc-chart{margin-bottom:10px;position:relative;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:rgba(0,0,0,.15);padding:8px 4px 4px}
+
+/* Last vend */
+.mc-last-vend{font-size:.62rem;color:var(--text2);display:flex;align-items:center;gap:4px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px;flex-wrap:wrap}
+.mc-last-vend strong{color:var(--text);font-weight:500;text-transform:none}
+.mc-last-vend .tag{background:rgba(255,255,255,.04);padding:2px 6px;border-radius:3px;border:1px solid var(--border)}
+
+/* Edit button */
+.mc-edit{width:100%;background:var(--lime);color:var(--charcoal);border:none;padding:8px;border-radius:8px;font-family:'Syne',sans-serif;font-weight:700;font-size:.72rem;cursor:pointer;transition:background .15s}
+.mc-edit:hover{background:var(--lime-dark)}
+
+/* ── SITE DETAIL ── */
+.site-header{margin-bottom:20px}
+.site-back{font-size:.78rem;color:var(--text2);text-decoration:none;margin-bottom:8px;display:inline-flex;align-items:center;gap:4px}
+.site-back:hover{color:var(--lime)}
+.site-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;display:flex;align-items:center;gap:10px}
+.site-pills{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:.62rem;font-weight:600;padding:4px 10px;border-radius:100px;letter-spacing:.06em}
+.pill-lime{background:rgba(186,239,91,.1);color:var(--lime);border:1px solid rgba(186,239,91,.2)}
+.pill-gold{background:rgba(242,201,76,.1);color:var(--gold);border:1px solid rgba(242,201,76,.2)}
+.pill-coral{background:rgba(255,92,53,.1);color:var(--coral);border:1px solid rgba(255,92,53,.2)}
+
+/* ── SITE DETAIL MACHINE SECTION ── */
+.ms{background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:24px;margin-bottom:20px}
+.ms-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.ms-img{width:56px;height:56px;background:rgba(255,255,255,.04);border-radius:8px;border:1px solid var(--border);flex-shrink:0}
+.ms-info{flex:1}
+.ms-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem}
+.ms-model{font-size:.7rem;color:var(--text2)}
+.ms-hostname{font-size:.62rem;color:var(--text2);font-family:monospace}
+.ms-actions{display:flex;gap:6px;align-items:center}
+.ms-btn{padding:6px 14px;border-radius:100px;font-size:.68rem;font-weight:600;cursor:pointer;transition:all .15s;border:1.5px solid}
+.ms-btn-online{background:rgba(186,239,91,.06);border-color:rgba(186,239,91,.2);color:var(--lime-dark)}
+.ms-btn-dex{background:rgba(255,255,255,.04);border-color:var(--border);color:var(--text2)}
+
+.detail-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.d-stat{background:rgba(0,0,0,.12);border-radius:12px;border:1px solid var(--border);padding:16px}
+.d-val{font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;line-height:1;margin-bottom:4px}
+.d-sub{font-size:.65rem;color:var(--text2)}
+.d-label{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);margin-top:4px}
+
+.ring-wrap{position:relative;width:64px;height:64px;flex-shrink:0}
+.ring-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.75rem}
+
+.d-last-vend .d-label{margin-bottom:6px}
+.d-last-vend .product{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;color:var(--lime);margin-bottom:5px}
+.d-last-vend .meta{font-size:.7rem;color:var(--text2);line-height:1.7}
+
+.ms-2col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.ms-card{background:rgba(0,0,0,.12);border:1px solid var(--border);border-radius:10px;padding:16px}
+.ms-card-label{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);margin-bottom:10px}
+.ms-card p{font-size:.75rem;color:var(--text2);line-height:1.5;margin-bottom:4px}
+.ms-dashboard-btn{display:inline-block;margin-top:10px;padding:8px 18px;border-radius:100px;border:1.5px solid var(--lime-dark);color:var(--lime-dark);background:none;font-family:'Syne',sans-serif;font-weight:700;font-size:.72rem;cursor:pointer;transition:all .15s}
+.ms-dashboard-btn:hover{background:rgba(186,239,91,.08)}
+
+/* ── SLOT GRID ── */
+.slot-section{margin-top:16px}
+.slot-section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.slot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:6px;margin-bottom:20px}
+.slot{background:var(--surface);border:1.5px solid var(--border);border-radius:9px;padding:8px 6px;text-align:center;font-size:.7rem;transition:all .15s;position:relative;min-height:88px;display:flex;flex-direction:column;justify-content:space-between;flex:1 1 0;min-width:0}
+.slot:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.15)}
+.slot-ok{border-color:rgba(255,255,255,.06)}
+.slot-low{border-color:rgba(242,201,76,.4);background:rgba(242,201,76,.03)}
+.slot-empty{border-color:rgba(255,92,53,.4);background:rgba(255,92,53,.05)}
+.slot-id{font-weight:700;color:var(--text2);font-size:.6rem;letter-spacing:.05em}
+.slot-product{font-size:.62rem;color:var(--text);margin:4px 0;line-height:1.3;flex:1}
+.slot-qty{font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem}
+.slot-qty.ok{color:var(--lime)}
+.slot-qty.low{color:var(--gold)}
+.slot-qty.empty{color:var(--coral)}
+.slot-price{font-size:.6rem;color:var(--text2)}
+.slot-img{width:36px;height:36px;border-radius:4px;margin:2px auto;background:rgba(255,255,255,.04)}
+.slot-row{display:flex;align-items:stretch;gap:6px;margin-bottom:6px}
+.slot-row-label{width:20px;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:var(--text2);flex-shrink:0}
+.slot-row-slots{display:flex;gap:6px;flex:1}
+.slot-legend{display:flex;gap:16px;margin-top:10px;font-size:.6rem;color:var(--text2)}
+.slot-legend-item{display:flex;align-items:center;gap:4px}
+.slot-legend-dot{width:8px;height:8px;border-radius:2px}
+
+/* ── VIEWS ── */
+.view{display:none}
+.view.active{display:block;animation:fadeUp .3s ease}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes growBar{from{height:0%}to{height:var(--target-h)}}
+
+/* ── LIGHT THEME ── */
+[data-theme="light"]{--bg:#F5F7F0;--surface:#FFFFFF;--text:#1A1D16;--text2:#4A5240;--border:rgba(26,29,22,0.14)}
+[data-theme="light"] .topnav{background:#F5F7F0;border-bottom-color:rgba(26,29,22,0.1)}
+[data-theme="light"] .topnav-logo{color:#1A1D16}
+[data-theme="light"] .sidebar{background:#eef2e8;border-right-color:rgba(26,29,22,0.1)}
+[data-theme="light"] .sb-summary{background:rgba(0,0,0,.03);border-color:rgba(26,29,22,0.1)}
+[data-theme="light"] .stat-card{background:#fff;border-color:rgba(26,29,22,0.1)}
+[data-theme="light"] .earnings-card{background:#fff;border-color:rgba(26,29,22,0.1)}
+[data-theme="light"] .machine-card{background:#fff;border-color:rgba(26,29,22,0.1)}
+[data-theme="light"] .chart-toggle-btn{background:rgba(0,0,0,.04);border-color:rgba(26,29,22,0.14);color:#4A5240}
+[data-theme="light"] .chart-toggle-btn.active{background:#1A1D16;border-color:#1A1D16;color:#F5F7F0}
+[data-theme="light"] .chart-range-btn{background:rgba(0,0,0,.04);border-color:rgba(26,29,22,0.14);color:#4A5240}
+[data-theme="light"] .chart-range-btn.active{background:var(--lime-dark);color:var(--charcoal);border-color:var(--lime-dark)}
+[data-theme="light"] .mc-chart{background:rgba(0,0,0,.02);border-color:rgba(26,29,22,0.1)}
+[data-theme="light"] .slot{background:#fff;border-color:rgba(26,29,22,0.1)}
+[data-theme="light"] .leaderboard-table td{border-bottom-color:rgba(26,29,22,0.06);color:#4A5240}
+[data-theme="light"] .topnav-select{background:#fff;border-color:rgba(26,29,22,0.14);color:#1A1D16}
+[data-theme="light"] .gate-card{background:#fff;border-color:rgba(26,29,22,0.1)}
+[data-theme="light"] .gate-input{background:#F5F7F0;border-color:rgba(26,29,22,0.14);color:#1A1D16}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(186,239,91,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(186,239,91,0)}}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+  .stat-strip{grid-template-columns:1fr 1fr}
+  .machine-grid{grid-template-columns:1fr}
+  .mc-stats{grid-template-columns:repeat(3,1fr)}
+  .main{padding:16px}
+  .slot-grid{grid-template-columns:repeat(auto-fill,minmax(60px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<!-- ── GATE ── -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="gate-logo">Vend<em>iQ</em></div>
+    <div class="gate-badge">Fleet Demo</div>
+    <p class="gate-text">See VendiQ in action. Enter the demo access code to explore a live fleet dashboard.</p>
+    <form onsubmit="return handleDemoLogin(event)">
+      <input class="gate-input" id="demoPass" type="password" placeholder="Access code" autocomplete="off" autofocus>
+      <button type="submit" class="gate-submit">Launch Demo</button>
+      <div class="gate-error" id="demoError"></div>
+    </form>
+    <a href="/" class="gate-back">&larr; Back to vendiqtech.com</a>
+  </div>
+</div>
+
+<!-- ── APP ── -->
+<div class="app" id="app">
+  <div class="topnav">
+    <button class="sidebar-toggle" onclick="toggleSidebar()" title="Toggle sidebar" id="sidebarBtn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="sidebar-toggle-icon" id="sidebarIcon">
+        <rect x="0.5" y="0.5" width="15" height="15" rx="2.5" stroke="currentColor" stroke-width="1"/>
+        <line x1="5.5" y1="0.5" x2="5.5" y2="15.5" stroke="currentColor" stroke-width="1"/>
+        <path d="M9 6L11 8L9 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-toggle-chevron"/>
+      </svg>
+    </button>
+    <a href="/" class="topnav-logo">Vend<em>iQ</em></a>
+    <div class="topnav-tag">Fleet Manager</div>
+    <div class="topnav-right">
+      <select class="topnav-select" onchange="if(this.value)showView('site-'+this.value);this.selectedIndex=0;">
+        <option value="">Jump to site...</option>
+        <option value="laundromat">First St Laundromat</option>
+        <option value="office">Riverside Office Park</option>
+        <option value="gym">Central Fitness Center</option>
+      </select>
+      <div class="topnav-pill"><span class="dot"></span>5 Online</div>
+      <div class="demo-badge">Demo Mode</div>
+      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" id="themeBtn">🌙</button>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <div class="sidebar">
+      <div class="sb-summary">
+        <div class="sb-stat"><span class="lab">Today's Revenue</span><span class="val lime">$187.50</span></div>
+        <div class="sb-stat"><span class="lab">Total Vends</span><span class="val">72</span></div>
+        <div class="sb-stat"><span class="lab">Fleet Online</span><span class="val">5 / 5</span></div>
+      </div>
+      <div class="sb-section">
+        <div class="sb-section-label">Overview</div>
+        <a class="sb-link active" onclick="showView('fleet')" id="nav-fleet"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>Fleet Overview</a>
+      </div>
+      <div class="sb-section">
+        <div class="sb-section-label">Sites</div>
+        <a class="sb-link" onclick="showView('site-laundromat')" id="nav-site-laundromat">
+          <span class="sb-dot online"></span>First St Laundromat
+          <span class="sb-badge warn">1</span>
+        </a>
+        <a class="sb-link" onclick="showView('site-office')" id="nav-site-office">
+          <span class="sb-dot online"></span>Riverside Office Park
+        </a>
+        <a class="sb-link" onclick="showView('site-gym')" id="nav-site-gym">
+          <span class="sb-dot online"></span>Central Fitness Center
+          <span class="sb-badge alert">2</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="main">
+
+      <!-- ══ FLEET OVERVIEW ══ -->
+      <div class="view active" id="view-fleet">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Fleet Overview</div>
+            <div class="page-sub">5 machines across 3 sites &mdash; Last updated just now</div>
+          </div>
+          <button class="btn-refresh" onclick="this.textContent='Refreshing...';var b=this;setTimeout(function(){b.textContent='⟳ Refresh'},800)">⟳ Refresh</button>
+        </div>
+
+        <div class="stat-strip">
+          <div class="stat-card sc-lime"><div class="stat-num">5</div><div class="stat-lbl">Total Machines</div></div>
+          <div class="stat-card sc-green"><div class="stat-num">5</div><div class="stat-lbl">Online</div></div>
+          <div class="stat-card sc-coral"><div class="stat-num">4</div><div class="stat-lbl">Empty Slots</div></div>
+          <div class="stat-card sc-gold"><div class="stat-num">7</div><div class="stat-lbl">Low Stock</div></div>
+        </div>
+
+        <div class="earnings-card">
+          <div class="card-label">Earnings</div>
+          <div id="rechartsRoot"></div>
+          <div class="leaderboard">
+            <div class="leaderboard-title">Top Sellers</div>
+            <table class="leaderboard-table">
+              <thead><tr><th style="width:24px">#</th><th>Product</th><th class="num">Vends &#9660;</th><th class="num">Revenue</th><th class="num">Profit</th></tr></thead>
+              <tbody>
+                <tr><td class="rank">1</td><td><div class="lb-product"><div class="lb-img" style="background:#1a5db5"></div>Dasani Water</div></td><td class="num">189</td><td class="num">$378.00</td><td class="profit">$264.60</td></tr>
+                <tr><td class="rank">2</td><td><div class="lb-product"><div class="lb-img" style="background:#c41230"></div>Coca-Cola</div></td><td class="num">156</td><td class="num">$390.00</td><td class="profit">$249.60</td></tr>
+                <tr><td class="rank">3</td><td><div class="lb-product"><div class="lb-img" style="background:#d4a017"></div>Lay's Classic</div></td><td class="num">134</td><td class="num">$301.50</td><td class="profit">$194.30</td></tr>
+                <tr><td class="rank">4</td><td><div class="lb-product"><div class="lb-img" style="background:#0d6ebd"></div>Gatorade Blue</div></td><td class="num">118</td><td class="num">$354.00</td><td class="profit">$200.60</td></tr>
+                <tr><td class="rank">5</td><td><div class="lb-product"><div class="lb-img" style="background:#5b3a1a"></div>Snickers</div></td><td class="num">112</td><td class="num">$224.00</td><td class="profit">$156.80</td></tr>
+                <tr><td class="rank">6</td><td><div class="lb-product"><div class="lb-img" style="background:#1a1a1a"></div>Monster Energy</div></td><td class="num">97</td><td class="num">$339.50</td><td class="profit">$184.30</td></tr>
+                <tr><td class="rank">7</td><td><div class="lb-product"><div class="lb-img" style="background:#6b3d2e"></div>Kind Bar Dark Choc</div></td><td class="num">89</td><td class="num">$222.50</td><td class="profit">$133.50</td></tr>
+                <tr><td class="rank">8</td><td><div class="lb-product"><div class="lb-img" style="background:#cc4400"></div>Doritos Nacho</div></td><td class="num">85</td><td class="num">$191.25</td><td class="profit">$127.50</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <div class="section-title">Machines</div>
+        </div>
+        <div class="machine-grid" id="fleetGrid"></div>
+      </div>
+
+      <!-- ══ SITE VIEWS (rendered dynamically) ══ -->
+      <div class="view" id="view-site-laundromat">
+        <div class="site-header"><a class="site-back" onclick="showView('fleet')">&larr; Fleet &rsaquo; Sites</a>
+          <div class="page-header" style="margin-bottom:4px"><div><div class="page-title">First St Laundromat</div><div class="page-sub">2 machines &middot; 2 online</div></div>
+          <div style="display:flex;gap:8px;align-items:center"><span class="pill pill-lime"><span class="sb-dot online" style="width:6px;height:6px"></span> All Online</span><button class="btn-refresh">Live Fetch</button></div></div>
+        </div>
+        <div class="stat-strip" id="stats-laundromat"></div>
+        <div id="site-laundromat-machines"></div>
+      </div>
+
+      <div class="view" id="view-site-office">
+        <div class="site-header"><a class="site-back" onclick="showView('fleet')">&larr; Fleet &rsaquo; Sites</a>
+          <div class="page-header" style="margin-bottom:4px"><div><div class="page-title">Riverside Office Park</div><div class="page-sub">2 machines &middot; 2 online</div></div>
+          <div style="display:flex;gap:8px;align-items:center"><span class="pill pill-lime"><span class="sb-dot online" style="width:6px;height:6px"></span> All Online</span><button class="btn-refresh">Live Fetch</button></div></div>
+        </div>
+        <div class="stat-strip" id="stats-office"></div>
+        <div id="site-office-machines"></div>
+      </div>
+
+      <div class="view" id="view-site-gym">
+        <div class="site-header"><a class="site-back" onclick="showView('fleet')">&larr; Fleet &rsaquo; Sites</a>
+          <div class="page-header" style="margin-bottom:4px"><div><div class="page-title">Central Fitness Center</div><div class="page-sub">1 machine &middot; 1 online</div></div>
+          <div style="display:flex;gap:8px;align-items:center"><span class="pill pill-lime"><span class="sb-dot online" style="width:6px;height:6px"></span> All Online</span><button class="btn-refresh">Live Fetch</button></div></div>
+        </div>
+        <div class="stat-strip" id="stats-gym"></div>
+        <div id="site-gym-machines"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+/* ── AUTH ── */
+var KEY='vendiq_demo_auth';
+if(sessionStorage.getItem(KEY)==='1') showApp();
+
+window.handleDemoLogin=function(e){
+  e.preventDefault();
+  var inp=document.getElementById('demoPass'),err=document.getElementById('demoError');
+  if(inp.value==='atlas1!'){sessionStorage.setItem(KEY,'1');showApp();}
+  else{inp.classList.add('error');err.textContent='Invalid access code.';setTimeout(function(){inp.classList.remove('error');},500);inp.value='';inp.focus();}
+  return false;
+};
+
+function showApp(){document.getElementById('gate').classList.add('hidden');document.getElementById('app').classList.add('visible');}
+
+window.toggleSidebar=function(){
+  var sb=document.querySelector('.sidebar');
+  var icon=document.getElementById('sidebarIcon');
+  sb.classList.toggle('collapsed');
+  icon.classList.toggle('collapsed');
+};
+
+window.toggleTheme=function(){
+  var body=document.body;
+  var btn=document.getElementById('themeBtn');
+  if(body.getAttribute('data-theme')==='light'){
+    body.removeAttribute('data-theme');
+    btn.textContent='🌙';
+  }else{
+    body.setAttribute('data-theme','light');
+    btn.textContent='☀️';
+  }
+};
+
+/* ── MOCK DATA ── */
+var MACHINES=[
+{id:'laundro-snack',name:'Snack Center',site:'First St Laundromat',siteKey:'laundromat',model:'Crane/National 167',category:'Snack',fill:71,vends:18,revenue:43.50,profit:26.10,lastVend:'Doritos Nacho Cheese',lastTime:'12 min ago',dex:802,
+ slots:[
+  {id:'A1',product:'Lay\'s Classic',qty:6,cap:10,price:2.25},{id:'A2',product:'Doritos Nacho',qty:3,cap:10,price:2.25},{id:'A3',product:'Cheetos Crunchy',qty:7,cap:10,price:2.25},{id:'A4',product:'Ruffles Cheddar',qty:1,cap:10,price:2.25},
+  {id:'B1',product:'Snickers',qty:8,cap:12,price:2.00},{id:'B2',product:'M&M Peanut',qty:5,cap:12,price:2.00},{id:'B3',product:'Reese\'s Cups',qty:0,cap:12,price:2.00},{id:'B4',product:'Kit Kat',qty:4,cap:12,price:2.00},
+  {id:'C1',product:'Nature Valley',qty:9,cap:10,price:1.75},{id:'C2',product:'PopTarts',qty:2,cap:10,price:2.00},{id:'C3',product:'Belvita',qty:6,cap:10,price:1.75},{id:'C4',product:'Trail Mix',qty:7,cap:8,price:2.50},
+  {id:'D1',product:'Pringles',qty:4,cap:8,price:2.50},{id:'D2',product:'Goldfish',qty:3,cap:10,price:1.75},{id:'D3',product:'Chex Mix',qty:5,cap:10,price:2.00},{id:'D4',product:'Beef Jerky',qty:2,cap:6,price:3.50}
+ ],chart:[28,34,31,42,38,35,43]},
+
+{id:'laundro-bev',name:'Beverage Wall',site:'First St Laundromat',siteKey:'laundromat',model:'Dixie-Narco BevMax 5000',category:'Beverage',fill:78,vends:13,revenue:35.00,profit:21.00,lastVend:'Coca-Cola',lastTime:'8 min ago',dex:1247,
+ slots:[
+  {id:'A1',product:'Coca-Cola',qty:6,cap:8,price:2.50},{id:'A2',product:'Diet Coke',qty:4,cap:8,price:2.50},{id:'A3',product:'Dr Pepper',qty:7,cap:8,price:2.50},{id:'A4',product:'Sprite',qty:5,cap:8,price:2.50},
+  {id:'B1',product:'Dasani Water',qty:8,cap:10,price:2.00},{id:'B2',product:'Gatorade Blue',qty:3,cap:8,price:3.00},{id:'B3',product:'Gatorade Fruit',qty:2,cap:8,price:3.00},{id:'B4',product:'Monster Energy',qty:5,cap:6,price:3.50},
+  {id:'C1',product:'Minute Maid OJ',qty:4,cap:8,price:2.75},{id:'C2',product:'AriZona Tea',qty:6,cap:8,price:2.00},{id:'C3',product:'Vitamin Water',qty:3,cap:8,price:2.75},{id:'C4',product:'Red Bull',qty:1,cap:6,price:4.00}
+ ],chart:[22,26,30,28,35,32,35]},
+
+{id:'office-snack',name:'Break Room Snacks',site:'Riverside Office Park',siteKey:'office',model:'AMS Sensit Snack (AMS39)',category:'Snack',fill:85,vends:14,revenue:36.50,profit:23.40,lastVend:'Kind Bar Dark Choc',lastTime:'22 min ago',dex:654,
+ slots:[
+  {id:'A1',product:'Kind Bar Dark Choc',qty:7,cap:10,price:2.50},{id:'A2',product:'RXBar Chocolate',qty:6,cap:10,price:3.00},{id:'A3',product:'Clif Bar Oat',qty:8,cap:10,price:2.50},{id:'A4',product:'Belvita Blueberry',qty:5,cap:10,price:2.00},
+  {id:'B1',product:'Lay\'s Classic',qty:9,cap:10,price:2.00},{id:'B2',product:'SunChips Harvest',qty:7,cap:10,price:2.00},{id:'B3',product:'Veggie Straws',qty:6,cap:10,price:2.25},{id:'B4',product:'Goldfish',qty:8,cap:10,price:1.75},
+  {id:'C1',product:'Oreos Mini',qty:5,cap:8,price:1.75},{id:'C2',product:'Grandma\'s Cookies',qty:4,cap:8,price:1.75},{id:'C3',product:'PopCorners',qty:6,cap:10,price:2.25},{id:'C4',product:'Smartfood Popcorn',qty:7,cap:10,price:2.25},
+  {id:'D1',product:'Nature Valley',qty:8,cap:10,price:1.75},{id:'D2',product:'Austin Crackers',qty:9,cap:12,price:1.50},{id:'D3',product:'Trail Mix',qty:4,cap:8,price:2.50},{id:'D4',product:'Beef Jerky',qty:3,cap:6,price:3.50}
+ ],chart:[30,32,28,36,34,38,36]},
+
+{id:'office-bev',name:'Lobby Beverages',site:'Riverside Office Park',siteKey:'office',model:'Royal Vendors Merlin 650',category:'Beverage',fill:80,vends:10,revenue:26.50,profit:16.50,lastVend:'Dasani Water',lastTime:'35 min ago',dex:431,
+ slots:[
+  {id:'A1',product:'Dasani Water',qty:7,cap:10,price:2.00},{id:'A2',product:'Smartwater',qty:5,cap:8,price:2.75},{id:'A3',product:'Coca-Cola',qty:6,cap:8,price:2.50},{id:'A4',product:'Coke Zero',qty:4,cap:8,price:2.50},
+  {id:'B1',product:'La Croix Lime',qty:8,cap:10,price:2.25},{id:'B2',product:'La Croix Berry',qty:6,cap:10,price:2.25},{id:'B3',product:'Starbucks Frapp',qty:2,cap:6,price:3.75},{id:'B4',product:'Starbucks Dblshot',qty:3,cap:6,price:3.75},
+  {id:'C1',product:'Minute Maid OJ',qty:5,cap:8,price:2.75},{id:'C2',product:'Lipton Tea',qty:7,cap:8,price:2.00},{id:'C3',product:'Vitamin Water',qty:4,cap:8,price:2.75},{id:'C4',product:'Gatorade Blue',qty:3,cap:8,price:3.00}
+ ],chart:[20,18,24,22,26,28,26]},
+
+{id:'gym-combo',name:'Gym Floor Combo',site:'Central Fitness Center',siteKey:'gym',model:'AMS Visi-Combo (AMS39-VC)',category:'Combo',fill:68,vends:17,revenue:46.00,profit:28.50,lastVend:'Gatorade Blue',lastTime:'5 min ago',dex:1089,
+ slots:[
+  {id:'A1',product:'Gatorade Blue',qty:2,cap:8,price:3.00},{id:'A2',product:'Gatorade Fruit',qty:1,cap:8,price:3.00},{id:'A3',product:'Muscle Milk',qty:3,cap:6,price:3.75},{id:'A4',product:'Protein Shake',qty:4,cap:6,price:3.50},
+  {id:'B1',product:'Dasani Water',qty:6,cap:10,price:2.00},{id:'B2',product:'Vitamin Water',qty:0,cap:8,price:2.75},{id:'B3',product:'Monster Energy',qty:2,cap:6,price:3.50},{id:'B4',product:'Red Bull',qty:0,cap:6,price:4.00},
+  {id:'C1',product:'RXBar Protein',qty:5,cap:8,price:3.00},{id:'C2',product:'Clif Builder Bar',qty:3,cap:8,price:2.75},{id:'C3',product:'Kind Bar Nut',qty:4,cap:10,price:2.50},{id:'C4',product:'Trail Mix',qty:2,cap:8,price:2.50},
+  {id:'D1',product:'Beef Jerky',qty:1,cap:6,price:3.50},{id:'D2',product:'Nature Valley',qty:6,cap:10,price:1.75},{id:'D3',product:'Banana Chips',qty:3,cap:8,price:2.25},{id:'D4',product:'Almonds',qty:4,cap:8,price:2.75}
+ ],chart:[32,38,42,36,44,40,46]}
+];
+
+/* ── RENDER HELPERS ── */
+function fillClass(pct){return pct>=60?'fill-ok':pct>=35?'fill-warn':'fill-low';}
+function slotClass(qty,cap){if(qty===0)return'slot-empty';if(qty/cap<=0.25)return'slot-low';return'slot-ok';}
+function qtyClass(qty,cap){if(qty===0)return'empty';if(qty/cap<=0.25)return'low';return'ok';}
+
+function renderMachineCard(m){
+  var empty=m.slots.filter(function(s){return s.qty===0;}).length;
+  var low=m.slots.filter(function(s){return s.qty>0&&s.qty/s.cap<=0.25;}).length;
+  var total=m.slots.length;
+
+  return'<div class="machine-card" onclick="showView(\'site-'+m.siteKey+'\')">'+
+    '<div class="mc-top"><div class="mc-status"><span class="dot"></span>Online</div><div class="mc-img"></div></div>'+
+    '<div class="mc-name">'+m.name+'</div>'+
+    '<div class="mc-hostname">'+m.id+' &mdash; '+m.model+'</div>'+
+    '<div class="fill-wrap"><div class="fill-label"><span class="lab">Fill Level</span><span class="pct">'+m.fill+'%</span></div>'+
+    '<div class="fill-bar"><div class="fill-bar-inner '+fillClass(m.fill)+'" style="width:'+m.fill+'%"></div></div></div>'+
+    '<div class="mc-3stats">'+
+    '<div class="mc-3stat"><div class="lab">Empty</div><div class="num coral">'+empty+'</div></div>'+
+    '<div class="mc-3stat"><div class="lab">Low Stock</div><div class="num gold">'+low+'</div></div>'+
+    '<div class="mc-3stat"><div class="lab">Total Slots</div><div class="num">'+total+'</div></div>'+
+    '</div>'+
+    '<div class="mc-fill-info">'+
+    '<div class="mc-fill-item"><div class="lab">Last Fill</div><div class="val">Mar 18</div></div>'+
+    '<div class="mc-fill-item"><div class="lab">Vends</div><div class="val">'+m.vends+'</div></div>'+
+    '<div class="mc-fill-item"><div class="lab">Revenue</div><div class="val lime">$'+m.revenue.toFixed(2)+'</div></div>'+
+    '<div class="mc-fill-item"><div class="lab">Profit</div><div class="val lime">$'+m.profit.toFixed(2)+'</div></div>'+
+    '</div>'+
+    '<div class="mc-chart" data-machine="'+m.id+'"></div>'+
+    '<div class="mc-last-vend">Last vend: <strong>'+m.lastVend+'</strong> <span class="tag">$'+m.slots[0].price.toFixed(2)+'</span> <span class="tag">Card</span> &mdash; '+m.lastTime+'</div>'+
+    '<button class="mc-edit" onclick="event.stopPropagation()">Edit</button>'+
+    '</div>';
+}
+
+function renderSlotGrid(m){
+  var html='<div class="slot-section"><div class="slot-section-title">Inventory &mdash; '+m.name+'</div><div class="slot-grid">';
+  m.slots.forEach(function(s){
+    var cls=slotClass(s.qty,s.cap);
+    var qcls=qtyClass(s.qty,s.cap);
+    html+='<div class="slot '+cls+'">'+
+      '<div class="slot-id">'+s.id+'</div>'+
+      '<div class="slot-product">'+s.product+'</div>'+
+      '<div class="slot-qty '+qcls+'">'+s.qty+'/'+s.cap+'</div>'+
+      '<div class="slot-price">$'+s.price.toFixed(2)+'</div>'+
+      '</div>';
+  });
+  html+='</div></div>';
+  return html;
+}
+
+function renderSiteStats(siteKey){
+  var machines=MACHINES.filter(function(m){return m.siteKey===siteKey;});
+  var tVends=0,tRev=0,tProf=0,tStock=0,tCap=0;
+  machines.forEach(function(m){tVends+=m.vends;tRev+=m.revenue;tProf+=m.profit;m.slots.forEach(function(s){tStock+=s.qty;tCap+=s.cap;});});
+  return'<div class="stat-card sc-lime"><div class="stat-num">'+tVends+'</div><div class="stat-lbl">Vends Since Fill</div></div>'+
+    '<div class="stat-card sc-green"><div class="stat-num lime">$'+tRev.toFixed(2)+'</div><div class="stat-lbl">Revenue</div></div>'+
+    '<div class="stat-card sc-gold"><div class="stat-num lime">$'+tProf.toFixed(2)+'</div><div class="stat-lbl">Profit</div></div>'+
+    '<div class="stat-card sc-lime"><div class="stat-num">'+tStock+'/'+tCap+'</div><div class="stat-lbl">Inventory</div></div>';
+}
+
+function renderSiteMachineDetail(m){
+  var empty=m.slots.filter(function(s){return s.qty===0;}).length;
+  var stock=0,cap=0;m.slots.forEach(function(s){stock+=s.qty;cap+=s.cap;});
+  var margin=m.revenue>0?Math.round(m.profit/m.revenue*100):0;
+  var rows={};m.slots.forEach(function(s){var row=s.id.charAt(0);if(!rows[row])rows[row]=[];rows[row].push(s);});
+  var slotHtml='';
+  Object.keys(rows).sort().forEach(function(row){
+    slotHtml+='<div class="slot-row"><div class="slot-row-label">'+row+'</div><div class="slot-row-slots">';
+    rows[row].forEach(function(s){
+      var cls=slotClass(s.qty,s.cap);var qcls=qtyClass(s.qty,s.cap);
+      var flex='flex:'+s.cap+' 1 0';
+      slotHtml+='<div class="slot '+cls+'" style="'+flex+'"><div class="slot-id">'+s.id+'</div>'+
+        '<div class="slot-img" style="background:hsl('+Math.abs(s.product.charCodeAt(0)*7%360)+',30%,25%)"></div>'+
+        '<div class="slot-product">'+s.product+'</div>'+
+        '<div class="slot-qty '+qcls+'">'+s.qty+'/'+s.cap+'</div>'+
+        '<div class="slot-price">$'+s.price.toFixed(2)+'</div></div>';
+    });
+    slotHtml+='</div></div>';
+  });
+  return'<div class="ms">'+
+    '<div class="ms-header"><div class="ms-img"></div><div class="ms-info"><div class="ms-name">'+m.name+'</div><div class="ms-model">'+m.model+'</div><div class="ms-hostname">'+m.id+'</div></div>'+
+    '<div class="ms-actions"><span class="ms-btn ms-btn-online"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--lime-dark);display:inline-block;margin-right:4px"></span>Online</span>'+
+    '<span class="pill pill-lime" style="font-size:.6rem">'+m.fill+'% Full</span></div></div>'+
+    '<div class="detail-grid4">'+
+    '<div class="d-stat"><div class="d-val">'+m.vends+'</div><div class="d-sub">since fill Mar 18</div><div class="d-label">Vends</div></div>'+
+    '<div class="d-stat"><div style="display:flex;gap:16px;align-items:flex-end;margin-bottom:2px"><div><div class="d-val" style="color:var(--lime)">$'+m.revenue.toFixed(2)+'</div><div class="d-label">Revenue</div></div><div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.2rem;color:var(--lime-dark)">$'+m.profit.toFixed(2)+'</div><div class="d-label">Profit</div></div></div><div class="d-sub">'+margin+'% margin</div></div>'+
+    (function(){var pct=Math.round(stock/cap*100);var r=27;var c=2*Math.PI*r;var d=c*pct/100;var o=c-d;var col=pct>=60?'var(--lime-dark)':pct>=35?'var(--gold)':'var(--coral)';
+    return'<div class="d-stat" style="display:flex;align-items:center;gap:14px"><div class="ring-wrap"><svg width="64" height="64" viewBox="0 0 64 64" style="transform:rotate(-90deg)"><circle cx="32" cy="32" r="'+r+'" fill="none" stroke="var(--border)" stroke-width="5"/><circle cx="32" cy="32" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="5" stroke-linecap="round" stroke-dasharray="'+d+' '+o+'"/></svg><div class="ring-label" style="color:'+col+'">'+pct+'%</div></div><div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.1rem;color:'+col+'">'+stock+'/'+cap+'</div><div class="d-label">Inventory</div></div></div>';})()+
+    '<div class="d-stat d-last-vend"><div class="d-label">Last Vend</div><div class="product">'+m.lastVend+'</div><div class="meta">'+m.lastTime+' &middot; <strong style="color:var(--text)">$'+m.slots[0].price.toFixed(2)+'</strong> &middot; Card</div></div>'+
+    '</div>'+
+    '<div class="ms-2col">'+
+    '<div class="ms-card"><div class="ms-card-label">Monitoring</div><p>'+m.dex+' DEX pulls &middot; <span class="mdb-counter" data-machine="'+m.id+'">0</span> MDB packets</p><p>last checked 2 mins ago</p><button class="ms-dashboard-btn" onclick="event.stopPropagation()">Open Dashboard</button></div>'+
+    '<div class="ms-card"><div class="ms-card-label">Revenue Trend</div><div class="mc-chart" data-machine="'+m.id+'" style="border:none;background:none;padding:0"></div></div>'+
+    '</div>'+
+    '<div class="ms-card-label" style="margin-bottom:10px">Inventory</div>'+slotHtml+
+    '<div class="slot-legend">'+
+    '<div class="slot-legend-item"><div class="slot-legend-dot" style="background:var(--lime-dark)"></div>In Stock</div>'+
+    '<div class="slot-legend-item"><div class="slot-legend-dot" style="background:var(--gold)"></div>Low</div>'+
+    '<div class="slot-legend-item"><div class="slot-legend-dot" style="background:var(--coral)"></div>Critical</div>'+
+    '<div class="slot-legend-item"><div class="slot-legend-dot" style="background:rgba(255,92,53,.3)"></div>Empty</div>'+
+    '</div></div>';
+}
+
+function renderSiteMachines(siteKey){
+  var machines=MACHINES.filter(function(m){return m.siteKey===siteKey;});
+  var html='';
+  machines.forEach(function(m){html+=renderSiteMachineDetail(m);});
+  return html;
+}
+
+/* ── INIT ── (chart rendered by React below) */
+var _skipOldChart=true;
+if(false){
+var DAILY=[];
+var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+for(var i=29;i>=0;i--){
+  var d=new Date();d.setDate(d.getDate()-i);
+  var base=140+Math.random()*80;
+  var rev=Math.round(base*100)/100;
+  var cost=Math.round(rev*0.39*100)/100;
+  DAILY.push({date:months[d.getMonth()]+' '+d.getDate(),revenue:rev,profit:Math.round((rev-cost)*100)/100,vends:Math.round(rev/2.5)});
+}
+
+function renderChart(days){
+  var data=DAILY.slice(-days);
+  var maxVal=Math.max.apply(null,data.map(function(d){return d.revenue;}));
+  var chart=document.getElementById('earningsChart');
+  var labels=document.getElementById('chartLabels');
+  var grid=document.getElementById('chartGrid');
+
+  // Y-axis grid lines (updated after maxVal potentially changes for cumulative/vends)
+  function updateGrid(){
+    var gridHtml='';
+    var steps=5;
+    var prefix=showVends?'':'$';
+    for(var i=0;i<=steps;i++){
+      var val=Math.round(maxVal*(steps-i)/steps);
+      gridHtml+='<div class="chart-grid-line"><span class="y-label">'+prefix+val+'</span></div>';
+    }
+    grid.innerHTML=gridHtml;
+  }
+
+  // Apply cumulative if needed
+  var plotData=data;
+  if(currentMode==='cumulative'){
+    var cumRev=0,cumProf=0,cumVends=0;
+    plotData=data.map(function(d){cumRev+=d.revenue;cumProf+=d.profit;cumVends+=d.vends;return{date:d.date,revenue:Math.round(cumRev*100)/100,profit:Math.round(cumProf*100)/100,vends:cumVends};});
+    maxVal=Math.max.apply(null,plotData.map(function(d){return d.revenue;}));
+  }
+
+  // Determine which bars to show based on metric
+  var showRev=currentMetric==='both'||currentMetric==='revenue';
+  var showProfit=currentMetric==='both'||currentMetric==='profit';
+  var showVends=currentMetric==='vends';
+
+  if(showVends) maxVal=Math.max.apply(null,plotData.map(function(d){return d.vends;}));
+
+  // Bars with staggered animation
+  var html='';
+  plotData.forEach(function(d,idx){
+    var delay=idx*15;
+    if(showVends){
+      var vH=Math.max(2,d.vends/maxVal*100);
+      html+='<div class="bar-group"><div class="bar rev" style="height:0%;animation:growBar .4s '+delay+'ms ease forwards" title="Vends: '+d.vends+'" data-h="'+vH+'"></div></div>';
+    }else{
+      var bars='';
+      if(showRev){var rH=Math.max(2,d.revenue/maxVal*100);bars+='<div class="bar rev" style="height:0%;animation:growBar .4s '+delay+'ms ease forwards" title="Rev: $'+d.revenue.toFixed(2)+'" data-h="'+rH+'"></div>';}
+      if(showProfit){var pH=Math.max(2,d.profit/maxVal*100);bars+='<div class="bar profit" style="height:0%;animation:growBar .4s '+(delay+50)+'ms ease forwards" title="Profit: $'+d.profit.toFixed(2)+'" data-h="'+pH+'"></div>';}
+      html+='<div class="bar-group">'+bars+'</div>';
+    }
+  });
+  chart.innerHTML=html;
+
+  chart.querySelectorAll('.bar').forEach(function(bar){
+    bar.style.setProperty('--target-h',bar.getAttribute('data-h')+'%');
+  });
+
+  updateGrid();
+
+  // X-axis labels
+  if(data.length<=7) labels.innerHTML=data.map(function(d){return'<span>'+d.date+'</span>';}).join('');
+  else{var f=data[0],l=data[data.length-1],m=data[Math.floor(data.length/2)];labels.innerHTML='<span>'+f.date+'</span><span>'+m.date+'</span><span>'+l.date+'</span>';}
+
+  // Animated totals
+  var tVends=0,tRev=0,tProfit=0;
+  data.forEach(function(d){tVends+=d.vends;tRev+=d.revenue;tProfit+=d.profit;});
+  var margin=tRev>0?Math.round(tProfit/tRev*100):0;
+  animateValue('e-vends',tVends,false);
+  animateValue('e-revenue',tRev,true);
+  animateValue('e-profit',tProfit,true);
+  document.getElementById('e-margin').textContent=margin+'%';
+}
+
+function animateValue(id,target,isCurrency){
+  var el=document.getElementById(id);
+  var start=parseFloat(el.textContent.replace(/[$,]/g,''))||0;
+  var diff=target-start;
+  var duration=400;
+  var startTime=null;
+  function step(ts){
+    if(!startTime)startTime=ts;
+    var progress=Math.min((ts-startTime)/duration,1);
+    var eased=progress<0.5?2*progress*progress:(1-Math.pow(-2*progress+2,2)/2);
+    var current=start+diff*eased;
+    if(isCurrency) el.textContent='$'+current.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+    else el.textContent=Math.round(current).toLocaleString();
+    if(progress<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+var currentMode='daily';
+var currentMetric='both';
+
+window.setRange=function(days,btn){
+  document.querySelectorAll('.chart-range-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderChart(days);
+};
+
+window.toggleGroup=function(groupId,btn){
+  document.getElementById(groupId).querySelectorAll('.chart-toggle-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+};
+
+window.setChartMode=function(mode){
+  currentMode=mode.toLowerCase();
+  var activeRange=document.querySelector('.chart-range-btn.active');
+  var days=activeRange?parseInt(activeRange.textContent==='1D'?1:activeRange.textContent==='3D'?3:activeRange.textContent==='7D'?7:activeRange.textContent==='1M'?30:90):30;
+  renderChart(days);
+};
+
+window.setMetric=function(metric){
+  currentMetric=metric.toLowerCase();
+  var activeRange=document.querySelector('.chart-range-btn.active');
+  var days=activeRange?parseInt(activeRange.textContent==='1D'?1:activeRange.textContent==='3D'?3:activeRange.textContent==='7D'?7:activeRange.textContent==='1M'?30:90):30;
+  renderChart(days);
+};
+
+} /* end skip old chart */
+
+/* ── INIT ── */
+var fleetHtml='';
+MACHINES.forEach(function(m){fleetHtml+=renderMachineCard(m);});
+document.getElementById('fleetGrid').innerHTML=fleetHtml;
+
+// Site stats
+document.getElementById('stats-laundromat').innerHTML=renderSiteStats('laundromat');
+document.getElementById('stats-office').innerHTML=renderSiteStats('office');
+document.getElementById('stats-gym').innerHTML=renderSiteStats('gym');
+
+// Site machine details
+document.getElementById('site-laundromat-machines').innerHTML=renderSiteMachines('laundromat');
+document.getElementById('site-office-machines').innerHTML=renderSiteMachines('office');
+document.getElementById('site-gym-machines').innerHTML=renderSiteMachines('gym');
+
+/* ── MDB PACKET COUNTER (randomized live increment) ── */
+var mdbCounts={};
+MACHINES.forEach(function(m){mdbCounts[m.id]=Math.floor(Math.random()*200)+50;});
+function tickMdb(){
+  document.querySelectorAll('.mdb-counter').forEach(function(el){
+    var id=el.getAttribute('data-machine');
+    if(Math.random()<0.4){mdbCounts[id]+= Math.floor(Math.random()*5)+1;}
+    el.textContent=mdbCounts[id].toLocaleString();
+  });
+}
+setInterval(tickMdb,1500);
+tickMdb();
+
+/* ── NAVIGATION ── */
+window.showView=function(viewId){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+  document.querySelectorAll('.sb-link').forEach(function(l){l.classList.remove('active');});
+  var target=document.getElementById('view-'+viewId);
+  if(target)target.classList.add('active');
+  var nav=document.getElementById('nav-'+viewId);
+  if(nav)nav.classList.add('active');
+  document.querySelector('.main').scrollTop=0;
+};
+})();
+</script>
+
+<!-- React + Recharts via CDN -->
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/prop-types@15/prop-types.min.js" crossorigin></script>
+<script src="https://unpkg.com/recharts@2.15.3/umd/Recharts.js" crossorigin></script>
+
+<script>
+(function(){
+var e=React.createElement;
+var RC=Recharts;
+
+// ── MOCK FLEET TIMESERIES DATA (same shape as real API) ──
+var MOCK_SITES={};
+var SITE_NAMES=['First St Laundromat','Riverside Office Park','Central Fitness Center'];
+var SITE_COLORS=[['#8FC93A','#BAEF5B'],['#FF5C35','#F2C94C'],['#6aab2a','#D4D9CC']];
+
+function genSiteData(avgRev,avgVends,fillDates){
+  var daily=[];var today=new Date();
+  for(var i=89;i>=0;i--){
+    var d=new Date(today);d.setDate(d.getDate()-i);
+    var dateStr=d.toISOString().slice(0,10);
+    var dayOfWeek=d.getDay();
+    var mult=dayOfWeek===0||dayOfWeek===6?0.6:1.0;
+    var rev=Math.round((avgRev*mult*(0.7+Math.random()*0.6))*100)/100;
+    var cost=Math.round(rev*0.38*100)/100;
+    daily.push({date:dateStr,total_revenue:rev,total_vends:Math.round(avgVends*mult*(0.6+Math.random()*0.8)),cost:cost,profit:Math.round((rev-cost)*100)/100});
+  }
+  return{daily:daily,fill_dates:fillDates};
+}
+
+MOCK_SITES['First St Laundromat']=genSiteData(85,32,['2026-02-15','2026-03-05','2026-03-18']);
+MOCK_SITES['Riverside Office Park']=genSiteData(65,24,['2026-02-20','2026-03-10']);
+MOCK_SITES['Central Fitness Center']=genSiteData(50,17,['2026-02-25','2026-03-12']);
+
+var RANGES=[{label:'1D',days:1},{label:'3D',days:3},{label:'7D',days:7},{label:'1M',days:30},{label:'3M',days:90}];
+
+function CustomTooltip(p){
+  if(!p.active||!p.payload||!p.payload.length)return null;
+  var isV=p.isVends;
+  return e('div',{style:{background:'#2C3025',border:'1px solid rgba(255,255,255,0.12)',borderRadius:8,padding:'8px 12px',fontSize:'.75rem'}},
+    e('div',{style:{color:'#8a9480',marginBottom:4}},p.label),
+    p.payload.sort(function(a,b){return b.value-a.value}).map(function(en){
+      return e('div',{key:en.dataKey,style:{display:'flex',alignItems:'center',gap:6,color:'#F5F7F0'}},
+        e('span',{style:{width:8,height:8,borderRadius:'50%',background:en.color,display:'inline-block'}}),
+        e('span',null,en.name+': '+(isV?en.value:'$'+en.value.toFixed(2)))
+      );
+    })
+  );
+}
+
+function FleetChart(){
+  var _s=React.useState;
+  var sr=_s(30),selectedRange=sr[0],setSelectedRange=sr[1];
+  var sv=_s('fleet'),view=sv[0],setView=sv[1];
+  var sm=_s('daily'),mode=sm[0],setMode=sm[1];
+  var smt=_s('both'),metric=smt[0],setMetric=smt[1];
+  var sf=_s(true),showFills=sf[0],setShowFills=sf[1];
+
+  var allDates=React.useMemo(function(){
+    var today=new Date();today.setHours(0,0,0,0);var dates=[];
+    for(var i=selectedRange-1;i>=0;i--){var d=new Date(today);d.setDate(d.getDate()-i);dates.push(d.toISOString().slice(0,10));}
+    return dates;
+  },[selectedRange]);
+
+  var result=React.useMemo(function(){
+    if(view==='fleet'){
+      var dailyMap={};allDates.forEach(function(d){dailyMap[d]={revenue:0,vends:0,cost:0};});
+      var allFills=new Set();
+      Object.values(MOCK_SITES).forEach(function(site){
+        site.daily.forEach(function(d){if(dailyMap[d.date]){dailyMap[d.date].revenue+=d.total_revenue;dailyMap[d.date].vends+=d.total_vends;dailyMap[d.date].cost+=d.cost;}});
+        site.fill_dates.forEach(function(f){allFills.add(f);});
+      });
+      var data;
+      if(mode==='daily'){
+        data=allDates.map(function(date){return{date:date,total_revenue:Math.round(dailyMap[date].revenue*100)/100,profit:Math.round((dailyMap[date].revenue-dailyMap[date].cost)*100)/100,vends:dailyMap[date].vends};});
+      }else{
+        var cr=0,cp=0,cv=0;
+        data=allDates.map(function(date){if(showFills&&allFills.has(date)){cr=0;cp=0;cv=0;}cr+=dailyMap[date].revenue;cp+=dailyMap[date].revenue-dailyMap[date].cost;cv+=dailyMap[date].vends;return{date:date,total_revenue:Math.round(cr*100)/100,profit:Math.round(cp*100)/100,vends:cv};});
+      }
+      return{chartData:data,fillLines:Array.from(allFills).sort().map(function(d){return{date:d};}),
+        lines:[{dataKey:'total_revenue',name:'Revenue',stroke:'#8FC93A',type:'revenue'},{dataKey:'profit',name:'Profit',stroke:'#BAEF5B',type:'profit'},{dataKey:'vends',name:'Vends',stroke:'#6aab2a',type:'vends'}]};
+    }
+    // Per site
+    var siteLookups={};SITE_NAMES.forEach(function(name){var lk={};MOCK_SITES[name].daily.forEach(function(d){lk[d.date]=d;});siteLookups[name]=lk;});
+    var data2;
+    if(mode==='daily'){
+      data2=allDates.map(function(date){var row={date:date};SITE_NAMES.forEach(function(name){var d=siteLookups[name][date];row[name+'_rev']=d?Math.round(d.total_revenue*100)/100:0;row[name+'_profit']=d?Math.round(d.profit*100)/100:0;row[name+'_vends']=d?d.total_vends:0;});return row;});
+    }else{
+      var cumSt={};SITE_NAMES.forEach(function(n){cumSt[n]={r:0,p:0,v:0};});
+      data2=allDates.map(function(date){var row={date:date};SITE_NAMES.forEach(function(name){if(showFills&&MOCK_SITES[name].fill_dates.indexOf(date)>=0){cumSt[name]={r:0,p:0,v:0};}var d=siteLookups[name][date];if(d){cumSt[name].r+=d.total_revenue;cumSt[name].p+=d.profit;cumSt[name].v+=d.total_vends;}row[name+'_rev']=Math.round(cumSt[name].r*100)/100;row[name+'_profit']=Math.round(cumSt[name].p*100)/100;row[name+'_vends']=cumSt[name].v;});return row;});
+    }
+    var linesDef=[],fillsDef=[];
+    SITE_NAMES.forEach(function(name,i){var c=SITE_COLORS[i];linesDef.push({dataKey:name+'_rev',name:name+' Rev',stroke:c[0],type:'revenue'},{dataKey:name+'_profit',name:name+' Profit',stroke:c[1],type:'profit'},{dataKey:name+'_vends',name:name,stroke:c[0],type:'vends'});MOCK_SITES[name].fill_dates.forEach(function(f){fillsDef.push({date:f,color:c[0]});});});
+    return{chartData:data2,fillLines:fillsDef,lines:linesDef};
+  },[allDates,view,mode,showFills]);
+
+  var totals=React.useMemo(function(){
+    var dateSet=new Set(allDates);var revenue=0,cost=0,vends=0;
+    Object.values(MOCK_SITES).forEach(function(site){site.daily.forEach(function(d){if(dateSet.has(d.date)){revenue+=d.total_revenue;cost+=d.cost;vends+=d.total_vends;}});});
+    var profit=revenue-cost;return{vends:vends,revenue:revenue,profit:profit,margin:revenue>0?profit/revenue*100:0};
+  },[allDates]);
+
+  var isVends=metric==='vends';
+  var visibleLines=metric==='both'?result.lines.filter(function(l){return l.type!=='vends';}):result.lines.filter(function(l){return l.type===metric;});
+  var showLegend=view==='site';
+  var chartHeight=showLegend?230:200;
+
+  function fmtTick(date){var d=new Date(date+'T00:00:00');var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return m[d.getMonth()]+' '+d.getDate();}
+
+  function btn(label,active,onClick,style){return e('button',{className:'chart-toggle-btn'+(active?' active':''),onClick:onClick,style:style||{}},label);}
+
+  return e('div',null,
+    // Range row
+    e('div',{className:'chart-range-row'},
+      e('span',{className:'chart-range-spacer'}),
+      RANGES.map(function(r){return e('button',{key:r.days,className:'chart-range-btn'+(selectedRange===r.days?' active':''),onClick:function(){setSelectedRange(r.days);}},r.label);})
+    ),
+    // Earnings summary
+    e('div',{className:'earnings-summary'},
+      e('div',{className:'earnings-item'},e('div',{className:'earnings-val'},totals.vends.toLocaleString()),e('div',{className:'stat-lbl'},'Vends')),
+      e('div',{className:'earnings-item'},e('div',{className:'earnings-val',style:{color:'#BAEF5B'}},'$'+totals.revenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',')),e('div',{className:'stat-lbl'},'Revenue')),
+      e('div',{className:'earnings-item'},e('div',{className:'earnings-val',style:{color:'#8FC93A'}},'$'+totals.profit.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',')),e('div',{className:'stat-lbl'},'Profit')),
+      e('div',{className:'earnings-item'},e('div',{className:'earnings-val',style:{color:'#8FC93A'}},totals.margin.toFixed(0)+'%'),e('div',{className:'stat-lbl'},'Margin'))
+    ),
+    // Controls
+    e('div',{className:'chart-controls'},
+      e('div',{className:'chart-toggles'},btn('Fleet',view==='fleet',function(){setView('fleet');}),btn('Per Site',view==='site',function(){setView('site');})),
+      e('div',{className:'chart-toggles'},btn('Daily',mode==='daily',function(){setMode('daily');}),btn('Cumulative',mode==='cumulative',function(){setMode('cumulative');})),
+      e('div',{className:'chart-toggles'},btn('Both',metric==='both',function(){setMetric('both');}),btn('Revenue',metric==='revenue',function(){setMetric('revenue');}),btn('Profit',metric==='profit',function(){setMetric('profit');}),btn('Vends',metric==='vends',function(){setMetric('vends');})),
+      e('button',{className:'chart-toggle-btn chart-toggle-fill'+(showFills?' active':''),onClick:function(){setShowFills(!showFills);}},'Show Fills')
+    ),
+    // Chart
+    e(RC.ResponsiveContainer,{width:'100%',height:chartHeight},
+      mode==='daily'?
+      e(RC.BarChart,{data:result.chartData,margin:{top:5,right:10,left:0,bottom:0}},
+        e(RC.CartesianGrid,{strokeDasharray:'3 3',stroke:'rgba(255,255,255,0.06)'}),
+        e(RC.XAxis,{dataKey:'date',tickFormatter:fmtTick,tick:{fontSize:11,fill:'#4A5240'},axisLine:false,tickLine:false}),
+        e(RC.YAxis,{tick:{fontSize:11,fill:'#4A5240'},axisLine:false,tickLine:false,tickFormatter:isVends?function(v){return v}:function(v){return'$'+v},width:50}),
+        e(RC.Tooltip,{content:e(CustomTooltip,{isVends:isVends})}),
+        showLegend?e(RC.Legend,{wrapperStyle:{fontSize:'0.7rem',paddingTop:'4px'},iconSize:10}):null,
+        showFills?result.fillLines.map(function(f,i){return e(RC.ReferenceLine,{key:f.date+'-'+i,x:f.date,stroke:f.color||'#F2C94C',strokeDasharray:'4 4',strokeWidth:1.5});}):null,
+        visibleLines.map(function(l){return e(RC.Bar,{key:l.dataKey,dataKey:l.dataKey,name:l.name,fill:l.stroke,radius:[2,2,0,0]});})
+      ):
+      e(RC.LineChart,{data:result.chartData,margin:{top:5,right:10,left:0,bottom:0}},
+        e(RC.CartesianGrid,{strokeDasharray:'3 3',stroke:'rgba(255,255,255,0.06)'}),
+        e(RC.XAxis,{dataKey:'date',tickFormatter:fmtTick,tick:{fontSize:11,fill:'#4A5240'},axisLine:false,tickLine:false}),
+        e(RC.YAxis,{tick:{fontSize:11,fill:'#4A5240'},axisLine:false,tickLine:false,tickFormatter:isVends?function(v){return v}:function(v){return'$'+v},width:50}),
+        e(RC.Tooltip,{content:e(CustomTooltip,{isVends:isVends})}),
+        showLegend?e(RC.Legend,{wrapperStyle:{fontSize:'0.7rem',paddingTop:'4px'},iconType:'line',iconSize:10}):null,
+        showFills?result.fillLines.map(function(f,i){return e(RC.ReferenceLine,{key:f.date+'-'+i,x:f.date,stroke:f.color||'#F2C94C',strokeDasharray:'4 4',strokeWidth:1.5});}):null,
+        visibleLines.map(function(l){return e(RC.Line,{key:l.dataKey,type:'monotone',dataKey:l.dataKey,name:l.name,stroke:l.stroke,strokeWidth:2,dot:false,activeDot:{r:3},connectNulls:true});})
+      )
+    )
+  );
+}
+
+// ── PER-MACHINE TIMESERIES DATA ──
+var MACHINE_TIMESERIES={};
+var MACHINE_IDS=['laundro-snack','laundro-bev','office-snack','office-bev','gym-combo'];
+var MACHINE_AVG_REV=[43,35,36,26,46];
+MACHINE_IDS.forEach(function(id,idx){
+  var daily=[];var today=new Date();var avgRev=MACHINE_AVG_REV[idx];
+  for(var i=89;i>=0;i--){
+    var d=new Date(today);d.setDate(d.getDate()-i);var ds=d.toISOString().slice(0,10);
+    var dow=d.getDay();var mult=dow===0||dow===6?0.5:1.0;
+    var rev=Math.round(avgRev*mult*(0.5+Math.random()*1.0)*100)/100;
+    var cost=Math.round(rev*0.4*100)/100;
+    daily.push({date:ds,total_revenue:rev,profit:Math.round((rev-cost)*100)/100});
+  }
+  MACHINE_TIMESERIES[id]=daily;
+});
+
+// ── MACHINE MINI CHART COMPONENT ──
+var MC_RANGES=[{label:'7D',days:7},{label:'1M',days:30},{label:'3M',days:90}];
+
+function MachineChart(props){
+  var _s=React.useState;
+  var sr=_s(30),days=sr[0],setDays=sr[1];
+  var data=React.useMemo(function(){
+    var all=MACHINE_TIMESERIES[props.machineId]||[];
+    var today=new Date();today.setHours(0,0,0,0);
+    var dates=[];for(var i=days-1;i>=0;i--){var d=new Date(today);d.setDate(d.getDate()-i);dates.push(d.toISOString().slice(0,10));}
+    var lookup={};all.forEach(function(d){lookup[d.date]=d;});
+    return dates.map(function(date){var d=lookup[date];return{date:date,total_revenue:d?d.total_revenue:0,profit:d?d.profit:0};});
+  },[days,props.machineId]);
+
+  function fmtTick(date){var d=new Date(date+'T00:00:00');var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return m[d.getMonth()]+' '+d.getDate();}
+
+  return e('div',null,
+    e('div',{style:{display:'flex',justifyContent:'flex-end',gap:3,marginBottom:4}},
+      MC_RANGES.map(function(r){return e('button',{key:r.days,className:'chart-range-btn'+(days===r.days?' active':''),onClick:function(ev){ev.stopPropagation();setDays(r.days);},style:{fontSize:'.55rem',padding:'2px 6px'}},r.label);})
+    ),
+    e(RC.ResponsiveContainer,{width:'100%',height:100},
+      e(RC.LineChart,{data:data,margin:{top:4,right:4,left:0,bottom:0}},
+        e(RC.CartesianGrid,{strokeDasharray:'3 3',stroke:'rgba(255,255,255,0.06)'}),
+        e(RC.XAxis,{dataKey:'date',tickFormatter:fmtTick,tick:{fontSize:9,fill:'#4A5240'},axisLine:false,tickLine:false,interval:'preserveStartEnd'}),
+        e(RC.YAxis,{tick:{fontSize:9,fill:'#4A5240'},axisLine:false,tickLine:false,tickFormatter:function(v){return'$'+v},width:32}),
+        e(RC.Tooltip,{content:e(CustomTooltip,{isVends:false})}),
+        e(RC.Line,{type:'monotone',dataKey:'total_revenue',name:'Revenue',stroke:'#8FC93A',strokeWidth:1.5,dot:false,activeDot:{r:2}}),
+        e(RC.Line,{type:'monotone',dataKey:'profit',name:'Profit',stroke:'#BAEF5B',strokeWidth:1.5,dot:false,activeDot:{r:2}})
+      )
+    )
+  );
+}
+
+// ── MOUNT ALL CHARTS ──
+var chartRoot=document.getElementById('rechartsRoot');
+if(chartRoot) ReactDOM.createRoot(chartRoot).render(e(FleetChart));
+
+// Mount per-machine charts (fleet grid + site detail views)
+setTimeout(function(){
+  document.querySelectorAll('.mc-chart[data-machine]').forEach(function(el){
+    var id=el.getAttribute('data-machine');
+    if(!el._mounted){
+      ReactDOM.createRoot(el).render(e(MachineChart,{machineId:id}));
+      el._mounted=true;
+    }
+  });
+},50);
+})();
+</script>
+
+</body>
+</html>

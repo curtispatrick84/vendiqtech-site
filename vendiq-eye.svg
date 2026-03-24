@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 6 100 58" fill="#BAEF5B">
-  <!-- Eye border (thinner band) -->
+  <!-- Eye border (rounded tips) -->
   <path fill-rule="evenodd" d="
-    M 3,35 Q 50,-18 97,35 Q 50,88 3,35 Z
-    M 12,35 Q 50,-5 88,35 Q 50,75 12,35 Z
+    M 10,30 Q 50,-18 90,30 C 96,33 96,37 90,40 Q 50,88 10,40 C 4,37 4,33 10,30 Z
+    M 17,32 Q 50,-5 83,32 C 87,34 87,36 83,38 Q 50,75 17,38 C 13,36 13,34 17,32 Z
   "/>
-  <!-- Iris ring (thinner band) -->
+  <!-- Iris ring -->
   <path fill-rule="evenodd" d="
     M 50,14 A 21,21 0 1,1 50,56 A 21,21 0 1,1 50,14 Z
     M 50,19 A 16,16 0 1,1 50,51 A 16,16 0 1,1 50,19 Z
