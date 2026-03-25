@@ -142,7 +142,7 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);lin
 .leaderboard-table td{padding:6px 8px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--text2)}
 .leaderboard-table td.num{text-align:right;font-variant-numeric:tabular-nums}
 .leaderboard-table td.rank{color:var(--text2);font-weight:600;width:24px;text-align:center}
-.leaderboard-table td.profit{color:var(--lime)}
+.leaderboard-table td.profit{color:var(--lime);text-align:right;font-variant-numeric:tabular-nums}
 .lb-product{display:flex;align-items:center;gap:8px}
 img.lb-img{width:28px;height:28px;border-radius:4px;flex-shrink:0;object-fit:contain;background:var(--surface)}
 div.lb-img{width:28px;height:28px;border-radius:4px;flex-shrink:0;background:var(--surface)}
@@ -503,11 +503,14 @@ div.slot-img{width:36px;height:36px;border-radius:4px;margin:2px auto;background
 var KEY='vendiq_demo_auth';
 if(sessionStorage.getItem(KEY)==='1') showApp();
 
-window.handleDemoLogin=function(e){
+window.handleDemoLogin=async function(e){
   e.preventDefault();
   var inp=document.getElementById('demoPass'),err=document.getElementById('demoError');
-  if(inp.value==='atlas1!'){sessionStorage.setItem(KEY,'1');showApp();}
-  else{inp.classList.add('error');err.textContent='Invalid access code.';setTimeout(function(){inp.classList.remove('error');},500);inp.value='';inp.focus();}
+  try{
+    var res=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:inp.value,scope:'demo'})});
+    if(res.ok){sessionStorage.setItem(KEY,'1');showApp();}
+    else{inp.classList.add('error');err.textContent='Invalid access code.';setTimeout(function(){inp.classList.remove('error');},500);inp.value='';inp.focus();}
+  }catch(e){err.textContent='Connection error. Please try again.';}
   return false;
 };
 
@@ -543,8 +546,8 @@ var MACHINES=[
  slots:[
   {id:'A1',product:'Lay\'s Classic',qty:6,cap:10,price:2.25},{id:'A2',product:'Doritos Nacho',qty:3,cap:10,price:2.25},{id:'A3',product:'Cheetos Crunchy',qty:7,cap:10,price:2.25},{id:'A4',product:'Ruffles Cheddar',qty:1,cap:10,price:2.25},
   {id:'B1',product:'Snickers',qty:8,cap:12,price:2.00},{id:'B2',product:'M&M Peanut',qty:5,cap:12,price:2.00},{id:'B3',product:'Reese\'s Cups',qty:0,cap:12,price:2.00},{id:'B4',product:'Kit Kat',qty:4,cap:12,price:2.00},
-  {id:'C1',product:'Nature Valley',qty:9,cap:10,price:1.75},{id:'C2',product:'PopTarts',qty:2,cap:10,price:2.00},{id:'C3',product:'Belvita',qty:6,cap:10,price:1.75},{id:'C4',product:'Trail Mix',qty:7,cap:8,price:2.50},
-  {id:'D1',product:'Pringles',qty:4,cap:8,price:2.50},{id:'D2',product:'Goldfish',qty:3,cap:10,price:1.75},{id:'D3',product:'Chex Mix',qty:5,cap:10,price:2.00},{id:'D4',product:'Beef Jerky',qty:2,cap:6,price:3.50}
+  {id:'C1',product:'Nature Valley',qty:9,cap:10,price:1.75},{id:'C2',product:'Nutri-Grain Bar',qty:2,cap:10,price:2.00},{id:'C3',product:'NV Cinnamon Biscuit',qty:6,cap:10,price:1.75},{id:'C4',product:'Kirkland Cashews',qty:7,cap:8,price:2.50},
+  {id:'D1',product:'Lay\'s BBQ',qty:4,cap:8,price:2.50},{id:'D2',product:'Goldfish',qty:3,cap:10,price:1.75},{id:'D3',product:'Chex Mix',qty:5,cap:10,price:2.00},{id:'D4',product:'Dot\'s Pretzels',qty:2,cap:6,price:3.50}
  ],chart:[28,34,31,42,38,35,43]},
 
 {id:'laundro-bev',name:'Beverage Wall',site:'First St Laundromat',siteKey:'laundromat',model:'Dixie-Narco BevMax 5000',category:'Beverage',fill:78,vends:13,revenue:35.00,profit:21.00,lastVend:'Coca-Cola',lastTime:'8 min ago',dex:1247,
@@ -556,10 +559,10 @@ var MACHINES=[
 
 {id:'office-snack',name:'Break Room Snacks',site:'Riverside Office Park',siteKey:'office',model:'AMS Sensit Snack (AMS39)',category:'Snack',fill:85,vends:14,revenue:36.50,profit:23.40,lastVend:'Kind Bar Dark Choc',lastTime:'22 min ago',dex:654,
  slots:[
-  {id:'A1',product:'Kind Bar Dark Choc',qty:7,cap:10,price:2.50},{id:'A2',product:'RXBar Chocolate',qty:6,cap:10,price:3.00},{id:'A3',product:'Clif Bar Oat',qty:8,cap:10,price:2.50},{id:'A4',product:'Belvita Blueberry',qty:5,cap:10,price:2.00},
+  {id:'A1',product:'Kind Bar Dark Choc',qty:7,cap:10,price:2.50},{id:'A2',product:'RXBar Chocolate',qty:6,cap:10,price:3.00},{id:'A3',product:'Clif Bar Oat',qty:8,cap:10,price:2.50},{id:'A4',product:'NV Cinnamon Biscuit',qty:5,cap:10,price:2.00},
   {id:'B1',product:'Lay\'s Classic',qty:9,cap:10,price:2.00},{id:'B2',product:'SunChips Harvest',qty:7,cap:10,price:2.00},{id:'B3',product:'Veggie Straws',qty:6,cap:10,price:2.25},{id:'B4',product:'Goldfish',qty:8,cap:10,price:1.75},
   {id:'C1',product:'Oreos Mini',qty:5,cap:8,price:1.75},{id:'C2',product:'Grandma\'s Cookies',qty:4,cap:8,price:1.75},{id:'C3',product:'PopCorners',qty:6,cap:10,price:2.25},{id:'C4',product:'Smartfood Popcorn',qty:7,cap:10,price:2.25},
-  {id:'D1',product:'Nature Valley',qty:8,cap:10,price:1.75},{id:'D2',product:'Austin Crackers',qty:9,cap:12,price:1.50},{id:'D3',product:'Trail Mix',qty:4,cap:8,price:2.50},{id:'D4',product:'Beef Jerky',qty:3,cap:6,price:3.50}
+  {id:'D1',product:'Nature Valley',qty:8,cap:10,price:1.75},{id:'D2',product:'Ritz PB Crackers',qty:9,cap:12,price:1.50},{id:'D3',product:'Kirkland Cashews',qty:4,cap:8,price:2.50},{id:'D4',product:'Dot\'s Pretzels',qty:3,cap:6,price:3.50}
  ],chart:[30,32,28,36,34,38,36]},
 
 {id:'office-bev',name:'Lobby Beverages',site:'Riverside Office Park',siteKey:'office',model:'Royal Vendors Merlin 650',category:'Beverage',fill:80,vends:10,revenue:26.50,profit:16.50,lastVend:'Dasani Water',lastTime:'35 min ago',dex:431,
@@ -573,8 +576,8 @@ var MACHINES=[
  slots:[
   {id:'A1',product:'Gatorade Blue',qty:2,cap:8,price:3.00},{id:'A2',product:'Gatorade Fruit',qty:1,cap:8,price:3.00},{id:'A3',product:'Muscle Milk',qty:3,cap:6,price:3.75},{id:'A4',product:'Protein Shake',qty:4,cap:6,price:3.50},
   {id:'B1',product:'Dasani Water',qty:6,cap:10,price:2.00},{id:'B2',product:'Vitamin Water',qty:0,cap:8,price:2.75},{id:'B3',product:'Monster Energy',qty:2,cap:6,price:3.50},{id:'B4',product:'Red Bull',qty:0,cap:6,price:4.00},
-  {id:'C1',product:'RXBar Protein',qty:5,cap:8,price:3.00},{id:'C2',product:'Clif Builder Bar',qty:3,cap:8,price:2.75},{id:'C3',product:'Kind Bar Nut',qty:4,cap:10,price:2.50},{id:'C4',product:'Trail Mix',qty:2,cap:8,price:2.50},
-  {id:'D1',product:'Beef Jerky',qty:1,cap:6,price:3.50},{id:'D2',product:'Nature Valley',qty:6,cap:10,price:1.75},{id:'D3',product:'Banana Chips',qty:3,cap:8,price:2.25},{id:'D4',product:'Almonds',qty:4,cap:8,price:2.75}
+  {id:'C1',product:'RXBar Protein',qty:5,cap:8,price:3.00},{id:'C2',product:'Clif Builder Bar',qty:3,cap:8,price:2.75},{id:'C3',product:'Kind Bar Nut',qty:4,cap:10,price:2.50},{id:'C4',product:'Kirkland Cashews',qty:2,cap:8,price:2.50},
+  {id:'D1',product:'Dot\'s Pretzels',qty:1,cap:6,price:3.50},{id:'D2',product:'Nature Valley',qty:6,cap:10,price:1.75},{id:'D3',product:'Pirate\'s Booty',qty:3,cap:8,price:2.25},{id:'D4',product:'Almonds',qty:4,cap:8,price:2.75}
  ],chart:[32,38,42,36,44,40,46]}
 ];
 
@@ -582,24 +585,24 @@ var MACHINES=[
 var IMG={
 "Lay's Classic":"/img/lays-classic.png","Doritos Nacho":"/img/doritos-nacho-cheese.png","Cheetos Crunchy":"/img/cheetos-crunchy.png","Ruffles Cheddar":"/img/ruffles-sour-cream-and-cheddar.png",
 "Snickers":"/img/snickers.png","M&M Peanut":"/img/mms-peanut.png","Reese's Cups":"/img/reeses-peanut-butter-cups.png","Kit Kat":"/img/kitkat.png",
-"Nature Valley":"/img/nature-valley-biscuits-almond-butter.png","PopTarts":"/img/nutri-grain-blueberry.png","Belvita":"/img/nature-valley-biscuits-cinnamon-almond-butter.png",
-"Trail Mix":"/img/kirkland-cashews.png","Pringles":"/img/lays-barbecue.png","Goldfish":"/img/goldfish-cheddar.png","Chex Mix":"/img/chex-mix-original.png","Beef Jerky":"/img/dots-original.png",
+"Nature Valley":"/img/nature-valley-biscuits-almond-butter.png","Nutri-Grain Bar":"/img/nutri-grain-blueberry.png","NV Cinnamon Biscuit":"/img/nature-valley-biscuits-cinnamon-almond-butter.png",
+"Kirkland Cashews":"/img/kirkland-cashews.png","Lay's BBQ":"/img/lays-barbecue.png","Goldfish":"/img/goldfish-cheddar.png","Chex Mix":"/img/chex-mix-original.png","Dot's Pretzels":"/img/dots-original.png",
 "Coca-Cola":"/img/coke.png","Diet Coke":"/img/diet-coke.png","Dr Pepper":"/img/dr-pepper.png","Sprite":"/img/sprite.png",
 "Dasani Water":"/img/kirkland-water.png","Gatorade Blue":"/img/gatorade-glacier-freeze.png","Gatorade Fruit":"/img/gatorade-fruit-punch.png","Monster Energy":"/img/rockstar-sugar-free-original.png",
 "Minute Maid OJ":"/img/capri-sun-fruit-punch.png","AriZona Tea":"/img/sparkling-ice-peach-nectarine.png","Vitamin Water":"/img/kirkland-vitamin-water-acai-blueberry.png","Red Bull":"/img/celsius-peach-vibe.png",
 "Kind Bar Dark Choc":"/img/natures-bakery-brownie.png","RXBar Chocolate":"/img/nature-valley-protein-peanut-butter-chocolate.png","Clif Bar Oat":"/img/nutri-grain-blueberry.png",
-"Belvita Blueberry":"/img/nature-valley-biscuits-cinnamon-almond-butter.png","SunChips Harvest":"/img/pop-corners-sea-salt.png","Veggie Straws":"/img/pirates-booty.png",
+"NV Cinnamon Biscuit":"/img/nature-valley-biscuits-cinnamon-almond-butter.png","SunChips Harvest":"/img/pop-corners-sea-salt.png","Veggie Straws":"/img/pirates-booty.png",
 "Oreos Mini":"/img/nabisoc-oreo-mini.png","Grandma's Cookies":"/img/nabisco-chips-ahoy.png","PopCorners":"/img/pop-corners-white-cheddar.png","Smartfood Popcorn":"/img/smartfood-white-cheddar.png",
-"Austin Crackers":"/img/ritz-peanut-butter.png","Coke Zero":"/img/coke-zero.png","Smartwater":"/img/kirkland-water.png",
+"Ritz PB Crackers":"/img/ritz-peanut-butter.png","Coke Zero":"/img/coke-zero.png","Smartwater":"/img/kirkland-water.png",
 "La Croix Lime":"/img/sparkling-water-various.png","La Croix Berry":"/img/sparkling-water-various.png","Starbucks Frapp":"/img/random-soda.png","Starbucks Dblshot":"/img/random-soda.png",
 "Lipton Tea":"/img/sparkling-ice-peach-nectarine.png","Muscle Milk":"/img/prime-hydration.png","Protein Shake":"/img/prime-hydration.png",
 "RXBar Protein":"/img/nature-valley-protein-peanut-butter-chocolate.png","Clif Builder Bar":"/img/nature-valley-protein-peanut-butter-chocolate.png","Kind Bar Nut":"/img/natures-bakery-brownie.png",
-"Banana Chips":"/img/pirates-booty.png","Almonds":"/img/kirkland-almonds.png"
+"Pirate's Booty":"/img/pirates-booty.png","Almonds":"/img/kirkland-almonds.png"
 };
 
 var MACHINE_IMG={
-"laundro-snack":"","laundro-bev":"/img/dixie-narco-501e.png",
-"office-snack":"/img/ams39vcb.jpeg","office-bev":"",
+"laundro-snack":"/img/crane.jpeg","laundro-bev":"/img/dixie-narco-501e.png",
+"office-snack":"/img/ams39vcb.jpeg","office-bev":"/img/crane.jpeg",
 "gym-combo":"/img/ams39vcb.jpeg"
 };
 
@@ -613,7 +616,7 @@ function renderMachineCard(m){
   var low=m.slots.filter(function(s){return s.qty>0&&s.qty/s.cap<=0.25;}).length;
   var total=m.slots.length;
 
-  return'<div class="machine-card" onclick="showView(\'site-'+m.siteKey+'\')">'+
+  return'<div class="machine-card" onclick="showView(\'site-'+m.siteKey+'\',\''+m.id+'\')">'+
     '<div class="mc-top"><div class="mc-status"><span class="dot"></span>Online</div>'+(MACHINE_IMG[m.id]?'<img class="mc-img" src="'+MACHINE_IMG[m.id]+'" alt="">':'<div class="mc-img"></div>')+'</div>'+
     '<div class="mc-name">'+m.name+'</div>'+
     '<div class="mc-hostname">'+m.id+' &mdash; '+m.model+'</div>'+
@@ -683,7 +686,7 @@ function renderSiteMachineDetail(m){
     });
     slotHtml+='</div></div>';
   });
-  return'<div class="ms">'+
+  return'<div class="ms" data-ms="'+m.id+'">'+
     '<div class="ms-header">'+(MACHINE_IMG[m.id]?'<img class="ms-img" src="'+MACHINE_IMG[m.id]+'" alt="">':'<div class="ms-img"></div>')+'<div class="ms-info"><div class="ms-name">'+m.name+'</div><div class="ms-model">'+m.model+'</div><div class="ms-hostname">'+m.id+'</div></div>'+
     '<div class="ms-actions"><span class="ms-btn ms-btn-online"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--lime-dark);display:inline-block;margin-right:4px"></span>Online</span>'+
     '<span class="pill pill-lime" style="font-size:.6rem">'+m.fill+'% Full</span></div></div>'+
@@ -874,14 +877,22 @@ setInterval(tickMdb,1500);
 tickMdb();
 
 /* ── NAVIGATION ── */
-window.showView=function(viewId){
+window.showView=function(viewId,machineId){
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
   document.querySelectorAll('.sb-link').forEach(function(l){l.classList.remove('active');});
   var target=document.getElementById('view-'+viewId);
   if(target)target.classList.add('active');
   var nav=document.getElementById('nav-'+viewId);
   if(nav)nav.classList.add('active');
-  document.querySelector('.main').scrollTop=0;
+  var main=document.querySelector('.main');
+  if(machineId){
+    setTimeout(function(){
+      var ms=main.querySelector('[data-ms="'+machineId+'"]');
+      if(ms) ms.scrollIntoView({behavior:'smooth',block:'start'});
+    },50);
+  }else{
+    main.scrollTop=0;
+  }
 };
 })();
 </script>

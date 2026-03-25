@@ -1145,19 +1145,28 @@
 
   if (sessionStorage.getItem(KEY) === '1') showPortal();
 
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault();
     var input = document.getElementById('gate-password');
     var error = document.getElementById('gate-error');
-    if (input.value === 'atlas1!') {
-      sessionStorage.setItem(KEY, '1');
-      showPortal();
-    } else {
-      input.classList.add('error');
-      error.textContent = 'Invalid access code. Try again.';
-      setTimeout(function() { input.classList.remove('error'); }, 500);
-      input.value = '';
-      input.focus();
+    try {
+      var res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: input.value, scope: 'beta' })
+      });
+      if (res.ok) {
+        sessionStorage.setItem(KEY, '1');
+        showPortal();
+      } else {
+        input.classList.add('error');
+        error.textContent = 'Invalid access code. Try again.';
+        setTimeout(function() { input.classList.remove('error'); }, 500);
+        input.value = '';
+        input.focus();
+      }
+    } catch (err) {
+      error.textContent = 'Connection error. Please try again.';
     }
     return false;
   }

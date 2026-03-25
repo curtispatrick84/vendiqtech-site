@@ -41,6 +41,26 @@ async def health():
     return {"status": "ok"}
 
 
+# ── Auth (password verification for protected pages) ──
+ACCESS_CODES = {
+    "beta": os.getenv("BETA_ACCESS_CODE", "atlas1!"),
+    "demo": os.getenv("DEMO_ACCESS_CODE", "atlas1!"),
+}
+
+
+class AuthRequest(BaseModel):
+    code: str
+    scope: str  # "beta" or "demo"
+
+
+@app.post("/api/auth")
+async def verify_access(data: AuthRequest):
+    expected = ACCESS_CODES.get(data.scope)
+    if not expected or data.code != expected:
+        raise HTTPException(status_code=403, detail="Invalid access code.")
+    return {"status": "ok"}
+
+
 # ── Waitlist ──
 class WaitlistRequest(BaseModel):
     email: EmailStr
