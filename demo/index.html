@@ -236,6 +236,8 @@ img.ms-img{width:56px;height:56px;object-fit:contain;border-radius:8px;border:1p
 .ring-wrap{position:relative;width:64px;height:64px;flex-shrink:0}
 .ring-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.75rem}
 
+.d-rev-profit{display:flex;gap:16px;align-items:flex-end;margin-bottom:2px;flex-wrap:wrap}
+.d-val-sm{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;line-height:1}
 .d-last-vend .d-label{margin-bottom:6px}
 .d-last-vend .product{font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;color:var(--lime);margin-bottom:5px}
 .d-last-vend .meta{font-size:.7rem;color:var(--text2);line-height:1.7}
@@ -326,6 +328,22 @@ div.slot-img{width:36px;height:36px;border-radius:4px;margin:2px auto;background
   .earnings-summary{grid-template-columns:1fr 1fr}
   .earnings-val{font-size:1.3rem}
   .chart-controls{flex-wrap:wrap}
+  /* Detail box inner overflow fixes */
+  .d-stat{overflow:hidden;min-width:0}
+  .d-val{font-size:1.2rem;word-break:break-all}
+  .d-last-vend .product{font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .d-last-vend .meta{font-size:.62rem}
+  .ring-wrap{width:48px;height:48px}
+  .ring-wrap svg{width:48px;height:48px}
+  .ring-label{font-size:.65rem}
+}
+@media(max-width:480px){
+  .detail-grid4{grid-template-columns:1fr}
+  .stat-strip{grid-template-columns:1fr}
+  .earnings-summary{grid-template-columns:1fr 1fr}
+  .earnings-val{font-size:1.1rem}
+  .d-val{font-size:1rem}
+  .mc-fill-info{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -670,7 +688,7 @@ function renderSiteMachineDetail(m){
     '<span class="pill pill-lime" style="font-size:.6rem">'+m.fill+'% Full</span></div></div>'+
     '<div class="detail-grid4">'+
     '<div class="d-stat"><div class="d-val">'+m.vends+'</div><div class="d-sub">since fill Mar 18</div><div class="d-label">Vends</div></div>'+
-    '<div class="d-stat"><div style="display:flex;gap:16px;align-items:flex-end;margin-bottom:2px"><div><div class="d-val" style="color:var(--lime)">$'+m.revenue.toFixed(2)+'</div><div class="d-label">Revenue</div></div><div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.2rem;color:var(--lime-dark)">$'+m.profit.toFixed(2)+'</div><div class="d-label">Profit</div></div></div><div class="d-sub">'+margin+'% margin</div></div>'+
+    '<div class="d-stat"><div class="d-rev-profit"><div><div class="d-val" style="color:var(--lime)">$'+m.revenue.toFixed(2)+'</div><div class="d-label">Revenue</div></div><div><div class="d-val-sm" style="color:var(--lime-dark)">$'+m.profit.toFixed(2)+'</div><div class="d-label">Profit</div></div></div><div class="d-sub">'+margin+'% margin</div></div>'+
     (function(){var pct=Math.round(stock/cap*100);var r=27;var c=2*Math.PI*r;var d=c*pct/100;var o=c-d;var col=pct>=60?'var(--lime-dark)':pct>=35?'var(--gold)':'var(--coral)';
     return'<div class="d-stat" style="display:flex;align-items:center;gap:14px"><div class="ring-wrap"><svg width="64" height="64" viewBox="0 0 64 64" style="transform:rotate(-90deg)"><circle cx="32" cy="32" r="'+r+'" fill="none" stroke="var(--border)" stroke-width="5"/><circle cx="32" cy="32" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="5" stroke-linecap="round" stroke-dasharray="'+d+' '+o+'"/></svg><div class="ring-label" style="color:'+col+'">'+pct+'%</div></div><div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.1rem;color:'+col+'">'+stock+'/'+cap+'</div><div class="d-label">Inventory</div></div></div>';})()+
     '<div class="d-stat d-last-vend"><div class="d-label">Last Vend</div><div class="product">'+m.lastVend+'</div><div class="meta">'+m.lastTime+' &middot; <strong style="color:var(--text)">$'+m.slots[0].price.toFixed(2)+'</strong> &middot; Card</div></div>'+
