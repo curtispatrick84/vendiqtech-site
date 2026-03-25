@@ -12,6 +12,7 @@ COPY index.html /usr/share/nginx/html/index.html
 COPY beta/ /usr/share/nginx/html/beta/
 COPY compatibility/ /usr/share/nginx/html/compatibility/
 COPY demo/ /usr/share/nginx/html/demo/
+COPY img/ /usr/share/nginx/html/img/
 
 # Copy both nginx configs (deploy script swaps between them)
 COPY nginx.conf /etc/nginx/conf.d/vendiq.conf

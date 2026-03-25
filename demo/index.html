@@ -144,7 +144,8 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);lin
 .leaderboard-table td.rank{color:var(--text2);font-weight:600;width:24px;text-align:center}
 .leaderboard-table td.profit{color:var(--lime)}
 .lb-product{display:flex;align-items:center;gap:8px}
-.lb-img{width:28px;height:28px;border-radius:4px;flex-shrink:0;background:var(--surface)}
+img.lb-img{width:28px;height:28px;border-radius:4px;flex-shrink:0;object-fit:contain;background:var(--surface)}
+div.lb-img{width:28px;height:28px;border-radius:4px;flex-shrink:0;background:var(--surface)}
 .btn-refresh{background:var(--lime);color:var(--charcoal);border:none;padding:8px 16px;border-radius:100px;font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;transition:background .15s}
 .btn-refresh:hover{background:var(--lime-dark)}
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
@@ -158,7 +159,8 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);lin
 .mc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
 .mc-status{display:inline-flex;align-items:center;gap:5px;font-size:.6rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--lime-dark);background:rgba(186,239,91,.06);padding:3px 8px;border-radius:4px;border:1px solid rgba(186,239,91,.12)}
 .mc-status .dot{width:7px;height:7px;border-radius:50%;background:var(--lime-dark);box-shadow:0 0 5px var(--lime-dark)}
-.mc-img{width:44px;height:44px;background:rgba(255,255,255,.04);border-radius:6px;border:1px solid var(--border)}
+div.mc-img{width:44px;height:44px;background:rgba(255,255,255,.04);border-radius:6px;border:1px solid var(--border)}
+img.mc-img{width:44px;height:44px;object-fit:contain;border-radius:6px;border:1px solid var(--border);background:rgba(255,255,255,.04)}
 .mc-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:2px}
 .mc-hostname{font-size:.65rem;color:var(--text2);margin-bottom:12px;font-family:monospace}
 
@@ -214,7 +216,8 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);lin
 /* ── SITE DETAIL MACHINE SECTION ── */
 .ms{background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:24px;margin-bottom:20px}
 .ms-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-.ms-img{width:56px;height:56px;background:rgba(255,255,255,.04);border-radius:8px;border:1px solid var(--border);flex-shrink:0}
+div.ms-img{width:56px;height:56px;background:rgba(255,255,255,.04);border-radius:8px;border:1px solid var(--border);flex-shrink:0}
+img.ms-img{width:56px;height:56px;object-fit:contain;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);flex-shrink:0}
 .ms-info{flex:1}
 .ms-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem}
 .ms-model{font-size:.7rem;color:var(--text2)}
@@ -260,13 +263,17 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);lin
 .slot-qty.low{color:var(--gold)}
 .slot-qty.empty{color:var(--coral)}
 .slot-price{font-size:.6rem;color:var(--text2)}
-.slot-img{width:36px;height:36px;border-radius:4px;margin:2px auto;background:rgba(255,255,255,.04)}
+img.slot-img{width:36px;height:36px;border-radius:4px;margin:2px auto;object-fit:contain;display:block}
+div.slot-img{width:36px;height:36px;border-radius:4px;margin:2px auto;background:rgba(255,255,255,.04)}
 .slot-row{display:flex;align-items:stretch;gap:6px;margin-bottom:6px}
 .slot-row-label{width:20px;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:var(--text2);flex-shrink:0}
 .slot-row-slots{display:flex;gap:6px;flex:1}
 .slot-legend{display:flex;gap:16px;margin-top:10px;font-size:.6rem;color:var(--text2)}
 .slot-legend-item{display:flex;align-items:center;gap:4px}
 .slot-legend-dot{width:8px;height:8px;border-radius:2px}
+
+/* ── DISCLAIMER ── */
+.demo-disclaimer{font-size:.6rem;color:var(--text2);opacity:.5;text-align:center;padding:32px 20px 16px;line-height:1.6;border-top:1px solid var(--border);margin-top:40px}
 
 /* ── VIEWS ── */
 .view{display:none}
@@ -418,14 +425,14 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);lin
             <table class="leaderboard-table">
               <thead><tr><th style="width:24px">#</th><th>Product</th><th class="num">Vends &#9660;</th><th class="num">Revenue</th><th class="num">Profit</th></tr></thead>
               <tbody>
-                <tr><td class="rank">1</td><td><div class="lb-product"><div class="lb-img" style="background:#1a5db5"></div>Dasani Water</div></td><td class="num">189</td><td class="num">$378.00</td><td class="profit">$264.60</td></tr>
-                <tr><td class="rank">2</td><td><div class="lb-product"><div class="lb-img" style="background:#c41230"></div>Coca-Cola</div></td><td class="num">156</td><td class="num">$390.00</td><td class="profit">$249.60</td></tr>
-                <tr><td class="rank">3</td><td><div class="lb-product"><div class="lb-img" style="background:#d4a017"></div>Lay's Classic</div></td><td class="num">134</td><td class="num">$301.50</td><td class="profit">$194.30</td></tr>
-                <tr><td class="rank">4</td><td><div class="lb-product"><div class="lb-img" style="background:#0d6ebd"></div>Gatorade Blue</div></td><td class="num">118</td><td class="num">$354.00</td><td class="profit">$200.60</td></tr>
-                <tr><td class="rank">5</td><td><div class="lb-product"><div class="lb-img" style="background:#5b3a1a"></div>Snickers</div></td><td class="num">112</td><td class="num">$224.00</td><td class="profit">$156.80</td></tr>
-                <tr><td class="rank">6</td><td><div class="lb-product"><div class="lb-img" style="background:#1a1a1a"></div>Monster Energy</div></td><td class="num">97</td><td class="num">$339.50</td><td class="profit">$184.30</td></tr>
-                <tr><td class="rank">7</td><td><div class="lb-product"><div class="lb-img" style="background:#6b3d2e"></div>Kind Bar Dark Choc</div></td><td class="num">89</td><td class="num">$222.50</td><td class="profit">$133.50</td></tr>
-                <tr><td class="rank">8</td><td><div class="lb-product"><div class="lb-img" style="background:#cc4400"></div>Doritos Nacho</div></td><td class="num">85</td><td class="num">$191.25</td><td class="profit">$127.50</td></tr>
+                <tr><td class="rank">1</td><td><div class="lb-product"><img class="lb-img" src="/img/kirkland-water.png" alt="">Dasani Water</div></td><td class="num">189</td><td class="num">$378.00</td><td class="profit">$264.60</td></tr>
+                <tr><td class="rank">2</td><td><div class="lb-product"><img class="lb-img" src="/img/coke.png" alt="">Coca-Cola</div></td><td class="num">156</td><td class="num">$390.00</td><td class="profit">$249.60</td></tr>
+                <tr><td class="rank">3</td><td><div class="lb-product"><img class="lb-img" src="/img/lays-classic.png" alt="">Lay's Classic</div></td><td class="num">134</td><td class="num">$301.50</td><td class="profit">$194.30</td></tr>
+                <tr><td class="rank">4</td><td><div class="lb-product"><img class="lb-img" src="/img/gatorade-glacier-freeze.png" alt="">Gatorade Blue</div></td><td class="num">118</td><td class="num">$354.00</td><td class="profit">$200.60</td></tr>
+                <tr><td class="rank">5</td><td><div class="lb-product"><img class="lb-img" src="/img/snickers.png" alt="">Snickers</div></td><td class="num">112</td><td class="num">$224.00</td><td class="profit">$156.80</td></tr>
+                <tr><td class="rank">6</td><td><div class="lb-product"><img class="lb-img" src="/img/rockstar-sugar-free-original.png" alt="">Monster Energy</div></td><td class="num">97</td><td class="num">$339.50</td><td class="profit">$184.30</td></tr>
+                <tr><td class="rank">7</td><td><div class="lb-product"><img class="lb-img" src="/img/natures-bakery-brownie.png" alt="">Kind Bar Dark Choc</div></td><td class="num">89</td><td class="num">$222.50</td><td class="profit">$133.50</td></tr>
+                <tr><td class="rank">8</td><td><div class="lb-product"><img class="lb-img" src="/img/doritos-nacho-cheese.png" alt="">Doritos Nacho</div></td><td class="num">85</td><td class="num">$191.25</td><td class="profit">$127.50</td></tr>
               </tbody>
             </table>
           </div>
@@ -464,6 +471,8 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);lin
         <div class="stat-strip" id="stats-gym"></div>
         <div id="site-gym-machines"></div>
       </div>
+
+      <div class="demo-disclaimer">Product names and images are shown for inventory identification only. All trademarks are property of their respective owners. VendiQ is not affiliated with or endorsed by any depicted brands.</div>
 
     </div>
   </div>
@@ -550,6 +559,31 @@ var MACHINES=[
  ],chart:[32,38,42,36,44,40,46]}
 ];
 
+/* ── PRODUCT IMAGE MAP ── */
+var IMG={
+"Lay's Classic":"/img/lays-classic.png","Doritos Nacho":"/img/doritos-nacho-cheese.png","Cheetos Crunchy":"/img/cheetos-crunchy.png","Ruffles Cheddar":"/img/ruffles-sour-cream-and-cheddar.png",
+"Snickers":"/img/snickers.png","M&M Peanut":"/img/mms-peanut.png","Reese's Cups":"/img/reeses-peanut-butter-cups.png","Kit Kat":"/img/kitkat.png",
+"Nature Valley":"/img/nature-valley-biscuits-almond-butter.png","PopTarts":"/img/nutri-grain-blueberry.png","Belvita":"/img/nature-valley-biscuits-cinnamon-almond-butter.png",
+"Trail Mix":"/img/kirkland-cashews.png","Pringles":"/img/lays-barbecue.png","Goldfish":"/img/goldfish-cheddar.png","Chex Mix":"/img/chex-mix-original.png","Beef Jerky":"/img/dots-original.png",
+"Coca-Cola":"/img/coke.png","Diet Coke":"/img/diet-coke.png","Dr Pepper":"/img/dr-pepper.png","Sprite":"/img/sprite.png",
+"Dasani Water":"/img/kirkland-water.png","Gatorade Blue":"/img/gatorade-glacier-freeze.png","Gatorade Fruit":"/img/gatorade-fruit-punch.png","Monster Energy":"/img/rockstar-sugar-free-original.png",
+"Minute Maid OJ":"/img/capri-sun-fruit-punch.png","AriZona Tea":"/img/sparkling-ice-peach-nectarine.png","Vitamin Water":"/img/kirkland-vitamin-water-acai-blueberry.png","Red Bull":"/img/celsius-peach-vibe.png",
+"Kind Bar Dark Choc":"/img/natures-bakery-brownie.png","RXBar Chocolate":"/img/nature-valley-protein-peanut-butter-chocolate.png","Clif Bar Oat":"/img/nutri-grain-blueberry.png",
+"Belvita Blueberry":"/img/nature-valley-biscuits-cinnamon-almond-butter.png","SunChips Harvest":"/img/pop-corners-sea-salt.png","Veggie Straws":"/img/pirates-booty.png",
+"Oreos Mini":"/img/nabisoc-oreo-mini.png","Grandma's Cookies":"/img/nabisco-chips-ahoy.png","PopCorners":"/img/pop-corners-white-cheddar.png","Smartfood Popcorn":"/img/smartfood-white-cheddar.png",
+"Austin Crackers":"/img/ritz-peanut-butter.png","Coke Zero":"/img/coke-zero.png","Smartwater":"/img/kirkland-water.png",
+"La Croix Lime":"/img/sparkling-water-various.png","La Croix Berry":"/img/sparkling-water-various.png","Starbucks Frapp":"/img/random-soda.png","Starbucks Dblshot":"/img/random-soda.png",
+"Lipton Tea":"/img/sparkling-ice-peach-nectarine.png","Muscle Milk":"/img/prime-hydration.png","Protein Shake":"/img/prime-hydration.png",
+"RXBar Protein":"/img/nature-valley-protein-peanut-butter-chocolate.png","Clif Builder Bar":"/img/nature-valley-protein-peanut-butter-chocolate.png","Kind Bar Nut":"/img/natures-bakery-brownie.png",
+"Banana Chips":"/img/pirates-booty.png","Almonds":"/img/kirkland-almonds.png"
+};
+
+var MACHINE_IMG={
+"laundro-snack":"","laundro-bev":"/img/dixie-narco-501e.png",
+"office-snack":"/img/ams39vcb.jpeg","office-bev":"",
+"gym-combo":"/img/ams39vcb.jpeg"
+};
+
 /* ── RENDER HELPERS ── */
 function fillClass(pct){return pct>=60?'fill-ok':pct>=35?'fill-warn':'fill-low';}
 function slotClass(qty,cap){if(qty===0)return'slot-empty';if(qty/cap<=0.25)return'slot-low';return'slot-ok';}
@@ -561,7 +595,7 @@ function renderMachineCard(m){
   var total=m.slots.length;
 
   return'<div class="machine-card" onclick="showView(\'site-'+m.siteKey+'\')">'+
-    '<div class="mc-top"><div class="mc-status"><span class="dot"></span>Online</div><div class="mc-img"></div></div>'+
+    '<div class="mc-top"><div class="mc-status"><span class="dot"></span>Online</div>'+(MACHINE_IMG[m.id]?'<img class="mc-img" src="'+MACHINE_IMG[m.id]+'" alt="">':'<div class="mc-img"></div>')+'</div>'+
     '<div class="mc-name">'+m.name+'</div>'+
     '<div class="mc-hostname">'+m.id+' &mdash; '+m.model+'</div>'+
     '<div class="fill-wrap"><div class="fill-label"><span class="lab">Fill Level</span><span class="pct">'+m.fill+'%</span></div>'+
@@ -620,8 +654,10 @@ function renderSiteMachineDetail(m){
     rows[row].forEach(function(s){
       var cls=slotClass(s.qty,s.cap);var qcls=qtyClass(s.qty,s.cap);
       var flex='flex:'+s.cap+' 1 0';
+      var imgSrc=IMG[s.product];
+      var imgTag=imgSrc?'<img class="slot-img" src="'+imgSrc+'" alt="'+s.product+'">':'<div class="slot-img" style="background:hsl('+Math.abs(s.product.charCodeAt(0)*7%360)+',30%,25%)"></div>';
       slotHtml+='<div class="slot '+cls+'" style="'+flex+'"><div class="slot-id">'+s.id+'</div>'+
-        '<div class="slot-img" style="background:hsl('+Math.abs(s.product.charCodeAt(0)*7%360)+',30%,25%)"></div>'+
+        imgTag+
         '<div class="slot-product">'+s.product+'</div>'+
         '<div class="slot-qty '+qcls+'">'+s.qty+'/'+s.cap+'</div>'+
         '<div class="slot-price">$'+s.price.toFixed(2)+'</div></div>';
@@ -629,7 +665,7 @@ function renderSiteMachineDetail(m){
     slotHtml+='</div></div>';
   });
   return'<div class="ms">'+
-    '<div class="ms-header"><div class="ms-img"></div><div class="ms-info"><div class="ms-name">'+m.name+'</div><div class="ms-model">'+m.model+'</div><div class="ms-hostname">'+m.id+'</div></div>'+
+    '<div class="ms-header">'+(MACHINE_IMG[m.id]?'<img class="ms-img" src="'+MACHINE_IMG[m.id]+'" alt="">':'<div class="ms-img"></div>')+'<div class="ms-info"><div class="ms-name">'+m.name+'</div><div class="ms-model">'+m.model+'</div><div class="ms-hostname">'+m.id+'</div></div>'+
     '<div class="ms-actions"><span class="ms-btn ms-btn-online"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--lime-dark);display:inline-block;margin-right:4px"></span>Online</span>'+
     '<span class="pill pill-lime" style="font-size:.6rem">'+m.fill+'% Full</span></div></div>'+
     '<div class="detail-grid4">'+
