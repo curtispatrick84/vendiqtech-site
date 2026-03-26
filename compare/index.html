@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VendiQ vs. Nayax vs. Cantaloupe — Full Feature Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lime:        #BAEF5B;
+    --lime-dark:   #8FC93A;
+    --charcoal:    #1A1D16;
+    --ink:         #2C3025;
+    --slate:       #4A5240;
+    --warm-white:  #F5F7F0;
+    --pale:        #E8EDE0;
+    --coral:       #FF5C35;
+    --gold:        #F2C94C;
+    --border-dark: rgba(255,255,255,0.09);
+    --border-light:#D4D9CC;
+    --yes-bg:      rgba(186,239,91,0.12);
+    --yes-text:    #8FC93A;
+    --no-bg:       rgba(255,92,53,0.12);
+    --no-text:     #FF5C35;
+    --partial-bg:  rgba(242,201,76,0.15);
+    --partial-text:#c8960a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; font-weight: 400; background: var(--charcoal); color: var(--warm-white); line-height: 1.65; }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--charcoal);
+    padding: 64px 64px 56px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border-dark);
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(186,239,91,0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .header-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    background: var(--lime);
+    padding: 5px 14px;
+    border-radius: 100px;
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+  .logo-mark {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
+    color: var(--warm-white);
+    margin-bottom: 6px;
+  }
+  .logo-mark em { color: var(--lime); font-style: normal; }
+  .logo-tagline {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 32px;
+  }
+  .header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 5vw, 4.2rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+  .header h1 em { color: var(--lime); font-style: normal; }
+  .header p {
+    font-size: 1rem;
+    color: var(--slate);
+    max-width: 560px;
+    line-height: 1.65;
+  }
+  .header-meta {
+    margin-top: 36px;
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    padding-top: 28px;
+    border-top: 1px solid var(--border-dark);
+  }
+  .meta-item { font-size: 0.72rem; color: var(--slate); letter-spacing: 0.06em; }
+  .meta-item span { color: var(--lime); display: block; font-weight: 600; font-size: 0.8rem; margin-bottom: 2px; }
+
+  /* ── MAIN ── */
+  .main { max-width: 1080px; margin: 0 auto; padding: 64px 48px; }
+
+  /* ── SECTION LABELS ── */
+  .sec-eyebrow {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--lime-dark);
+    margin-bottom: 8px;
+  }
+  .sec-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 8px;
+    color: var(--warm-white);
+  }
+  .sec-sub {
+    font-size: 0.9rem;
+    color: var(--slate);
+    margin-bottom: 36px;
+    line-height: 1.6;
+  }
+
+  /* ── VERDICT CARDS ── */
+  .verdict-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 64px;
+  }
+  .verdict-card {
+    border-radius: 16px;
+    padding: 28px 24px;
+    border: 1px solid var(--border-dark);
+    display: flex;
+    flex-direction: column;
+  }
+  .v-top {
+    display: flex;
+    flex-direction: column;
+  }
+  .v-brand-area { min-height: 0; }
+  .v-price-area { min-height: 0; margin-bottom: 6px; }
+  .v-top .v-price-label {
+    margin-top: auto;
+  }
+  .verdict-card.us {
+    background: var(--ink);
+    border: 1px solid rgba(186,239,91,0.25);
+    position: relative;
+    overflow: hidden;
+  }
+  .verdict-card.us::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--lime);
+    border-radius: 16px 16px 0 0;
+  }
+  .verdict-card.them { background: var(--ink); }
+  .v-chip {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+    display: inline-block;
+    margin-bottom: 16px;
+    align-self: flex-start;
+  }
+  .v-chip.ours { background: var(--lime); color: var(--charcoal); }
+  .v-chip.theirs { background: rgba(255,255,255,0.07); color: var(--slate); }
+  .v-brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--warm-white);
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+  .v-brand em { color: var(--lime); font-style: normal; }
+  .v-operator-tag {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lime-dark);
+    margin-bottom: 18px;
+  }
+  .v-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--lime);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .verdict-card.them .v-price { color: var(--warm-white); font-size: 1.4rem; padding-top: 6px; }
+  .v-price-label {
+    font-size: 0.68rem;
+    color: var(--slate);
+    letter-spacing: 0.06em;
+    margin-bottom: 20px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border-dark);
+  }
+  .v-items { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .v-items li {
+    font-size: 0.82rem;
+    color: var(--pale);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.4;
+    opacity: 0.85;
+  }
+  .v-items li::before { content: '→'; position: absolute; left: 0; }
+  .verdict-card.us .v-items li::before { color: var(--lime); }
+  .verdict-card.them .v-items li::before { color: var(--slate); }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin-bottom: 64px;
+    border-radius: 16px;
+    border: 1px solid var(--border-dark);
+    background: var(--ink);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  thead tr { background: var(--charcoal); }
+  thead th {
+    padding: 14px 18px;
+    text-align: left;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--slate);
+    border-bottom: 1px solid var(--border-dark);
+  }
+  thead th.us-head { color: var(--lime); }
+  thead th.feature-head { color: var(--slate); }
+  tbody tr { border-bottom: 1px solid var(--border-dark); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(186,239,91,0.03); }
+  td { padding: 12px 18px; vertical-align: middle; line-height: 1.5; color: var(--pale); }
+  td.feature-col { font-weight: 500; color: var(--warm-white); font-size: 0.88rem; }
+  td.us-col { background: rgba(186,239,91,0.04); }
+  .yes { color: var(--yes-text); font-weight: 600; }
+  .no  { color: var(--no-text); }
+  .partial { color: var(--partial-text); }
+  .badge-win {
+    display: inline-block;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 100px;
+    background: var(--lime);
+    color: var(--charcoal);
+    margin-left: 6px;
+  }
+  .section-row td {
+    background: var(--charcoal) !important;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--slate);
+    padding: 10px 18px;
+  }
+
+  /* ── DEEP DIVES ── */
+  .dive-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 64px;
+  }
+  .dive-card {
+    background: var(--ink);
+    border-radius: 16px;
+    padding: 28px;
+    border: 1px solid var(--border-dark);
+    border-top: 3px solid var(--lime);
+  }
+  .dive-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--lime-dark);
+    margin-bottom: 10px;
+  }
+  .dive-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--warm-white);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .dive-card p { font-size: 0.82rem; color: var(--slate); line-height: 1.7; }
+  .big-stat {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--lime);
+    line-height: 1;
+    margin: 10px 0 4px;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 12px;
+  }
+
+  /* ── QUOTES ── */
+  .quotes-section { margin-bottom: 64px; }
+  .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+  .quote-card {
+    background: var(--ink);
+    border-radius: 16px;
+    padding: 28px;
+    border: 1px solid var(--border-dark);
+    border-left: 3px solid var(--coral);
+  }
+  .quote-brand {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 14px;
+  }
+  .quote-text {
+    font-size: 0.88rem;
+    color: var(--pale);
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: 14px;
+    opacity: 0.9;
+  }
+  .quote-source {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  /* ── CTA ── */
+  .cta-block {
+    background: var(--ink);
+    border-radius: 20px;
+    border: 1px solid rgba(186,239,91,0.2);
+    padding: 56px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-block::before {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(186,239,91,0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .cta-block h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 800;
+    color: var(--warm-white);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+  }
+  .cta-block h2 em { color: var(--lime); font-style: normal; }
+  .cta-block p { color: var(--slate); font-size: 0.95rem; margin-bottom: 28px; }
+  .cta-btn {
+    display: inline-block;
+    background: var(--lime);
+    color: var(--charcoal);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 13px 32px;
+    border-radius: 100px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: background 0.15s;
+  }
+  .cta-btn:hover { background: var(--lime-dark); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--charcoal);
+    border-top: 1px solid var(--border-dark);
+    padding: 36px 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--warm-white);
+  }
+  .footer-logo em { color: var(--lime); font-style: normal; }
+  .footer-meta { font-size: 0.72rem; color: var(--slate); letter-spacing: 0.06em; line-height: 1.8; }
+
+  /* ── DIVIDER ── */
+  hr.rule { border: none; border-top: 1px solid var(--border-dark); margin: 64px 0; }
+
+  @media (max-width: 720px) {
+    .header { padding: 40px 24px; }
+    .main { padding: 40px 20px; }
+    .verdict-grid, .dive-grid, .quote-grid { grid-template-columns: 1fr; }
+    .header-meta { gap: 20px; }
+    .footer { padding: 32px 24px; flex-direction: column; align-items: flex-start; }
+  }
+
+  /* ── GATE ── */
+  .gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px;background:var(--charcoal)}
+  .gate-card{background:var(--ink);border:1px solid var(--border-dark);border-radius:20px;padding:48px 44px;width:100%;max-width:420px;text-align:center}
+  .gate-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;letter-spacing:-.5px;margin-bottom:8px}
+  .gate-logo em{color:var(--lime);font-style:normal}
+  .gate-badge{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--charcoal);background:var(--lime);padding:4px 12px;border-radius:100px;margin-bottom:28px}
+  .gate-text{font-size:.88rem;color:var(--slate);margin-bottom:28px;line-height:1.6}
+  .gate-input{width:100%;background:var(--charcoal);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 16px;color:var(--warm-white);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;margin-bottom:16px}
+  .gate-input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(186,239,91,.12)}
+  .gate-submit{width:100%;background:var(--lime);color:var(--charcoal);border:none;padding:14px 24px;border-radius:100px;font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer}
+  .gate-submit:hover{background:var(--lime-dark)}
+  .gate-error{font-size:.78rem;color:#FF5C35;margin-top:14px;min-height:20px}
+  .gate-back{display:block;margin-top:24px;font-size:.78rem;color:var(--slate);text-decoration:none}
+  .gate-back:hover{color:var(--lime-dark)}
+  .gate.hidden{display:none}
+  .page-content{display:none}
+  .page-content.visible{display:block}
+</style>
+</head>
+<body>
+
+<!-- ── GATE ── -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="gate-logo">Vend<em>iQ</em></div>
+    <div class="gate-badge">Competitive Analysis</div>
+    <p class="gate-text">This document is for internal and investor use. Enter your access code to continue.</p>
+    <form onsubmit="return handleCompareLogin(event)">
+      <input class="gate-input" id="comparePass" type="password" placeholder="Access code" autocomplete="off" autofocus>
+      <button type="submit" class="gate-submit">View Comparison</button>
+      <div class="gate-error" id="compareError"></div>
+    </form>
+    <a href="/" class="gate-back">&larr; Back to vendiqtech.com</a>
+  </div>
+</div>
+
+<div class="page-content" id="pageContent">
+
+<!-- ══ HEADER ══ -->
+<div class="header">
+  <div class="logo-mark">Vend<em>iQ</em></div>
+  <div class="logo-tagline">Legacy Vending, Revitalized.</div>
+  <div class="header-badge">Feature Comparison — 2026</div>
+  <h1>Vend<em>iQ</em> vs.<br>The Competition</h1>
+  <p>Nayax and Cantaloupe built their products to process payments. We built ours to run your entire operation. Here's what that difference actually looks like.</p>
+  <div class="header-meta">
+    <div class="meta-item"><span>VendiQ</span>vendiqtech.com</div>
+    <div class="meta-item"><span>vs. Nayax</span>VPOS Touch</div>
+    <div class="meta-item"><span>vs. Cantaloupe</span>ePort / Seed</div>
+    <div class="meta-item"><span>Updated</span>2026</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ══ AT A GLANCE ══ -->
+  <div class="sec-eyebrow">Overview</div>
+  <div class="sec-title">At a glance</div>
+  <div class="sec-sub">How each product positions itself — and what operators actually get.</div>
+
+  <div class="verdict-grid">
+    <div class="verdict-card us">
+      <span class="v-chip ours">Our product</span>
+      <div class="v-top">
+        <div class="v-brand-area"><div class="v-brand">Vend<em>iQ</em></div><div class="v-operator-tag">Built by operators, for operators</div></div>
+        <div class="v-price-area"><div class="v-price">$499</div></div>
+        <div class="v-price-label">one-time hardware + $9.99/mo — no transaction fee on top</div>
+      </div>
+      <ul class="v-items">
+        <li>Smartphone-based payments — no card reader hardware</li>
+        <li>Venmo, Cash App, PayPal, Apple Pay, Google Pay</li>
+        <li>No per-transaction fees from VendiQ</li>
+        <li>Real-time inventory by slot</li>
+        <li>Revenue dashboard included</li>
+        <li>Coin jam detection &amp; alerts</li>
+        <li>Temperature monitoring*</li>
+        <li>No long-term contract</li>
+        <li style="color:var(--lime);font-weight:600;">All features included — no upsells</li>
+      </ul>
+    </div>
+    <div class="verdict-card them">
+      <span class="v-chip theirs">Competitor</span>
+      <div class="v-top">
+        <div class="v-brand-area"><div class="v-brand">Nayax VPOS</div></div>
+        <div class="v-price-area"><div class="v-price">$289–$399</div></div>
+        <div class="v-price-label">hardware + ~$7.95/mo + 5.95% per transaction</div>
+      </div>
+      <ul class="v-items">
+        <li>Physical card reader (NFC/EMV hardware)</li>
+        <li>No Venmo, Cash App, or PayPal</li>
+        <li>Telemetry on higher tiers only</li>
+        <li>Revenue reporting</li>
+        <li>No coin jam detection</li>
+        <li>No temperature monitoring</li>
+        <li style="color:var(--coral);">5.95% fee on every transaction — adds up fast</li>
+        <li style="color:var(--coral);">International HQ — limited US-based support</li>
+      </ul>
+    </div>
+    <div class="verdict-card them">
+      <span class="v-chip theirs">Competitor</span>
+      <div class="v-top">
+        <div class="v-brand-area"><div class="v-brand">Cantaloupe ePort</div></div>
+        <div class="v-price-area"><div class="v-price">$329</div></div>
+        <div class="v-price-label">hardware (G11 kit) + $9.95/mo + 5.95% per transaction</div>
+      </div>
+      <ul class="v-items">
+        <li>Physical card reader (NFC/EMV hardware)</li>
+        <li>No Venmo, Cash App, or PayPal</li>
+        <li>Inventory requires Seed Pro upgrade</li>
+        <li>No coin jam detection</li>
+        <li>No temperature monitoring</li>
+        <li style="color:var(--coral);">5.95% fee on every transaction — adds up fast</li>
+        <li style="color:var(--coral);">36-month contracts — you don't own the device</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background:rgba(186,239,91,0.07);border:1px solid rgba(186,239,91,0.2);border-radius:12px;padding:16px 20px;margin-bottom:48px;">
+    <p style="font-size:0.82rem;color:var(--pale);line-height:1.7;margin:0;"><strong style="color:var(--lime);">The real cost comparison:</strong> A machine doing $500/month in cashless sales costs you $29.75/mo in transaction fees alone with Nayax or Cantaloupe (5.95%). VendiQ charges no per-transaction fee — on a 10-machine route that's <strong style="color:var(--lime);">$357/month</strong> straight back in your pocket, every month.</p>
+  </div>
+
+  <!-- ══ FULL TABLE ══ -->
+  <div class="sec-eyebrow">Full breakdown</div>
+  <div class="sec-title">Feature comparison</div>
+  <div class="sec-sub">Every capability, side by side — no marketing spin.</div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="feature-head" style="width:32%">Feature</th>
+          <th class="us-head" style="width:23%">VendiQ</th>
+          <th style="width:22%">Nayax VPOS Touch</th>
+          <th style="width:23%">Cantaloupe ePort</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- PAYMENTS -->
+        <tr class="section-row"><td colspan="4">App-Based &amp; Mobile Payments</td></tr>
+        <tr>
+          <td class="feature-col">Physical card reader (swipe/tap/insert)</td>
+          <td class="us-col"><span class="partial">No — phone-based checkout</span></td>
+          <td><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">Apple Pay / Google Pay</td>
+          <td class="us-col"><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">Venmo / Cash App / PayPal</td>
+          <td class="us-col"><span class="yes">Yes <span class="badge-win">Exclusive</span></span></td>
+          <td><span class="no">No</span></td>
+          <td><span class="no">No</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">QR code payments</td>
+          <td class="us-col"><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+          <td><span class="partial">Limited</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">NFC hardware required</td>
+          <td class="us-col"><span class="yes">No <span class="badge-win">Advantage</span></span></td>
+          <td><span class="no">Yes</span></td>
+          <td><span class="no">Yes</span></td>
+        </tr>
+
+        <!-- HARDWARE INTELLIGENCE -->
+        <tr class="section-row"><td colspan="4">Hardware Intelligence</td></tr>
+        <tr>
+          <td class="feature-col">Coin jam detection &amp; alert</td>
+          <td class="us-col"><span class="yes">Yes <span class="badge-win">Exclusive</span></span></td>
+          <td><span class="no">No</span></td>
+          <td><span class="no">No</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">Temperature monitoring*</td>
+          <td class="us-col"><span class="yes">Yes <span class="badge-win">Exclusive</span></span></td>
+          <td><span class="no">No</span></td>
+          <td><span class="no">No</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">Machine error / jam alerts</td>
+          <td class="us-col"><span class="yes">Yes — included</span></td>
+          <td><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">OTA firmware updates</td>
+          <td class="us-col"><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">Battery backup (power outage safe)</td>
+          <td class="us-col"><span class="yes">Yes</span></td>
+          <td><span class="partial">Limited</span></td>
+          <td><span class="no">No</span></td>
+        </tr>
+
+        <!-- INVENTORY -->
+        <tr class="section-row"><td colspan="4">Inventory Intelligence</td></tr>
+        <tr>
+          <td class="feature-col">Real-time inventory by slot</td>
+          <td class="us-col"><span class="yes">Yes — included</span></td>
+          <td><span class="partial">Higher tier / add-on</span></td>
+          <td><span class="partial">Seed Pro required</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">Low-stock mobile alerts</td>
+          <td class="us-col"><span class="yes">Yes — included</span></td>
+          <td><span class="yes">Yes</span></td>
+          <td><span class="partial">Seed Pro required</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">Sales velocity by product</td>
+          <td class="us-col"><span class="yes">Yes — included</span></td>
+          <td><span class="partial">Limited / higher tier</span></td>
+          <td><span class="partial">Seed Pro required</span></td>
+        </tr>
+
+        <!-- REVENUE REPORTING -->
+        <tr class="section-row"><td colspan="4">Revenue Reporting</td></tr>
+        <tr>
+          <td class="feature-col">Revenue dashboard</td>
+          <td class="us-col"><span class="yes">Yes — included</span></td>
+          <td><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">Cash + cashless combined reporting</td>
+          <td class="us-col"><span class="yes">Yes — included</span></td>
+          <td><span class="yes">Yes</span></td>
+          <td><span class="partial">Requires additional setup</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">Daily / weekly / monthly reports</td>
+          <td class="us-col"><span class="yes">Yes — included</span></td>
+          <td><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">CSV / PDF export</td>
+          <td class="us-col"><span class="yes">Yes — included</span></td>
+          <td><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+        </tr>
+
+        <!-- OPERATIONS -->
+        <tr class="section-row"><td colspan="4">Operations</td></tr>
+        <tr>
+          <td class="feature-col">Mobile app (iOS + Android)</td>
+          <td class="us-col"><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">Plug-and-play install (&lt;15 min)</td>
+          <td class="us-col"><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+        </tr>
+
+        <!-- PRICING & TERMS -->
+        <tr class="section-row"><td colspan="4">Pricing &amp; Terms</td></tr>
+        <tr>
+          <td class="feature-col">Hardware price</td>
+          <td class="us-col"><span class="yes">$499 retail / $399 pre-order</span></td>
+          <td>$289–$399</td>
+          <td><span class="no">$329 (G11 kit) — more than VendiQ pre-order</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">Monthly software fee</td>
+          <td class="us-col"><span class="yes">$9.99 / machine</span></td>
+          <td>~$7.95 / machine</td>
+          <td>$9.95 / machine</td>
+        </tr>
+        <tr>
+          <td class="feature-col">Transaction fee per sale</td>
+          <td class="us-col"><span class="yes">No per-transaction fee <span class="badge-win">Advantage</span></span></td>
+          <td><span class="no">5.95% on every sale</span></td>
+          <td><span class="no">5.95% on every sale</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">True monthly cost (est. $500 cashless/mo)</td>
+          <td class="us-col"><span class="yes">$9.99/mo total</span></td>
+          <td><span class="no">~$37.70/mo ($7.95 + $29.75 in fees)</span></td>
+          <td><span class="no">~$39.70/mo ($9.95 + $29.75 in fees)</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">No long-term contract required</td>
+          <td class="us-col"><span class="yes">Yes — cancel anytime</span></td>
+          <td><span class="partial">Varies by region</span></td>
+          <td><span class="no">36-month contract required (Cantaloupe One)</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">You own the hardware outright</td>
+          <td class="us-col"><span class="yes">Yes</span></td>
+          <td><span class="yes">Yes</span></td>
+          <td><span class="no">Cantaloupe owns device for contract duration</span></td>
+        </tr>
+
+        <!-- COMPANY -->
+        <tr class="section-row"><td colspan="4">Company</td></tr>
+        <tr>
+          <td class="feature-col">US-based company</td>
+          <td class="us-col"><span class="yes">Yes — Washington State</span></td>
+          <td><span class="no">No — HQ outside US</span></td>
+          <td><span class="yes">Yes — Pennsylvania</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">Founded by vending operators</td>
+          <td class="us-col"><span class="yes">Yes</span></td>
+          <td><span class="no">No</span></td>
+          <td><span class="no">No — PE-backed</span></td>
+        </tr>
+        <tr>
+          <td class="feature-col">Dedicated onboarding support</td>
+          <td class="us-col"><span class="yes">Yes</span></td>
+          <td><span class="partial">Limited</span></td>
+          <td><span class="no">Known support issues</span></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ DEEP DIVES ══ -->
+  <hr class="rule" style="margin-top:0;">
+  <div class="sec-eyebrow">Where it really matters</div>
+  <div class="sec-title">The real differences</div>
+  <div class="sec-sub">Where the gap shows up in your day-to-day operations and bottom line.</div>
+
+  <div class="dive-grid">
+    <div class="dive-card">
+      <div class="dive-label">Payment reach</div>
+      <h3>Accept payments from the apps your customers already use</h3>
+      <p>Venmo, Cash App, PayPal, Apple Pay, Google Pay — no card reader hardware required. Your customer's phone is the payment terminal. Simpler hardware, lower cost, less maintenance, and access to P2P payment networks that neither competitor touches.</p>
+    </div>
+    <div class="dive-card">
+      <div class="dive-label">Feature access</div>
+      <h3>No upsells. No "Pro tier required."</h3>
+      <div class="big-stat">All in.</div>
+      <div class="stat-label">every feature, one price</div>
+      <p>Cantaloupe gates route optimization and advanced inventory behind Seed Pro. Nayax requires higher tiers for full telemetry. With VendiQ, everything is included from day one — no surprises on your invoice.</p>
+    </div>
+    <div class="dive-card">
+      <div class="dive-label">Hardware intelligence</div>
+      <h3>Know when something's wrong before your customer does</h3>
+      <p>Coin jam detection and temperature monitoring* are built in. Get alerted the moment a jam is detected or a cooler drifts out of safe range — before you lose a sale or spoil inventory. Neither Nayax nor Cantaloupe offer this.</p>
+    </div>
+    <div class="dive-card">
+      <div class="dive-label">Revenue lift</div>
+      <h3>Going cashless changes your numbers fast</h3>
+      <div class="big-stat">25–35%</div>
+      <div class="stat-label">avg revenue increase going cashless</div>
+      <p>Operators consistently report a 25–35% revenue lift when adding cashless payments. VendiQ captures that upside while also showing you exactly which slots, products, and machines are driving it.</p>
+    </div>
+  </div>
+
+  <!-- ══ QUOTES ══ -->
+  <div class="quotes-section">
+    <div class="sec-eyebrow">Operator reviews</div>
+    <div class="sec-title">What operators say about the competition</div>
+    <div class="sec-sub">Real reviews — publicly available on BBB and verified operator platforms.</div>
+    <div class="quote-grid">
+      <div class="quote-card">
+        <div class="quote-brand">Cantaloupe Inc. — BBB Review</div>
+        <div class="quote-text">"My experience with Cantaloupe has been one of the worst experiences in the vending industry... I was misled into signing a contract and cannot get out of it."</div>
+        <div class="quote-source">Verified BBB complaint</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-brand">Nayax — Verified Operator Review</div>
+        <div class="quote-text">"85 failures in 4 months, only phone support available, doesn't work reliably... and they hold your funds for up to 45 days."</div>
+        <div class="quote-source">Verified operator review</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CTA ══ -->
+  <div class="cta-block">
+    <h2>Ready to switch to <em>VendiQ?</em></h2>
+    <p>Pre-orders opening soon. Join the waitlist and be first in line.</p>
+    <a class="cta-btn" href="/">Join the waitlist →</a>
+  </div>
+
+</div>
+
+<!-- ══ FOOTER ══ -->
+<div class="footer">
+  <div>
+    <div class="footer-logo">Vend<em>iQ</em></div>
+    <div style="font-size:0.65rem;color:var(--slate);margin-top:4px;letter-spacing:0.1em;text-transform:uppercase;">Legacy Vending, Revitalized.</div>
+  </div>
+  <div class="footer-meta">
+    vendiqtech.com &nbsp;·&nbsp; <a href="mailto:hello@vendiqtech.com" style="color:var(--lime-dark);text-decoration:none;">hello@vendiqtech.com</a><br>
+    © 2026 VendiQ Inc. All rights reserved.
+    <br><span style="font-size:0.6rem;opacity:0.6;">*Temperature monitoring available as an add-on accessory.</span>
+  </div>
+</div>
+
+</div><!-- end .page-content -->
+
+<script>
+(function(){
+  // Equalize card section heights so everything aligns horizontally
+  function alignCards(){
+    ['.v-brand-area','.v-price-area','.v-price-label','.v-top'].forEach(function(sel){
+      var els=document.querySelectorAll(sel);
+      if(!els.length) return;
+      els.forEach(function(e){e.style.minHeight='';});
+      var max=0;
+      els.forEach(function(e){if(e.offsetHeight>max) max=e.offsetHeight;});
+      els.forEach(function(e){e.style.minHeight=max+'px';});
+    });
+  }
+  window.addEventListener('load',alignCards);
+  window.addEventListener('resize',alignCards);
+
+  var KEY='vendiq_compare_auth';
+  if(sessionStorage.getItem(KEY)==='1') showPage();
+
+  window.handleCompareLogin=async function(e){
+    e.preventDefault();
+    var inp=document.getElementById('comparePass'),err=document.getElementById('compareError');
+    try{
+      var res=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:inp.value,scope:'compare'})});
+      if(res.ok){sessionStorage.setItem(KEY,'1');showPage();}
+      else{err.textContent='Invalid access code. Try again.';inp.value='';inp.focus();}
+    }catch(e){err.textContent='Connection error. Please try again.';}
+    return false;
+  };
+
+  function showPage(){
+    document.getElementById('gate').classList.add('hidden');
+    document.getElementById('pageContent').classList.add('visible');
+    setTimeout(alignCards,50);
+  }
+})();
+</script>
+</body>
+</html>

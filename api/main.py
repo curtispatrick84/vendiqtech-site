@@ -45,6 +45,7 @@ async def health():
 ACCESS_CODES = {
     "beta": os.getenv("BETA_ACCESS_CODE", "atlas1!"),
     "demo": os.getenv("DEMO_ACCESS_CODE", "atlas1!"),
+    "compare": os.getenv("COMPARE_ACCESS_CODE", "atlas1!"),
 }
 
 
