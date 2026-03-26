@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HLCWF822NZ"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-HLCWF822NZ");</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VendiQ — Beta Portal</title>
@@ -1157,6 +1160,7 @@
       });
       if (res.ok) {
         sessionStorage.setItem(KEY, '1');
+        if(typeof gtag==='function') gtag('event','beta_login',{event_category:'engagement'});
         showPortal();
       } else {
         input.classList.add('error');
@@ -1274,6 +1278,7 @@
     g('c-payment').textContent = pmt ? pmt.value : '—';
     g('c-readiness').textContent = g('readiness').value;
     g('step5').classList.remove('active');
+    if(typeof gtag==='function') gtag('event','beta_application',{event_category:'conversion',event_label:g('email').value});
     g('confirmation').classList.add('active');
     g('progressFill').style.width = '100%';
     g('stepLabel').textContent = 'Application Complete';

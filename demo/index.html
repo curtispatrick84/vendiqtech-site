@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HLCWF822NZ"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-HLCWF822NZ");</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VendiQ — Fleet Manager Demo</title>
@@ -508,7 +511,7 @@ window.handleDemoLogin=async function(e){
   var inp=document.getElementById('demoPass'),err=document.getElementById('demoError');
   try{
     var res=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:inp.value,scope:'demo'})});
-    if(res.ok){sessionStorage.setItem(KEY,'1');showApp();}
+    if(res.ok){sessionStorage.setItem(KEY,'1');if(typeof gtag==='function') gtag('event','demo_login',{event_category:'engagement'});showApp();}
     else{inp.classList.add('error');err.textContent='Invalid access code.';setTimeout(function(){inp.classList.remove('error');},500);inp.value='';inp.focus();}
   }catch(e){err.textContent='Connection error. Please try again.';}
   return false;

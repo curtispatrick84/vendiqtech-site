@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HLCWF822NZ"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-HLCWF822NZ");</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VendiQ — Machine Compatibility</title>
@@ -341,6 +344,7 @@ function checkCompat(){
 
   if(machine.v==='Yes'){
     r.classList.add('compat');
+    if(typeof gtag==='function') gtag('event','compat_check',{event_category:'engagement',event_label:machine.m+' '+machine.s,result:'compatible'});
     icon.textContent='✅';
     title.textContent='Fully Compatible!';
     title.style.color='var(--lime)';
@@ -348,6 +352,7 @@ function checkCompat(){
     cta.innerHTML='<button class="result-cta primary" onclick="window.location.href=\'/\';setTimeout(function(){if(window.openWaitlist)window.openWaitlist();},500);">Join the Waitlist →</button>';
   } else if(machine.v==='Yes with Upgrade'){
     r.classList.add('upgrade');
+    if(typeof gtag==='function') gtag('event','compat_check',{event_category:'engagement',event_label:machine.m+' '+machine.s,result:'upgrade'});
     icon.textContent='⚠️';
     title.textContent='Compatible with Upgrade';
     title.style.color='var(--gold)';
@@ -355,6 +360,7 @@ function checkCompat(){
     cta.innerHTML='<button class="result-cta primary" onclick="window.location.href=\'/\';setTimeout(function(){if(window.openWaitlist)window.openWaitlist();},500);">Join the Waitlist →</button>';
   } else {
     r.classList.add('incompat');
+    if(typeof gtag==='function') gtag('event','compat_check',{event_category:'engagement',event_label:machine.m+' '+machine.s,result:'incompatible'});
     icon.textContent='❌';
     title.textContent='Not Compatible';
     title.style.color='var(--coral)';

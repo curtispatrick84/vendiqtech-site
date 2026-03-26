@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HLCWF822NZ"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-HLCWF822NZ");</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VendiQ — Legacy Vending, Revitalized.</title>
@@ -783,6 +786,7 @@
   var modal = document.getElementById('waitlistModal');
 
   window.openWaitlist = function() {
+    if(typeof gtag==='function') gtag('event','waitlist_modal_open',{event_category:'engagement'});
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
     var emailInput = document.getElementById('wlEmail');
@@ -849,6 +853,7 @@
 
       if (res.ok) {
         document.getElementById('wlForm').style.display = 'none';
+        if(typeof gtag==='function') gtag('event','waitlist_signup',{event_category:'conversion',event_label:email.value.trim()});
         document.getElementById('wlConfirmation').classList.add('visible');
       } else if (res.status === 409) {
         serverErr.textContent = 'This email is already on the waitlist — we\'ll be in touch!';
