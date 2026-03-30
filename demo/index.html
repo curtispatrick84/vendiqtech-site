@@ -257,10 +257,12 @@ img.ms-img{width:56px;height:56px;object-fit:contain;border-radius:8px;border:1p
 .slot-section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .slot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:6px;margin-bottom:20px}
 .slot{background:var(--surface);border:1.5px solid var(--border);border-radius:9px;padding:8px 6px;text-align:center;font-size:.7rem;transition:all .15s;position:relative;min-height:88px;display:flex;flex-direction:column;justify-content:space-between;flex:1 1 0;min-width:0}
-.slot:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.15)}
+.slot{-webkit-tap-highlight-color:transparent}
+@media(hover:hover){.slot:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.15)}}
 .slot-ok{border-color:rgba(255,255,255,.06)}
 .slot-low{border-color:rgba(242,201,76,.4);background:rgba(242,201,76,.03)}
 .slot-empty{border-color:rgba(255,92,53,.4);background:rgba(255,92,53,.05)}
+@media(hover:hover){.slot-low:hover{border-color:rgba(242,201,76,.55)}.slot-empty:hover{border-color:rgba(255,92,53,.55)}}
 .slot-id{font-weight:700;color:var(--text2);font-size:.6rem;letter-spacing:.05em}
 .slot-product{font-size:.62rem;color:var(--text);margin:4px 0;line-height:1.3;flex:1}
 .slot-qty{font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem}
@@ -557,7 +559,7 @@ var MACHINES=[
  slots:[
   {id:'A1',product:'Coca-Cola',qty:6,cap:8,price:2.50},{id:'A2',product:'Diet Coke',qty:4,cap:8,price:2.50},{id:'A3',product:'Dr Pepper',qty:7,cap:8,price:2.50},{id:'A4',product:'Sprite',qty:5,cap:8,price:2.50},
   {id:'B1',product:'Dasani Water',qty:8,cap:10,price:2.00},{id:'B2',product:'Gatorade Blue',qty:3,cap:8,price:3.00},{id:'B3',product:'Gatorade Fruit',qty:2,cap:8,price:3.00},{id:'B4',product:'Monster Energy',qty:5,cap:6,price:3.50},
-  {id:'C1',product:'Minute Maid OJ',qty:4,cap:8,price:2.75},{id:'C2',product:'AriZona Tea',qty:6,cap:8,price:2.00},{id:'C3',product:'Vitamin Water',qty:3,cap:8,price:2.75},{id:'C4',product:'Red Bull',qty:1,cap:6,price:4.00}
+  {id:'C1',product:'Capri Sun',qty:4,cap:8,price:2.75},{id:'C2',product:'Sparkling Ice',qty:6,cap:8,price:2.00},{id:'C3',product:'Vitamin Water',qty:3,cap:8,price:2.75},{id:'C4',product:'Celsius',qty:1,cap:6,price:4.00}
  ],chart:[22,26,30,28,35,32,35]},
 
 {id:'office-snack',name:'Break Room Snacks',site:'Riverside Office Park',siteKey:'office',model:'AMS Sensit Snack (AMS39)',category:'Snack',fill:85,vends:14,revenue:36.50,profit:23.40,lastVend:'Kind Bar Dark Choc',lastTime:'22 min ago',dex:654,
@@ -572,13 +574,13 @@ var MACHINES=[
  slots:[
   {id:'A1',product:'Dasani Water',qty:7,cap:10,price:2.00},{id:'A2',product:'Smartwater',qty:5,cap:8,price:2.75},{id:'A3',product:'Coca-Cola',qty:6,cap:8,price:2.50},{id:'A4',product:'Coke Zero',qty:4,cap:8,price:2.50},
   {id:'B1',product:'La Croix Lime',qty:8,cap:10,price:2.25},{id:'B2',product:'La Croix Berry',qty:6,cap:10,price:2.25},{id:'B3',product:'Starbucks Frapp',qty:2,cap:6,price:3.75},{id:'B4',product:'Starbucks Dblshot',qty:3,cap:6,price:3.75},
-  {id:'C1',product:'Minute Maid OJ',qty:5,cap:8,price:2.75},{id:'C2',product:'Lipton Tea',qty:7,cap:8,price:2.00},{id:'C3',product:'Vitamin Water',qty:4,cap:8,price:2.75},{id:'C4',product:'Gatorade Blue',qty:3,cap:8,price:3.00}
+  {id:'C1',product:'Capri Sun',qty:5,cap:8,price:2.75},{id:'C2',product:'Lipton Tea',qty:7,cap:8,price:2.00},{id:'C3',product:'Vitamin Water',qty:4,cap:8,price:2.75},{id:'C4',product:'Gatorade Blue',qty:3,cap:8,price:3.00}
  ],chart:[20,18,24,22,26,28,26]},
 
 {id:'gym-combo',name:'Gym Floor Combo',site:'Central Fitness Center',siteKey:'gym',model:'AMS Visi-Combo (AMS39-VC)',category:'Combo',fill:68,vends:17,revenue:46.00,profit:28.50,lastVend:'Gatorade Blue',lastTime:'5 min ago',dex:1089,
  slots:[
   {id:'A1',product:'Gatorade Blue',qty:2,cap:8,price:3.00},{id:'A2',product:'Gatorade Fruit',qty:1,cap:8,price:3.00},{id:'A3',product:'Muscle Milk',qty:3,cap:6,price:3.75},{id:'A4',product:'Protein Shake',qty:4,cap:6,price:3.50},
-  {id:'B1',product:'Dasani Water',qty:6,cap:10,price:2.00},{id:'B2',product:'Vitamin Water',qty:0,cap:8,price:2.75},{id:'B3',product:'Monster Energy',qty:2,cap:6,price:3.50},{id:'B4',product:'Red Bull',qty:0,cap:6,price:4.00},
+  {id:'B1',product:'Dasani Water',qty:6,cap:10,price:2.00},{id:'B2',product:'Vitamin Water',qty:0,cap:8,price:2.75},{id:'B3',product:'Monster Energy',qty:2,cap:6,price:3.50},{id:'B4',product:'Celsius',qty:0,cap:6,price:4.00},
   {id:'C1',product:'RXBar Protein',qty:5,cap:8,price:3.00},{id:'C2',product:'Clif Builder Bar',qty:3,cap:8,price:2.75},{id:'C3',product:'Kind Bar Nut',qty:4,cap:10,price:2.50},{id:'C4',product:'Kirkland Cashews',qty:2,cap:8,price:2.50},
   {id:'D1',product:'Dot\'s Pretzels',qty:1,cap:6,price:3.50},{id:'D2',product:'Nature Valley',qty:6,cap:10,price:1.75},{id:'D3',product:'Pirate\'s Booty',qty:3,cap:8,price:2.25},{id:'D4',product:'Almonds',qty:4,cap:8,price:2.75}
  ],chart:[32,38,42,36,44,40,46]}
@@ -592,7 +594,7 @@ var IMG={
 "Kirkland Cashews":"/img/kirkland-cashews.png","Lay's BBQ":"/img/lays-barbecue.png","Goldfish":"/img/goldfish-cheddar.png","Chex Mix":"/img/chex-mix-original.png","Dot's Pretzels":"/img/dots-original.png",
 "Coca-Cola":"/img/coke.png","Diet Coke":"/img/diet-coke.png","Dr Pepper":"/img/dr-pepper.png","Sprite":"/img/sprite.png",
 "Dasani Water":"/img/kirkland-water.png","Gatorade Blue":"/img/gatorade-glacier-freeze.png","Gatorade Fruit":"/img/gatorade-fruit-punch.png","Monster Energy":"/img/rockstar-sugar-free-original.png",
-"Minute Maid OJ":"/img/capri-sun-fruit-punch.png","AriZona Tea":"/img/sparkling-ice-peach-nectarine.png","Vitamin Water":"/img/kirkland-vitamin-water-acai-blueberry.png","Red Bull":"/img/celsius-peach-vibe.png",
+"Capri Sun":"/img/capri-sun-fruit-punch.png","Sparkling Ice":"/img/sparkling-ice-peach-nectarine.png","Vitamin Water":"/img/kirkland-vitamin-water-acai-blueberry.png","Celsius":"/img/celsius-peach-vibe.png",
 "Kind Bar Dark Choc":"/img/natures-bakery-brownie.png","RXBar Chocolate":"/img/nature-valley-protein-peanut-butter-chocolate.png","Clif Bar Oat":"/img/nutri-grain-blueberry.png",
 "NV Cinnamon Biscuit":"/img/nature-valley-biscuits-cinnamon-almond-butter.png","SunChips Harvest":"/img/pop-corners-sea-salt.png","Veggie Straws":"/img/pirates-booty.png",
 "Oreos Mini":"/img/nabisoc-oreo-mini.png","Grandma's Cookies":"/img/nabisco-chips-ahoy.png","PopCorners":"/img/pop-corners-white-cheddar.png","Smartfood Popcorn":"/img/smartfood-white-cheddar.png",
