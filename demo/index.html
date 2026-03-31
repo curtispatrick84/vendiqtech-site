@@ -23,8 +23,7 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);lin
 
 /* ── GATE ── */
 .gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px}
-.gate-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px 44px;width:100%;max-width:620px;text-align:center;animation:fadeUp .6s ease both}
-.gate-video{width:100%;border-radius:10px;border:1.5px solid var(--border);margin-bottom:24px;cursor:pointer;display:block;background:#000}
+.gate-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px 44px;width:100%;max-width:420px;text-align:center;animation:fadeUp .6s ease both}
 .gate-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;letter-spacing:-.5px;margin-bottom:8px}
 .gate-logo em{color:var(--lime);font-style:normal}
 .gate-badge{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--charcoal);background:var(--lime);padding:4px 12px;border-radius:100px;margin-bottom:28px}
@@ -362,7 +361,6 @@ div.slot-img{width:36px;height:36px;border-radius:4px;margin:2px auto;background
     <div class="gate-logo">Vend<em>iQ</em></div>
     <div class="gate-badge">Fleet Demo</div>
     <p class="gate-text">See VendiQ in action. Enter the demo access code to explore a sample fleet dashboard with mock data.</p>
-    <video class="gate-video" src="/img/fleet-demo.mp4" poster="/img/fleet-demo-poster.jpg" playsinline muted loop autoplay onclick="this.paused?this.play():this.pause()"></video>
     <form onsubmit="return handleDemoLogin(event)">
       <input class="gate-input" id="demoPass" type="password" placeholder="Access code" autocomplete="off" autofocus>
       <button type="submit" class="gate-submit">Launch Demo</button>
