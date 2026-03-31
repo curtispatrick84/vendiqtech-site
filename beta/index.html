@@ -68,6 +68,16 @@
     pointer-events: none;
   }
 
+  .gate-video {
+    width: 100%;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-dark);
+    margin-bottom: 24px;
+    cursor: pointer;
+    display: block;
+    background: #000;
+  }
+
   .gate-card {
     position: relative;
     background: var(--ink);
@@ -75,7 +85,7 @@
     border-radius: 20px;
     padding: 48px 44px;
     width: 100%;
-    max-width: 420px;
+    max-width: 620px;
     text-align: center;
     animation: fadeUp 0.6s ease-out both;
   }
@@ -763,6 +773,7 @@
     <div class="gate-logo"><svg class="logo-icon" fill="currentColor"><use href="#vendiq-icon"/></svg>Vend<em>iQ</em></div>
     <div class="gate-badge">Beta Access</div>
     <p class="gate-text">Early access for beta operators. Enter the code provided by your VendiQ contact to continue.</p>
+    <video class="gate-video" src="/img/fleet-demo.mp4" poster="/img/fleet-demo-poster.jpg" playsinline muted loop autoplay onclick="this.paused?this.play():this.pause()"></video>
     <form id="gate-form" onsubmit="return handleLogin(event)">
       <div class="gate-input-wrap">
         <input class="gate-input" id="gate-password" type="password" placeholder="Access code" autocomplete="off" autofocus>
