@@ -20,7 +20,6 @@ jobs:
             cd /opt/vendiqtech-site
             git fetch --all
             git checkout ${{ github.ref_name }}
-            docker compose down
             docker compose up --build -d
             docker image prune -f
             echo "Deployed ${{ github.ref_name }}"

@@ -9,6 +9,9 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - /var/www/certbot:/var/www/certbot:ro
+    networks:
+      - default
+      - edge  # reaches the vendiqtech-pay container for pay.vendiqtech.com
     depends_on:
       api:
         condition: service_healthy
@@ -31,3 +34,7 @@ services:
 
 volumes:
   api-data:
+
+networks:
+  edge:
+    external: true  # created once on the droplet: docker network create edge
