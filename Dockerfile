@@ -13,6 +13,7 @@ COPY beta/ /usr/share/nginx/html/beta/
 COPY compatibility/ /usr/share/nginx/html/compatibility/
 COPY demo/ /usr/share/nginx/html/demo/
 COPY compare/ /usr/share/nginx/html/compare/
+COPY atlas-vending/ /usr/share/nginx/html/atlas-vending/
 COPY img/ /usr/share/nginx/html/img/
 
 # Copy both nginx configs (deploy script swaps between them)

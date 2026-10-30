@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas Vending — Vancouver, WA</title>
+<meta name="description" content="Atlas Vending is a family-owned vending machine operator serving businesses in Vancouver, Washington and the surrounding area.">
+<style>
+  :root {
+    --navy:   #1F3A5F;
+    --ink:    #22272E;
+    --muted:  #5B6470;
+    --bg:     #FFFFFF;
+    --soft:   #F3F5F8;
+    --border: #DDE2E8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+  a { color: var(--navy); }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+  header { background: var(--navy); color: #fff; padding: 56px 0 48px; }
+  header h1 { font-size: 2.2rem; letter-spacing: 0.02em; }
+  header p { margin-top: 8px; opacity: 0.85; font-size: 1.05rem; }
+
+  section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+  h2 { font-size: 1.3rem; color: var(--navy); margin-bottom: 12px; }
+  p + p { margin-top: 12px; }
+  ul { margin: 12px 0 0 20px; }
+  li + li { margin-top: 6px; }
+
+  .contact { background: var(--soft); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-top: 12px; }
+  .contact dt { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .contact dd { margin-bottom: 12px; font-size: 1.05rem; }
+  .contact dd:last-child { margin-bottom: 0; }
+
+  footer { background: var(--soft); color: var(--muted); font-size: 0.9rem; padding: 24px 0; text-align: center; }
+
+  @media (max-width: 600px) {
+    header { padding: 40px 0 32px; }
+    header h1 { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Atlas Vending</h1>
+    <p>Snack and beverage vending in Vancouver, Washington</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section>
+    <h2>About Us</h2>
+    <p>Atlas Vending is a family-owned and operated vending company based in Vancouver, WA. We own, stock, and service more than ten snack and beverage vending machines at businesses and workplaces throughout the Vancouver area.</p>
+    <p>We handle everything — machine placement, restocking, maintenance, and customer support — so our host locations get a convenient amenity at no cost to them.</p>
+  </section>
+
+  <section>
+    <h2>What We Offer</h2>
+    <ul>
+      <li>Snacks, candy, and healthier options</li>
+      <li>Cold drinks, water, sports drinks, and energy drinks</li>
+      <li>Cash and card / mobile payment at our machines</li>
+      <li>Regular restocking and prompt repairs</li>
+      <li>Free machine placement for qualifying locations</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Refunds &amp; Support</h2>
+    <p>If a machine doesn't vend your item or charges you incorrectly, email us with the machine location, the date and time, and the amount charged. We'll make it right, either with a refund to your original payment method or a replacement item.</p>
+  </section>
+
+  <section>
+    <h2>Contact</h2>
+    <p>Interested in a machine at your location, or need help with a purchase? Get in touch.</p>
+    <dl class="contact">
+      <dt>Email</dt>
+      <dd><a href="mailto:atlasvendingsupport@gmail.com">atlasvendingsupport@gmail.com</a></dd>
+      <dt>Service Area</dt>
+      <dd>Vancouver, WA and surrounding Clark County</dd>
+    </dl>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">&copy; <span id="year">2026</span> Atlas Vending &middot; Vancouver, Washington</div>
+</footer>
+
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
