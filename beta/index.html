@@ -789,7 +789,7 @@
 </style>
 <script>
 window.VENDIQ_ZOHO = {
-  xnQsjsdp: "", xmIwtLD: "",   // paste from the Zoho webform embed code; until filled in, nothing is sent
+  xnQsjsdp: "0eed6b4590927149f7046c1bff952dd3f3c67038ad9b1c4cc8196f96ace17294", xmIwtLD: "be317d55ee2e3ec3131c80507e45b74ec971a399c7876bd9e976f135d53feb2b1d012ba0d4dca4340bcf6f44513668f1",   // paste from the Zoho webform embed code; until filled in, nothing is sent
   actionType: "TGVhZHM=",
   endpoint: "https://crm.zoho.com/crm/WebToLeadForm",
   leadSource: "Beta Application",
@@ -1324,7 +1324,9 @@ window.VENDIQ_ZOHO = {
     function radio(n){var el=document.querySelector('input[name="'+n+'"]:checked');return el?el.value:'';}
     function checks(n){return Array.prototype.map.call(document.querySelectorAll('input[name="'+n+'"]:checked'),function(e){return e.value;}).join(', ');}
     var summary=['BETA APPLICATION','Machine makes/models: '+val('makes'),'Total machines: '+val('machineCount'),'Machines for beta: '+val('betaCount'),'Average machine age: '+val('machineAge'),'Vending type: '+checks('vendType'),'Payment setup: '+radio('paymentType'),'Placements: '+checks('placement'),'Environment: '+radio('environment'),'Daily foot traffic: '+val('traffic'),'Tech comfort: '+radio('techComfort'),'Primary device: '+radio('deviceType'),'Vending software: '+val('vms'),'Readiness: '+val('readiness'),'Share revenue data: '+radio('revenueShare'),'Biggest frustration: '+val('frustration'),'Prior solutions: '+val('priorSolutions'),'Anything else: '+val('anythingElse'),'Heard about VendiQ: '+val('referral'),'Beta terms acknowledged: '+(document.getElementById('depositAck')&&document.getElementById('depositAck').checked?'Yes':'No')].join('\n');
-    var fields={xnQsjsdp:Z.xnQsjsdp,zc_gad:'',xmIwtLD:Z.xmIwtLD,actionType:Z.actionType,'First Name':val('firstName'),'Last Name':val('lastName'),'Company':(val('firstName')+' '+val('lastName')).trim()+' (Vending Operator)','Email':val('email'),'Phone':val('phone'),'City':val('city'),'State':val('state'),'Lead Source':Z.leadSource,'Lead Status':Z.leadStatus,'Description':summary};
+    // Zoho's State/Province picklist wants full names (two are suffixed to tell them apart from other countries' regions)
+    var ZOHO_STATES={AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',CO:'Colorado',CT:'Connecticut',DE:'Delaware',FL:'Florida (United States)',GA:'Georgia',HI:'Hawaii',ID:'Idaho',IL:'Illinois',IN:'Indiana',IA:'Iowa',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',ME:'Maine',MD:'Maryland',MA:'Massachusetts',MI:'Michigan',MN:'Minnesota',MS:'Mississippi',MO:'Missouri',MT:'Montana (United States)',NE:'Nebraska',NV:'Nevada',NH:'New Hampshire',NJ:'New Jersey',NM:'New Mexico',NY:'New York',NC:'North Carolina',ND:'North Dakota',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',TX:'Texas',UT:'Utah',VT:'Vermont',VA:'Virginia',WA:'Washington',WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming'};
+    var fields={xnQsjsdp:Z.xnQsjsdp,zc_gad:'',xmIwtLD:Z.xmIwtLD,actionType:Z.actionType,'First Name':val('firstName'),'Last Name':val('lastName'),'Company':(val('firstName')+' '+val('lastName')).trim()+' (Vending Operator)','Email':val('email'),'Phone':val('phone'),'Address - City':val('city'),'Address - State / Province':ZOHO_STATES[val('state')]||val('state'),'Lead Source':Z.leadSource,'Lead Status':Z.leadStatus,'Description':summary};
     var frame=document.createElement('iframe');frame.name='zohoSink';frame.style.display='none';document.body.appendChild(frame);
     var f=document.createElement('form');f.method='POST';f.action=Z.endpoint;f.target='zohoSink';f.acceptCharset='UTF-8';f.style.display='none';
     Object.keys(fields).forEach(function(k){var i=document.createElement('input');i.type='hidden';i.name=k;i.value=fields[k];f.appendChild(i);});
