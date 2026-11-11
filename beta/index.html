@@ -514,6 +514,50 @@
 
   .check-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
 
+  /* Machine picker (step 2) */
+  .picker-row { display: grid; grid-template-columns: 1fr 1.4fr auto; gap: 10px; }
+  .form-card select:disabled { opacity: 0.45; cursor: not-allowed; }
+  .picker-add {
+    background: transparent; border: 1.5px solid rgba(186,239,91,0.4); color: var(--lime);
+    padding: 0 22px; border-radius: 10px; font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700;
+    cursor: pointer; transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+  }
+  .picker-add:hover:not(:disabled) { background: rgba(186,239,91,0.08); border-color: var(--lime); }
+  .picker-add:disabled { opacity: 0.35; cursor: not-allowed; }
+  .picker-preview { font-size: 0.78rem; color: var(--slate); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-height: 0; }
+  .picker-preview:empty { display: none; }
+  .machine-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .machine-list:empty { display: none; }
+  .machine-item {
+    display: flex; align-items: center; gap: 10px; background: var(--charcoal);
+    border: 1.5px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 12px 10px 14px;
+  }
+  .machine-item .mi-text { flex: 1; min-width: 0; font-size: 0.85rem; color: var(--warm-white); line-height: 1.35; }
+  .machine-item .mi-sub { display: block; font-size: 0.72rem; color: var(--slate); margin-top: 2px; }
+  .machine-item .mi-note { display: block; font-size: 0.72rem; margin-top: 4px; }
+  .machine-item.v-upgrade .mi-note { color: var(--gold); }
+  .machine-item.v-no .mi-note { color: var(--coral); }
+  .mi-remove {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12);
+    background: transparent; color: var(--pale); font-size: 1rem; line-height: 1; cursor: pointer;
+  }
+  .mi-remove:hover { border-color: var(--coral); color: var(--coral); }
+  .vbadge { display: inline-block; flex-shrink: 0; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; white-space: nowrap; }
+  .vbadge-yes { background: rgba(186,239,91,0.12); color: var(--lime); border: 1px solid rgba(186,239,91,0.25); }
+  .vbadge-upgrade { background: rgba(242,201,76,0.12); color: var(--gold); border: 1px solid rgba(242,201,76,0.25); }
+  .vbadge-no { background: rgba(255,92,53,0.12); color: var(--coral); border: 1px solid rgba(255,92,53,0.25); }
+  .vbadge-review { background: rgba(255,255,255,0.06); color: var(--pale); border: 1px solid rgba(255,255,255,0.15); }
+  .other-toggle { margin-top: 4px; }
+  .other-box { display: flex; flex-direction: column; gap: 10px; }
+  .other-box[hidden] { display: none; }
+  .other-note {
+    font-size: 0.78rem; line-height: 1.55; color: var(--pale);
+    background: rgba(242,201,76,0.06); border: 1px solid rgba(242,201,76,0.22); border-radius: 10px; padding: 12px 14px;
+  }
+  .other-note strong { color: var(--gold); font-weight: 600; }
+  .hint a { color: var(--lime); text-decoration: none; border-bottom: 1px solid rgba(186,239,91,0.35); }
+  .hint a:hover { border-bottom-color: var(--lime); }
+
   .check-item {
     display: flex;
     align-items: center;
@@ -784,6 +828,8 @@
     .form-card { padding: 28px 22px; }
     .field-row { grid-template-columns: 1fr; }
     .check-grid { grid-template-columns: 1fr; }
+    .picker-row { grid-template-columns: 1fr; }
+    .picker-add { padding: 12px; }
     .apply-section { padding: 0 20px 56px; }
   }
 </style>
@@ -796,6 +842,7 @@ window.VENDIQ_ZOHO = {
   leadStatus: "Applied"
 };
 </script>
+<script src="/compatibility/machines.js?v=20261110"></script>
 </head>
 <body>
 <svg style="display:none"><symbol id="vendiq-icon" viewBox="0 0 1378 998"><g transform="translate(0,998) scale(0.1,-0.1)"><path d="M11955 9733 c-71 -18 -251 -65 -400 -104 -148 -38 -358 -93 -465 -120 -107 -28 -231 -61 -275 -74 -44 -13 -145 -41 -225 -60 -79 -20 -221 -59 -314 -86 -93 -27 -171 -49 -173 -49 -1 0 -3 -6 -3 -14 0 -8 22 -32 49 -54 27 -21 148 -133 269 -247 l220 -209 -163 -175 c-89 -97 -206 -221 -260 -276 -54 -55 -128 -131 -163 -170 -36 -38 -111 -117 -167 -175 -56 -58 -142 -150 -190 -205 -48 -55 -142 -156 -209 -225 -66 -69 -186 -195 -265 -280 -79 -85 -183 -196 -230 -245 -389 -407 -531 -557 -631 -665 -63 -69 -137 -148 -165 -176 -47 -48 -99 -103 -270 -284 -39 -41 -156 -167 -260 -280 -104 -113 -222 -239 -261 -280 -130 -137 -203 -216 -224 -243 l-21 -27 -67 58 c-88 77 -722 718 -909 920 -17 17 -36 32 -43 32 -16 0 -574 -568 -925 -941 -44 -46 -148 -156 -231 -244 -83 -88 -175 -187 -205 -220 -30 -33 -92 -100 -139 -150 -369 -392 -519 -552 -606 -648 -56 -62 -236 -248 -400 -415 -229 -232 -305 -303 -323 -302 -59 0 -414 212 -425 254 -3 11 -6 452 -6 978 0 618 -3 959 -10 963 -5 3 -161 6 -347 6 -260 0 -339 -3 -349 -13 -10 -10 -13 -165 -16 -693 -2 -374 -7 -686 -11 -693 -6 -9 -31 8 -90 59 -45 39 -132 114 -193 167 -238 207 -569 521 -649 617 -27 33 -92 108 -143 168 -51 59 -98 119 -104 132 -16 36 28 103 198 305 211 250 485 514 782 755 68 55 158 128 200 163 42 35 111 89 152 120 41 30 107 81 145 112 82 66 102 80 340 244 378 260 496 327 999 571 242 117 276 132 276 121 0 -9 -66 -112 -131 -206 -245 -353 -382 -641 -529 -1114 -29 -95 -75 -301 -94 -426 -55 -360 -59 -815 -10 -1150 19 -134 67 -367 100 -490 40 -150 98 -311 111 -308 6 2 71 66 144 143 73 77 184 194 247 260 63 66 119 129 124 141 7 16 4 48 -11 115 -68 306 -87 681 -51 999 22 189 96 505 160 685 70 195 194 457 274 579 70 108 227 320 275 370 103 109 389 371 475 435 180 135 420 270 606 344 620 244 1240 276 1865 96 254 -73 514 -185 718 -311 107 -65 288 -198 382 -279 39 -34 77 -65 86 -70 14 -7 36 13 110 98 52 59 132 148 179 198 47 50 127 138 179 195 52 58 166 178 253 268 87 90 158 167 158 172 0 25 -262 123 -585 219 -148 44 -553 148 -700 180 -143 31 -454 86 -637 111 -1012 143 -1689 92 -2929 -220 -145 -36 -434 -127 -604 -190 -229 -84 -707 -292 -850 -369 -347 -188 -589 -329 -770 -447 -273 -179 -725 -507 -897 -651 -51 -43 -124 -103 -163 -133 -289 -227 -867 -805 -1089 -1088 -158 -201 -177 -228 -260 -352 -97 -145 -106 -162 -106 -189 0 -11 46 -75 102 -141 57 -67 154 -188 217 -268 172 -223 245 -303 563 -612 449 -438 579 -556 828 -756 291 -233 330 -262 790 -575 168 -115 413 -255 660 -379 187 -94 206 -101 226 -89 20 13 107 105 477 504 66 72 157 168 201 215 45 47 115 121 156 165 41 45 129 139 195 210 66 71 214 226 328 344 115 117 254 264 310 325 155 170 357 385 513 546 77 80 186 197 241 260 56 63 133 146 171 184 l71 69 74 -69 c41 -38 242 -240 445 -450 384 -395 485 -484 532 -469 30 10 224 204 442 445 369 407 555 606 737 794 270 278 391 404 530 556 69 74 199 214 290 310 91 96 197 209 236 250 38 41 124 131 190 200 66 69 181 190 255 270 74 80 192 203 261 275 69 71 172 180 230 240 559 591 779 817 790 813 15 -6 269 -238 407 -372 104 -101 146 -136 152 -126 9 15 21 75 80 395 47 253 156 805 205 1040 19 88 46 225 60 304 14 79 32 175 40 213 8 38 15 73 15 78 0 19 -32 15 -155 -17z"/><path d="M10919 7512 c-13 -15 -74 -86 -136 -157 -61 -72 -154 -173 -207 -225 -53 -52 -96 -98 -96 -103 0 -4 58 -45 128 -91 373 -243 798 -555 1061 -781 361 -309 586 -512 646 -581 32 -38 91 -103 130 -144 120 -129 265 -329 265 -366 0 -39 -483 -559 -785 -845 -143 -135 -394 -359 -403 -359 -11 0 -24 845 -22 1450 1 245 1 453 1 463 -1 16 -24 17 -347 17 -231 0 -352 -4 -366 -11 -20 -11 -20 -17 -14 -217 9 -331 21 -1444 19 -1845 -1 -259 -5 -378 -13 -398 -10 -23 -104 -99 -123 -99 -16 0 -377 -216 -502 -300 -77 -52 -100 -74 -91 -89 3 -5 40 -26 82 -47 85 -42 222 -140 391 -281 62 -51 116 -93 121 -93 11 0 85 43 282 164 36 22 119 79 185 126 66 48 183 131 260 185 315 222 921 716 1048 856 32 35 163 170 291 299 127 129 267 274 311 321 166 177 539 678 531 711 -13 55 -283 449 -399 583 -29 33 -72 85 -97 115 -132 165 -604 639 -871 875 -297 263 -444 374 -889 672 -272 182 -338 223 -358 223 -5 0 -20 -12 -33 -28z"/><path d="M6956 7421 l-30 -6 -2 -790 c-2 -434 -5 -806 -7 -825 -4 -44 2 -57 57 -113 24 -26 70 -78 101 -117 37 -45 61 -67 69 -62 19 11 386 397 452 476 l59 69 3 671 3 671 -22 18 c-19 15 -50 17 -338 16 -174 -1 -329 -4 -345 -8z"/><path d="M5767 6753 c-10 -9 -9 -565 1 -580 5 -8 56 35 152 129 80 77 162 152 183 166 l37 25 42 -19 c27 -12 88 -65 165 -144 l123 -125 -3 275 -2 275 -346 3 c-190 1 -348 -1 -352 -5z"/><path d="M9919 6447 c-178 -186 -310 -334 -345 -386 l-26 -39 37 -92 c75 -188 119 -406 136 -673 26 -405 -41 -842 -195 -1263 -51 -141 -92 -224 -193 -393 -122 -203 -192 -294 -417 -544 -87 -97 -341 -314 -481 -412 -249 -174 -652 -355 -960 -431 -288 -71 -601 -98 -850 -75 -171 16 -407 56 -515 86 -286 81 -625 221 -806 334 -165 103 -470 338 -559 430 -21 23 -44 41 -51 41 -6 0 -83 -77 -170 -172 -141 -153 -288 -310 -628 -675 -92 -98 -98 -107 -81 -119 60 -44 672 -259 947 -333 40 -11 107 -29 148 -41 134 -38 341 -90 485 -121 77 -16 169 -36 205 -44 117 -25 433 -69 655 -90 249 -25 632 -27 855 -5 622 61 1216 268 1680 588 106 72 260 194 304 241 31 32 56 40 56 19 0 -7 73 -83 162 -169 l163 -156 5 -140 c5 -135 6 -140 34 -174 35 -43 756 -776 1023 -1041 294 -292 391 -363 531 -389 133 -25 301 22 390 110 130 129 197 347 157 511 -31 127 -68 170 -622 727 -279 280 -570 575 -645 655 -91 96 -152 153 -181 167 -56 27 -135 28 -187 1 -22 -11 -47 -20 -57 -20 -19 0 -296 280 -319 324 -23 42 -12 68 86 198 265 350 508 886 604 1333 8 39 26 122 40 185 48 223 61 370 60 695 0 332 -8 413 -70 725 -40 197 -81 360 -126 500 -32 100 -113 280 -126 280 -4 0 -73 -69 -153 -153z"/><path d="M4577 5913 c-10 -9 -9 -1023 1 -1023 5 0 31 24 58 53 27 28 108 115 180 192 72 77 153 165 179 195 27 30 106 115 177 188 l129 133 -3 132 -3 132 -356 3 c-195 1 -358 -1 -362 -5z"/><path d="M8672 5144 c-104 -104 -271 -278 -371 -387 l-181 -198 0 -52 c-3 -275 1 -1641 4 -1645 6 -5 93 53 260 172 133 95 292 245 441 415 l48 55 -8 379 c-5 243 -3 568 6 903 9 379 10 527 2 535 -8 8 -64 -41 -201 -177z"/><path d="M6045 4474 c-49 -53 -136 -146 -192 -207 l-103 -112 3 -715 2 -715 125 -52 c254 -107 555 -192 583 -164 9 9 12 211 14 862 l2 850 -167 172 c-92 95 -169 173 -172 174 -3 1 -45 -41 -95 -93z"/><path d="M7460 3841 c-96 -97 -201 -200 -233 -229 l-57 -54 -115 108 c-64 59 -118 105 -121 102 -8 -8 -14 -824 -7 -1070 l6 -228 46 0 c152 0 618 108 664 154 8 9 12 37 11 82 0 38 -2 349 -3 692 0 342 -4 621 -8 621 -5 -1 -87 -81 -183 -178z"/><path d="M5255 3648 c-24 -30 -135 -147 -278 -295 l-51 -52 20 -22 c46 -53 330 -267 340 -257 9 9 14 647 5 652 -5 3 -21 -9 -36 -26z"/></g></symbol></svg>
@@ -952,10 +999,22 @@ window.VENDIQ_ZOHO = {
         <div class="step-desc">We need a variety of makes and models — your details help us confirm compatibility.</div>
         <div class="field-group">
           <div class="field" id="f-makes">
-            <label>Machine Make(s) &amp; Model(s) <span class="req">*</span></label>
-            <textarea id="makes" placeholder="e.g. Crane 167, AMS 39-VUE, Dixie Narco 5591..."></textarea>
-            <span class="hint">List all makes/models you'd consider enrolling. Separate with commas.</span>
-            <span class="error-msg">Please list at least one machine make/model.</span>
+            <label for="pickMfg">Machine Make(s) &amp; Model(s) <span class="req">*</span></label>
+            <div class="picker-row">
+              <select id="pickMfg" aria-label="Manufacturer"><option value="">— Manufacturer —</option></select>
+              <select id="pickModel" aria-label="Model" disabled><option value="">— Model —</option></select>
+              <button type="button" class="picker-add" id="pickAdd" disabled>Add</button>
+            </div>
+            <div class="picker-preview" id="pickPreview" aria-live="polite"></div>
+            <ul class="machine-list" id="machineList"></ul>
+            <label class="check-item other-toggle"><input type="checkbox" id="makesOtherToggle"><div class="check-box"></div><span class="check-label">Custom / Other — my machine isn't on the list</span></label>
+            <div class="other-box" id="otherBox" hidden>
+              <textarea id="makesOther" placeholder="Make, model and model # for each machine, e.g. Vendo 721, Model # V721-HVV"></textarea>
+              <div class="other-note"><strong>We'll need more information.</strong> Machines that aren't on our compatibility chart need a manual compatibility check before we can ship a kit. If you're selected, we'll ask for photos of the machine's ID plate, control board, and MDB/DEX ports.</div>
+            </div>
+            <input type="hidden" id="makes">
+            <span class="hint">Add each make and model you'd consider enrolling, from our <a href="/compatibility/" target="_blank" rel="noopener">compatibility chart</a>.</span>
+            <span class="error-msg" id="makesError">Please add at least one machine, or describe yours under Custom / Other.</span>
           </div>
           <div class="field-row">
             <div class="field" id="f-machineCount">
@@ -983,15 +1042,6 @@ window.VENDIQ_ZOHO = {
               <option>10–15 years</option><option>15–20 years</option><option>20+ years</option>
             </select>
             <span class="error-msg">Please select machine age.</span>
-          </div>
-          <div class="field">
-            <label>Vending Type (select all that apply)</label>
-            <div class="check-grid">
-              <label class="check-item"><input type="checkbox" name="vendType" value="Snack"><div class="check-box"></div><span class="check-label">Snack</span></label>
-              <label class="check-item"><input type="checkbox" name="vendType" value="Beverage"><div class="check-box"></div><span class="check-label">Beverage</span></label>
-              <label class="check-item"><input type="checkbox" name="vendType" value="Combo"><div class="check-box"></div><span class="check-label">Combo</span></label>
-              <label class="check-item"><input type="checkbox" name="vendType" value="Specialty/Other"><div class="check-box"></div><span class="check-label">Specialty / Other</span></label>
-            </div>
           </div>
         </div>
         <div class="btn-row">
@@ -1257,6 +1307,86 @@ window.VENDIQ_ZOHO = {
   function setError(id) { var el = g(id); if (el) el.classList.add('has-error'); }
   function clearError(id) { var el = g(id); if (el) el.classList.remove('has-error'); }
 
+  // ── Machine picker (step 2). Models come from /compatibility/machines.js ──
+  var MACHINE_LIST = window.MACHINES || [];
+  var picked = [];   // indexes into MACHINE_LIST, in the order added
+  var VERDICTS = {
+    'Yes':              { cls: 'yes',     label: 'Compatible',     note: '' },
+    'Yes with Upgrade': { cls: 'upgrade', label: 'With Upgrade',   note: 'May need a board or firmware upgrade. We can help with that.' },
+    'No':               { cls: 'no',      label: 'Not Compatible', note: 'No MDB/DEX interface, so it can\'t run VendiQ today. We\'ll keep it on file for future hardware.' }
+  };
+  function verdictOf(x) { return VERDICTS[x.v] || VERDICTS['No']; }
+  function modelLabel(x) { return x.s + (x.n && x.s.indexOf(x.n) < 0 ? ' (' + x.n + ')' : ''); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function(c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function otherText() { return g('makesOtherToggle').checked ? g('makesOther').value.trim() : ''; }
+  function makesValid() {
+    if (g('makesOtherToggle').checked && !otherText()) return false;
+    return picked.length > 0 || !!otherText();
+  }
+  function syncMakes() {
+    var parts = picked.map(function(i) { var x = MACHINE_LIST[i]; return x.m + ' ' + modelLabel(x) + ' [' + x.c + ', ' + verdictOf(x).label + ']'; });
+    var o = otherText();
+    if (o) parts.push('Custom/Other (needs compatibility review): ' + o);
+    g('makes').value = parts.join('; ');
+    if (g('f-makes').classList.contains('has-error') && makesValid()) clearError('f-makes');
+  }
+  function updatePickPreview() {
+    var i = g('pickModel').value, p = g('pickPreview');
+    g('pickAdd').disabled = (i === '' || picked.indexOf(+i) >= 0);
+    if (i === '') { p.innerHTML = ''; return; }
+    var x = MACHINE_LIST[+i], v = verdictOf(x);
+    p.innerHTML = '<span class="vbadge vbadge-' + v.cls + '">' + v.label + '</span><span>' + esc(x.c) + ' &middot; MDB ' + esc(x.mdb) + ' &middot; DEX ' + esc(x.dex) +
+      (picked.indexOf(+i) >= 0 ? ' &middot; already added' : '') + '</span>';
+  }
+  function renderPicked() {
+    g('machineList').innerHTML = picked.map(function(i) {
+      var x = MACHINE_LIST[i], v = verdictOf(x);
+      return '<li class="machine-item v-' + v.cls + '"><span class="mi-text">' + esc(x.m) + ' &mdash; ' + esc(x.s) +
+        '<span class="mi-sub">' + (x.n ? 'Model # ' + esc(x.n) + ' &middot; ' : '') + esc(x.c) + '</span>' +
+        (v.note ? '<span class="mi-note">' + esc(v.note) + '</span>' : '') + '</span>' +
+        '<span class="vbadge vbadge-' + v.cls + '">' + v.label + '</span>' +
+        '<button type="button" class="mi-remove" data-i="' + i + '" aria-label="Remove ' + esc(x.m + ' ' + x.s) + '">&times;</button></li>';
+    }).join('');
+    updatePickPreview();
+    syncMakes();
+  }
+  (function initPicker() {
+    var mfgSel = g('pickMfg'), modelSel = g('pickModel');
+    var mfgs = [];
+    MACHINE_LIST.forEach(function(x) { if (mfgs.indexOf(x.m) < 0) mfgs.push(x.m); });
+    mfgs.sort().forEach(function(m) { var o = document.createElement('option'); o.value = m; o.textContent = m; mfgSel.appendChild(o); });
+    mfgSel.addEventListener('change', function() {
+      modelSel.innerHTML = '<option value="">— Model —</option>';
+      MACHINE_LIST.forEach(function(x, i) {
+        if (x.m !== mfgSel.value) return;
+        var o = document.createElement('option'); o.value = i; o.textContent = modelLabel(x); modelSel.appendChild(o);
+      });
+      modelSel.disabled = !mfgSel.value;
+      updatePickPreview();
+    });
+    modelSel.addEventListener('change', updatePickPreview);
+    g('pickAdd').addEventListener('click', function() {
+      var i = modelSel.value;
+      if (i === '' || picked.indexOf(+i) >= 0) return;
+      picked.push(+i);
+      modelSel.value = '';
+      renderPicked();
+      modelSel.focus();
+    });
+    g('machineList').addEventListener('click', function(e) {
+      var b = e.target.closest('.mi-remove');
+      if (!b) return;
+      picked.splice(picked.indexOf(+b.getAttribute('data-i')), 1);
+      renderPicked();
+    });
+    g('makesOtherToggle').addEventListener('change', function() {
+      g('otherBox').hidden = !this.checked;
+      if (this.checked) g('makesOther').focus();
+      syncMakes();
+    });
+    g('makesOther').addEventListener('input', syncMakes);
+  })();
+
   function updateProgress(step) {
     var pct = Math.round((step / totalSteps) * 100);
     g('progressFill').style.width = pct + '%';
@@ -1280,8 +1410,13 @@ window.VENDIQ_ZOHO = {
       else clearError('f-state');
     }
     if (step === 2) {
-      var makes = g('makes');
-      if (!makes || !makes.value.trim()) { setError('f-makes'); valid = false; }
+      syncMakes();
+      if (!makesValid()) {
+        g('makesError').textContent = (g('makesOtherToggle').checked && !otherText())
+          ? 'Please describe your Custom / Other machine(s), or uncheck that box.'
+          : 'Please add at least one machine, or describe yours under Custom / Other.';
+        setError('f-makes'); valid = false;
+      }
       else clearError('f-makes');
       ['machineCount','betaCount','machineAge'].forEach(function(fid) {
         var el = g(fid);
@@ -1323,7 +1458,7 @@ window.VENDIQ_ZOHO = {
     function val(id){var el=document.getElementById(id);return el?el.value.trim():'';}
     function radio(n){var el=document.querySelector('input[name="'+n+'"]:checked');return el?el.value:'';}
     function checks(n){return Array.prototype.map.call(document.querySelectorAll('input[name="'+n+'"]:checked'),function(e){return e.value;}).join(', ');}
-    var summary=['BETA APPLICATION','Machine makes/models: '+val('makes'),'Total machines: '+val('machineCount'),'Machines for beta: '+val('betaCount'),'Average machine age: '+val('machineAge'),'Vending type: '+checks('vendType'),'Payment setup: '+radio('paymentType'),'Placements: '+checks('placement'),'Environment: '+radio('environment'),'Daily foot traffic: '+val('traffic'),'Tech comfort: '+radio('techComfort'),'Primary device: '+radio('deviceType'),'Vending software: '+val('vms'),'Readiness: '+val('readiness'),'Share revenue data: '+radio('revenueShare'),'Biggest frustration: '+val('frustration'),'Prior solutions: '+val('priorSolutions'),'Anything else: '+val('anythingElse'),'Heard about VendiQ: '+val('referral'),'Beta terms acknowledged: '+(document.getElementById('depositAck')&&document.getElementById('depositAck').checked?'Yes':'No')].join('\n');
+    var summary=['BETA APPLICATION','Machine makes/models: '+val('makes'),'Total machines: '+val('machineCount'),'Machines for beta: '+val('betaCount'),'Average machine age: '+val('machineAge'),'Payment setup: '+radio('paymentType'),'Placements: '+checks('placement'),'Environment: '+radio('environment'),'Daily foot traffic: '+val('traffic'),'Tech comfort: '+radio('techComfort'),'Primary device: '+radio('deviceType'),'Vending software: '+val('vms'),'Readiness: '+val('readiness'),'Share revenue data: '+radio('revenueShare'),'Biggest frustration: '+val('frustration'),'Prior solutions: '+val('priorSolutions'),'Anything else: '+val('anythingElse'),'Heard about VendiQ: '+val('referral'),'Beta terms acknowledged: '+(document.getElementById('depositAck')&&document.getElementById('depositAck').checked?'Yes':'No')].join('\n');
     // Zoho's State/Province picklist wants full names (two are suffixed to tell them apart from other countries' regions)
     var ZOHO_STATES={AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',CO:'Colorado',CT:'Connecticut',DE:'Delaware',FL:'Florida (United States)',GA:'Georgia',HI:'Hawaii',ID:'Idaho',IL:'Illinois',IN:'Indiana',IA:'Iowa',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',ME:'Maine',MD:'Maryland',MA:'Massachusetts',MI:'Michigan',MN:'Minnesota',MS:'Mississippi',MO:'Missouri',MT:'Montana (United States)',NE:'Nebraska',NV:'Nevada',NH:'New Hampshire',NJ:'New Jersey',NM:'New Mexico',NY:'New York',NC:'North Carolina',ND:'North Dakota',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',TX:'Texas',UT:'Utah',VT:'Vermont',VA:'Virginia',WA:'Washington',WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming'};
     var fields={xnQsjsdp:Z.xnQsjsdp,zc_gad:'',xmIwtLD:Z.xmIwtLD,actionType:Z.actionType,'First Name':val('firstName'),'Last Name':val('lastName'),'Company':(val('firstName')+' '+val('lastName')).trim()+' (Vending Operator)','Email':val('email'),'Phone':val('phone'),'Address - City':val('city'),'Address - State / Province':ZOHO_STATES[val('state')]||val('state'),'Lead Source':Z.leadSource,'Lead Status':Z.leadStatus,'Description':summary};
