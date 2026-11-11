@@ -6,7 +6,7 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-HLCWF822NZ");</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VendiQ — Beta Portal</title>
+<title>VendiQ | Beta Portal</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231A1D16'/><text x='4' y='24' font-family='sans-serif' font-weight='800' font-size='22' fill='%23BAEF5B'>iQ</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -308,6 +308,85 @@
     color: var(--lime);
     border: 1px solid rgba(186,239,91,0.25);
   }
+
+  /* ── BETA OFFER ── */
+  .offer-card {
+    background: var(--ink);
+    border: 1.5px solid rgba(186,239,91,0.35);
+    border-radius: 16px;
+    padding: 36px 40px;
+    max-width: 520px;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 36px;
+  }
+
+  .offer-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 6px;
+  }
+
+  .offer-head h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: var(--warm-white);
+  }
+
+  .offer-price {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--lime);
+    line-height: 1;
+  }
+
+  .offer-sub { font-size: 0.85rem; color: rgba(232,237,224,0.6); margin-bottom: 20px; }
+
+  .offer-list { list-style: none; margin-bottom: 28px; }
+
+  .offer-list li {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-dark);
+    font-size: 0.85rem;
+    color: var(--pale);
+    line-height: 1.5;
+  }
+
+  .offer-list li:last-child { border-bottom: none; }
+  .offer-list li strong { color: var(--warm-white); font-weight: 600; }
+  .offer-list svg { flex: none; margin-top: 3px; color: var(--lime); }
+
+  .tier-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(232,237,224,0.6);
+    margin-bottom: 10px;
+  }
+
+  .tiers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+
+  .tier {
+    border: 1px solid var(--border-dark);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+
+  .tier-name { font-size: 0.7rem; font-weight: 600; color: rgba(232,237,224,0.6); text-transform: uppercase; letter-spacing: 0.1em; }
+  .tier-amt { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--pale); margin-top: 4px; }
+  .tier-note { font-size: 0.66rem; color: rgba(232,237,224,0.5); margin-top: 2px; }
+
+  .tier.current { border-color: var(--lime); background: rgba(186,239,91,0.08); }
+  .tier.current .tier-name, .tier.current .tier-note { color: var(--lime); }
+  .tier.current .tier-amt { color: var(--lime); }
 
   /* ── APPLY CTA ── */
   .apply-cta {
@@ -825,6 +904,10 @@
     .portal-nav { padding: 24px; }
     .portal-body { padding: 40px 24px 24px; }
     .portal-card { padding: 28px 24px; }
+    .offer-card { padding: 28px 20px; }
+    .tier { padding: 12px 4px; }
+    .tier-name { font-size: 0.62rem; letter-spacing: 0.04em; }
+    .tier-amt { font-size: 1.1rem; }
     .form-card { padding: 28px 22px; }
     .field-row { grid-template-columns: 1fr; }
     .check-grid { grid-template-columns: 1fr; }
@@ -875,7 +958,7 @@ window.VENDIQ_ZOHO = {
   </nav>
 
   <div class="portal-body">
-    <div class="portal-eyebrow">Operator Beta &mdash; Alpha Testing</div>
+    <div class="portal-eyebrow">Operator Beta &middot; Alpha Testing</div>
     <h1 class="portal-title">You're <span>early</span>.</h1>
     <p class="portal-desc">We're deploying the first retrofit kits with a small group of operators. The platform modules below are rolling out as we validate hardware in the field. You'll get access here as each one goes live.</p>
 
@@ -907,6 +990,35 @@ window.VENDIQ_ZOHO = {
       </div>
     </div>
 
+    <section class="offer-card" aria-labelledby="offer-title">
+      <div class="offer-head">
+        <h2 id="offer-title">Beta Kit</h2>
+        <div class="offer-price">$199</div>
+      </div>
+      <p class="offer-sub">Everything you need to run VendiQ in one of your machines during the beta.</p>
+      <ul class="offer-list">
+        <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>VendiQ board</strong> to install in your machine for testing</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>VendiQ software free for the whole beta</strong>: payments feed, revenue dashboard, and inventory alerts. $9.99/month per machine starts after the beta ends.</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>White glove support</strong> from setup through the end of the beta</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Quick weekly check-ins</strong> with the VendiQ team</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>60-day return policy</strong>: send the kit back in working condition within 60 days for a full $199 refund</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>Buy more kits</strong> at beta or Pre-Launch pricing</span></li>
+      </ul>
+      <div class="tier-label">Kit pricing</div>
+      <div class="tiers">
+        <div class="tier current">
+          <div class="tier-name">Beta</div>
+          <div class="tier-amt">$199</div>
+          <div class="tier-note">You're here</div>
+        </div>
+        <div class="tier">
+          <div class="tier-name">Pre-Launch</div>
+          <div class="tier-amt">$349</div>
+          <div class="tier-note">Pre-order</div>
+        </div>
+      </div>
+    </section>
+
     <a href="#apply" class="apply-cta">
       Apply for Beta Program
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -924,7 +1036,7 @@ window.VENDIQ_ZOHO = {
 
     <div class="progress-wrap">
       <div class="progress-meta">
-        <span class="progress-label" id="stepLabel">Step 1 of 5 — Contact Info</span>
+        <span class="progress-label" id="stepLabel">Step 1 of 5: Contact Info</span>
         <span class="progress-count" id="stepCount">20%</span>
       </div>
       <div class="progress-track">
@@ -969,7 +1081,7 @@ window.VENDIQ_ZOHO = {
             <div class="field" id="f-state">
               <label>State <span class="req">*</span></label>
               <select id="state">
-                <option value="">— Select —</option>
+                <option value="">Select</option>
                 <option>AL</option><option>AK</option><option>AZ</option><option>AR</option>
                 <option>CA</option><option>CO</option><option>CT</option><option>DE</option>
                 <option>FL</option><option>GA</option><option>HI</option><option>ID</option>
@@ -996,18 +1108,18 @@ window.VENDIQ_ZOHO = {
       <!-- STEP 2 -->
       <div class="step" id="step2">
         <div class="step-title">Tell us about your machines.</div>
-        <div class="step-desc">We need a variety of makes and models — your details help us confirm compatibility.</div>
+        <div class="step-desc">We need a variety of makes and models, and your details help us confirm compatibility.</div>
         <div class="field-group">
           <div class="field" id="f-makes">
             <label for="pickMfg">Machine Make(s) &amp; Model(s) <span class="req">*</span></label>
             <div class="picker-row">
-              <select id="pickMfg" aria-label="Manufacturer"><option value="">— Manufacturer —</option></select>
-              <select id="pickModel" aria-label="Model" disabled><option value="">— Model —</option></select>
+              <select id="pickMfg" aria-label="Manufacturer"><option value="">Manufacturer</option></select>
+              <select id="pickModel" aria-label="Model" disabled><option value="">Model</option></select>
               <button type="button" class="picker-add" id="pickAdd" disabled>Add</button>
             </div>
             <div class="picker-preview" id="pickPreview" aria-live="polite"></div>
             <ul class="machine-list" id="machineList"></ul>
-            <label class="check-item other-toggle"><input type="checkbox" id="makesOtherToggle"><div class="check-box"></div><span class="check-label">Custom / Other — my machine isn't on the list</span></label>
+            <label class="check-item other-toggle"><input type="checkbox" id="makesOtherToggle"><div class="check-box"></div><span class="check-label">Custom / Other: my machine isn't on the list</span></label>
             <div class="other-box" id="otherBox" hidden>
               <textarea id="makesOther" placeholder="Make, model and model # for each machine, e.g. Vendo 721, Model # V721-HVV"></textarea>
               <div class="other-note"><strong>We'll need more information.</strong> Machines that aren't on our compatibility chart need a manual compatibility check before we can ship a kit. If you're selected, we'll ask for photos of the machine's ID plate, control board, and MDB/DEX ports.</div>
@@ -1020,7 +1132,7 @@ window.VENDIQ_ZOHO = {
             <div class="field" id="f-machineCount">
               <label>Total Machines You Own <span class="req">*</span></label>
               <select id="machineCount">
-                <option value="">— Select —</option>
+                <option value="">Select</option>
                 <option>1–5</option><option>6–15</option><option>16–30</option><option>31–50</option><option>50+</option>
               </select>
               <span class="error-msg">Please select a range.</span>
@@ -1028,7 +1140,7 @@ window.VENDIQ_ZOHO = {
             <div class="field" id="f-betaCount">
               <label>Machines Available for Beta <span class="req">*</span></label>
               <select id="betaCount">
-                <option value="">— Select —</option>
+                <option value="">Select</option>
                 <option>1</option><option>2–3</option><option>4–5</option><option>6+</option>
               </select>
               <span class="error-msg">Please select a number.</span>
@@ -1037,7 +1149,7 @@ window.VENDIQ_ZOHO = {
           <div class="field" id="f-machineAge">
             <label>Average Machine Age <span class="req">*</span></label>
             <select id="machineAge">
-              <option value="">— Select —</option>
+              <option value="">Select</option>
               <option>Less than 5 years</option><option>5–10 years</option>
               <option>10–15 years</option><option>15–20 years</option><option>20+ years</option>
             </select>
@@ -1060,7 +1172,7 @@ window.VENDIQ_ZOHO = {
             <div class="radio-group">
               <label class="radio-item"><input type="radio" name="paymentType" value="Cash only"><div class="radio-dot"></div><span class="radio-label">Cash only</span></label>
               <label class="radio-item"><input type="radio" name="paymentType" value="Cashless only"><div class="radio-dot"></div><span class="radio-label">Cashless only</span></label>
-              <label class="radio-item"><input type="radio" name="paymentType" value="Mixed"><div class="radio-dot"></div><span class="radio-label">Mixed — some cash, some cashless</span></label>
+              <label class="radio-item"><input type="radio" name="paymentType" value="Mixed"><div class="radio-dot"></div><span class="radio-label">Mixed: some cash, some cashless</span></label>
             </div>
             <span class="error-msg">Please select your current payment setup.</span>
           </div>
@@ -1088,7 +1200,7 @@ window.VENDIQ_ZOHO = {
           <div class="field" id="f-traffic">
             <label>Estimated Daily Foot Traffic per Machine <span class="req">*</span></label>
             <select id="traffic">
-              <option value="">— Select —</option>
+              <option value="">Select</option>
               <option>Under 50</option><option>50–150</option><option>150–300</option>
               <option>300–500</option><option>500+</option>
             </select>
@@ -1104,14 +1216,14 @@ window.VENDIQ_ZOHO = {
       <!-- STEP 4 -->
       <div class="step" id="step4">
         <div class="step-title">Tech comfort &amp; commitment.</div>
-        <div class="step-desc">We want beta testers who are ready to engage — this helps us find the right fit.</div>
+        <div class="step-desc">We want beta testers who are ready to engage. This helps us find the right fit.</div>
         <div class="field-group">
           <div class="field" id="f-techComfort">
             <label>How comfortable are you setting up new hardware? <span class="req">*</span></label>
             <div class="radio-group">
-              <label class="radio-item"><input type="radio" name="techComfort" value="Very comfortable"><div class="radio-dot"></div><span class="radio-label">Very comfortable — I handle installs myself</span></label>
-              <label class="radio-item"><input type="radio" name="techComfort" value="Somewhat comfortable"><div class="radio-dot"></div><span class="radio-label">Somewhat — I can follow instructions</span></label>
-              <label class="radio-item"><input type="radio" name="techComfort" value="Not very comfortable"><div class="radio-dot"></div><span class="radio-label">Not very — I'd need hands-on support</span></label>
+              <label class="radio-item"><input type="radio" name="techComfort" value="Very comfortable"><div class="radio-dot"></div><span class="radio-label">Very comfortable: I handle installs myself</span></label>
+              <label class="radio-item"><input type="radio" name="techComfort" value="Somewhat comfortable"><div class="radio-dot"></div><span class="radio-label">Somewhat: I can follow instructions</span></label>
+              <label class="radio-item"><input type="radio" name="techComfort" value="Not very comfortable"><div class="radio-dot"></div><span class="radio-label">Not very: I'd need hands-on support</span></label>
             </div>
             <span class="error-msg">Please select your comfort level.</span>
           </div>
@@ -1127,8 +1239,8 @@ window.VENDIQ_ZOHO = {
           <div class="field">
             <label>Do you use any vending management software?</label>
             <select id="vms">
-              <option value="">— Select —</option>
-              <option>No — I manage manually</option>
+              <option value="">Select</option>
+              <option>No, I manage manually</option>
               <option>Parlevel</option><option>Cantaloupe / Seed</option>
               <option>VendSoft</option><option>Other</option>
             </select>
@@ -1136,7 +1248,7 @@ window.VENDIQ_ZOHO = {
           <div class="field" id="f-readiness">
             <label>How soon could you have a machine ready? <span class="req">*</span></label>
             <select id="readiness">
-              <option value="">— Select —</option>
+              <option value="">Select</option>
               <option>Within 1 week</option><option>2–4 weeks</option>
               <option>1–2 months</option><option>Just exploring for now</option>
             </select>
@@ -1159,7 +1271,7 @@ window.VENDIQ_ZOHO = {
 
       <!-- STEP 5 -->
       <div class="step" id="step5">
-        <div class="step-title">Almost there — last few questions.</div>
+        <div class="step-title">Almost there, just a few last questions.</div>
         <div class="step-desc">Your open-ended answers are the most valuable part. Don't hold back.</div>
         <div class="field-group">
           <div class="field">
@@ -1172,12 +1284,12 @@ window.VENDIQ_ZOHO = {
           </div>
           <div class="field">
             <label>Anything else you'd want us to know?</label>
-            <textarea id="anythingElse" placeholder="Open floor — tell us whatever feels relevant."></textarea>
+            <textarea id="anythingElse" placeholder="Open floor. Tell us whatever feels relevant."></textarea>
           </div>
           <div class="field">
             <label>How did you hear about VendiQ?</label>
             <select id="referral">
-              <option value="">— Select —</option>
+              <option value="">Select</option>
               <option>Word of mouth</option><option>Social media</option>
               <option>Trade show / event</option><option>Online search</option>
               <option>Email outreach</option><option>Other</option>
@@ -1189,19 +1301,19 @@ window.VENDIQ_ZOHO = {
           <div class="field" id="f-deposit">
             <span class="section-label-light">Pilot Program Terms</span>
             <div class="deposit-callout">
-              <h4>$199 Fully Refundable Device Deposit</h4>
-              <p>Selected beta testers will be asked to place a <strong>$199 refundable deposit</strong> to reserve their VendiQ device. At the end of the pilot program, you can:</p>
+              <h4>$199 Beta Kit &middot; 60-Day Returns</h4>
+              <p>Selected beta testers get the VendiQ Beta Kit for <strong>$199</strong>. That's a VendiQ board for your machine, white glove support, quick weekly check-ins, and the VendiQ software free for the whole beta. After the beta ends, software is <strong>$9.99/month per machine</strong>. Within 60 days, you can:</p>
               <ul>
-                <li><strong class="keep">Keep it</strong> — apply your deposit toward the device at a significant discount off early adopter and retail pricing.</li>
-                <li><strong>Return it</strong> — send the device back and receive your full $199 back, no questions asked.</li>
+                <li><strong class="keep">Keep it:</strong> the kit is yours, and you can buy more kits at beta or Pre-Launch pricing ($349).</li>
+                <li><strong>Return it:</strong> send the kit back in working condition within 60 days for a full $199 refund.</li>
               </ul>
             </div>
             <label class="check-item" style="background:var(--charcoal);border-color:rgba(255,255,255,0.1);">
               <input type="checkbox" id="depositAck">
               <div class="check-box"></div>
-              <span class="check-label" style="font-size:0.82rem;line-height:1.45;">I understand that if selected, a <strong>$199 fully refundable deposit</strong> may be required to participate in the beta program.</span>
+              <span class="check-label" style="font-size:0.82rem;line-height:1.45;">I understand that if selected, the <strong>Beta Kit is $199</strong>, can be returned in working condition within 60 days for a full refund, and software is $9.99/month per machine after the beta ends.</span>
             </label>
-            <span class="error-msg">Please acknowledge the deposit terms to continue.</span>
+            <span class="error-msg">Please acknowledge the beta terms to continue.</span>
           </div>
         </div>
         <div class="btn-row">
@@ -1219,13 +1331,13 @@ window.VENDIQ_ZOHO = {
         <p class="conf-p">Thanks for applying to the VendiQ beta program. We'll review your application and reach out within 3–5 business days.</p>
         <div class="confirm-details">
           <h4>Your Submission Summary</h4>
-          <div class="confirm-row"><span class="key">Name</span><span class="val" id="c-name">—</span></div>
-          <div class="confirm-row"><span class="key">Email</span><span class="val" id="c-email">—</span></div>
-          <div class="confirm-row"><span class="key">Location</span><span class="val" id="c-location">—</span></div>
-          <div class="confirm-row"><span class="key">Machines for Beta</span><span class="val" id="c-betaCount">—</span></div>
-          <div class="confirm-row"><span class="key">Machine Age</span><span class="val" id="c-age">—</span></div>
-          <div class="confirm-row"><span class="key">Payment Setup</span><span class="val" id="c-payment">—</span></div>
-          <div class="confirm-row"><span class="key">Readiness</span><span class="val" id="c-readiness">—</span></div>
+          <div class="confirm-row"><span class="key">Name</span><span class="val" id="c-name">-</span></div>
+          <div class="confirm-row"><span class="key">Email</span><span class="val" id="c-email">-</span></div>
+          <div class="confirm-row"><span class="key">Location</span><span class="val" id="c-location">-</span></div>
+          <div class="confirm-row"><span class="key">Machines for Beta</span><span class="val" id="c-betaCount">-</span></div>
+          <div class="confirm-row"><span class="key">Machine Age</span><span class="val" id="c-age">-</span></div>
+          <div class="confirm-row"><span class="key">Payment Setup</span><span class="val" id="c-payment">-</span></div>
+          <div class="confirm-row"><span class="key">Readiness</span><span class="val" id="c-readiness">-</span></div>
         </div>
         <p style="font-size:0.78rem;color:var(--slate);opacity:0.7;">Questions? Reach us at <strong style="color:var(--lime);">hello@vendiqtech.com</strong></p>
       </div>
@@ -1296,11 +1408,11 @@ window.VENDIQ_ZOHO = {
   var totalSteps = 5;
 
   var stepLabels = [
-    'Step 1 of 5 \u2014 Contact Info',
-    'Step 2 of 5 \u2014 Machine Info',
-    'Step 3 of 5 \u2014 Payment & Location',
-    'Step 4 of 5 \u2014 Tech & Commitment',
-    'Step 5 of 5 \u2014 Final Questions'
+    'Step 1 of 5: Contact Info',
+    'Step 2 of 5: Machine Info',
+    'Step 3 of 5: Payment & Location',
+    'Step 4 of 5: Tech & Commitment',
+    'Step 5 of 5: Final Questions'
   ];
 
   function g(id) { return document.getElementById(id); }
@@ -1311,9 +1423,9 @@ window.VENDIQ_ZOHO = {
   var MACHINE_LIST = window.MACHINES || [];
   var picked = [];   // indexes into MACHINE_LIST, in the order added
   var VERDICTS = {
-    'Yes':              { cls: 'yes',     label: 'Compatible',     note: '' },
-    'Yes with Upgrade': { cls: 'upgrade', label: 'With Upgrade',   note: 'May need a board or firmware upgrade. We can help with that.' },
-    'No':               { cls: 'no',      label: 'Not Compatible', note: 'No MDB/DEX interface, so it can\'t run VendiQ today. We\'ll keep it on file for future hardware.' }
+    'Yes':              { cls: 'yes',     rec: 'Compatible',              label: '✓ Compatible',  note: '' },
+    'Yes with Upgrade': { cls: 'upgrade', rec: 'Compatible with Upgrade', label: '✓ Compatible*', note: '*Compatible with upgrade: may need a board or firmware upgrade. We can help with that.' },
+    'No':               { cls: 'no',      rec: 'Not Compatible',          label: 'Not Compatible', note: 'No MDB/DEX interface, so it can\'t run VendiQ today. We\'ll keep it on file for future hardware.' }
   };
   function verdictOf(x) { return VERDICTS[x.v] || VERDICTS['No']; }
   function modelLabel(x) { return x.s + (x.n && x.s.indexOf(x.n) < 0 ? ' (' + x.n + ')' : ''); }
@@ -1324,7 +1436,7 @@ window.VENDIQ_ZOHO = {
     return picked.length > 0 || !!otherText();
   }
   function syncMakes() {
-    var parts = picked.map(function(i) { var x = MACHINE_LIST[i]; return x.m + ' ' + modelLabel(x) + ' [' + x.c + ', ' + verdictOf(x).label + ']'; });
+    var parts = picked.map(function(i) { var x = MACHINE_LIST[i]; return x.m + ' ' + modelLabel(x) + ' [' + x.c + ', ' + verdictOf(x).rec + ']'; });
     var o = otherText();
     if (o) parts.push('Custom/Other (needs compatibility review): ' + o);
     g('makes').value = parts.join('; ');
@@ -1341,7 +1453,7 @@ window.VENDIQ_ZOHO = {
   function renderPicked() {
     g('machineList').innerHTML = picked.map(function(i) {
       var x = MACHINE_LIST[i], v = verdictOf(x);
-      return '<li class="machine-item v-' + v.cls + '"><span class="mi-text">' + esc(x.m) + ' &mdash; ' + esc(x.s) +
+      return '<li class="machine-item v-' + v.cls + '"><span class="mi-text">' + esc(x.m) + ' &middot; ' + esc(x.s) +
         '<span class="mi-sub">' + (x.n ? 'Model # ' + esc(x.n) + ' &middot; ' : '') + esc(x.c) + '</span>' +
         (v.note ? '<span class="mi-note">' + esc(v.note) + '</span>' : '') + '</span>' +
         '<span class="vbadge vbadge-' + v.cls + '">' + v.label + '</span>' +
@@ -1356,7 +1468,7 @@ window.VENDIQ_ZOHO = {
     MACHINE_LIST.forEach(function(x) { if (mfgs.indexOf(x.m) < 0) mfgs.push(x.m); });
     mfgs.sort().forEach(function(m) { var o = document.createElement('option'); o.value = m; o.textContent = m; mfgSel.appendChild(o); });
     mfgSel.addEventListener('change', function() {
-      modelSel.innerHTML = '<option value="">— Model —</option>';
+      modelSel.innerHTML = '<option value="">Model</option>';
       MACHINE_LIST.forEach(function(x, i) {
         if (x.m !== mfgSel.value) return;
         var o = document.createElement('option'); o.value = i; o.textContent = modelLabel(x); modelSel.appendChild(o);
@@ -1477,7 +1589,7 @@ window.VENDIQ_ZOHO = {
     g('c-betaCount').textContent = g('betaCount').value;
     g('c-age').textContent = g('machineAge').value;
     var pmt = document.querySelector('input[name="paymentType"]:checked');
-    g('c-payment').textContent = pmt ? pmt.value : '—';
+    g('c-payment').textContent = pmt ? pmt.value : '-';
     g('c-readiness').textContent = g('readiness').value;
     g('step5').classList.remove('active');
     if(typeof gtag==='function') gtag('event','beta_application',{event_category:'conversion',event_label:g('email').value});

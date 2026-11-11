@@ -6,8 +6,8 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-HLCWF822NZ");</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VendiQ — Legacy Vending, Revitalized.</title>
-<meta name="description" content="One plug-in device gives your vending machines cashless payments, real-time inventory tracking, and revenue reporting. No replacements needed. Starting at $399.">
+<title>VendiQ | Legacy Vending, Revitalized.</title>
+<meta name="description" content="One plug-in device gives your vending machines cashless payments, real-time inventory tracking, and revenue reporting. No replacements needed. Starting at $349.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231A1D16'/><text x='4' y='24' font-family='sans-serif' font-weight='800' font-size='22' fill='%23BAEF5B'>iQ</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
@@ -667,7 +667,7 @@ window.VENDIQ_ZOHO_WAITLIST = {
     <h1 class="hero-title">One device.<br>Three <span>upgrades</span>.</h1>
     <p class="hero-mission">Legacy Vending, Revitalized. Smart hardware + software platform converting legacy vending machines into connected, data-driven revenue engines.</p>
     <p class="hero-desc">
-      VendiQ is a single plug-in retrofit kit that adds <strong>cashless payments, real-time inventory tracking, and revenue reporting</strong> to the vending machines you already own.* Competitors charge $350&ndash;$500 for a card reader that does nothing else.<br><strong class="hero-highlight">We do more, for less.</strong>
+      VendiQ is a single plug-in retrofit kit that adds <strong>cashless payments, real-time inventory tracking, and revenue reporting</strong> to the vending machines you already own.* Customers scan a QR code and pay from their phone with no app to download, straight into your own Stripe or PayPal account.<br><strong class="hero-highlight">No reader. No drilling. No cut of your sales.</strong>
     </p>
     <p class="hero-footnote">*Machines require MDB and/or DEX for compatibility</p>
     <div class="cta-row">
@@ -702,7 +702,7 @@ window.VENDIQ_ZOHO_WAITLIST = {
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="4" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 11h2M12 7.5a1 1 0 11-2 0 1 1 0 012 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
         <h3>Digital Payments</h3>
-        <p>Accept Apple Pay, Google Pay, and digital wallet payments directly from your machines. Operators report 25&ndash;35% revenue lift after going cashless.</p>
+        <p>Accept Apple Pay, Google Pay, PayPal, Venmo, cards, and Cash App (via Stripe) through your own processor. VendiQ adds no per-transaction fee. Operators report 25&ndash;35% revenue lift after going cashless.</p>
       </div>
     </div>
   </section>
@@ -714,7 +714,7 @@ window.VENDIQ_ZOHO_WAITLIST = {
       <div class="footer-tagline">Legacy Vending, Revitalized.</div>
     </div>
     <div class="footer-right">
-      &copy; 2026 VendiQ Inc. &mdash; <a href="mailto:hello@vendiqtech.com">hello@vendiqtech.com</a>
+      &copy; 2026 VendiQ Inc. &middot; <a href="mailto:hello@vendiqtech.com">hello@vendiqtech.com</a>
     </div>
   </footer>
 </div>
@@ -744,7 +744,7 @@ window.VENDIQ_ZOHO_WAITLIST = {
       <div class="wl-field">
         <label>I am a...</label>
         <select id="wlRole">
-          <option value="">— Select —</option>
+          <option value="">Select</option>
           <option>Vending Operator</option>
           <option>Route Driver / Technician</option>
           <option>Distributor</option>
@@ -755,7 +755,7 @@ window.VENDIQ_ZOHO_WAITLIST = {
       <div class="wl-field">
         <label>Number of Machines</label>
         <select id="wlMachines">
-          <option value="">— Select —</option>
+          <option value="">Select</option>
           <option>1–5</option>
           <option>6–15</option>
           <option>16–50</option>
@@ -765,7 +765,7 @@ window.VENDIQ_ZOHO_WAITLIST = {
       <div class="wl-field">
         <label>How did you hear about us?</label>
         <select id="wlReferral">
-          <option value="">— Select —</option>
+          <option value="">Select</option>
           <option>Word of mouth</option>
           <option>Social media</option>
           <option>Online search</option>
@@ -890,7 +890,7 @@ window.VENDIQ_ZOHO_WAITLIST = {
         if(typeof gtag==='function') gtag('event','waitlist_signup',{event_category:'conversion',event_label:email.value.trim()});
         document.getElementById('wlConfirmation').classList.add('visible');
       } else if (res.status === 409) {
-        serverErr.textContent = 'This email is already on the waitlist — we\'ll be in touch!';
+        serverErr.textContent = 'This email is already on the waitlist. We\'ll be in touch!';
         serverErr.style.display = 'block';
         btn.disabled = false;
         btn.textContent = 'Join the Waitlist';

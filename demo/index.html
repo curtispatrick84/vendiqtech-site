@@ -6,7 +6,7 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-HLCWF822NZ");</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VendiQ — Fleet Manager Demo</title>
+<title>VendiQ | Fleet Manager Demo</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231A1D16'/><text x='4' y='24' font-family='sans-serif' font-weight='800' font-size='22' fill='%23BAEF5B'>iQ</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -398,8 +398,8 @@ div.slot-img{width:36px;height:36px;border-radius:4px;margin:2px auto;background
   <div class="app-body">
     <div class="sidebar">
       <div class="sb-summary">
-        <div class="sb-stat"><span class="lab">Today's Revenue</span><span class="val lime" id="sb-revenue">—</span></div>
-        <div class="sb-stat"><span class="lab">Total Vends</span><span class="val" id="sb-vends">—</span></div>
+        <div class="sb-stat"><span class="lab">Today's Revenue</span><span class="val lime" id="sb-revenue">-</span></div>
+        <div class="sb-stat"><span class="lab">Total Vends</span><span class="val" id="sb-vends">-</span></div>
         <div class="sb-stat"><span class="lab">Fleet Online</span><span class="val">5 / 5</span></div>
       </div>
       <div class="sb-section">
@@ -429,7 +429,7 @@ div.slot-img{width:36px;height:36px;border-radius:4px;margin:2px auto;background
         <div class="page-header">
           <div>
             <div class="page-title">Fleet Overview</div>
-            <div class="page-sub">5 machines across 3 sites &mdash; Last updated just now</div>
+            <div class="page-sub">5 machines across 3 sites &middot; Last updated just now</div>
           </div>
           <button class="btn-refresh" onclick="this.textContent='Refreshing...';var b=this;setTimeout(function(){b.textContent='⟳ Refresh'},800)">⟳ Refresh</button>
         </div>
@@ -624,7 +624,7 @@ function renderMachineCard(m){
   return'<div class="machine-card" onclick="showView(\'site-'+m.siteKey+'\',\''+m.id+'\')">'+
     '<div class="mc-top"><div class="mc-status"><span class="dot"></span>Online</div>'+(MACHINE_IMG[m.id]?'<img class="mc-img" src="'+MACHINE_IMG[m.id]+'" alt="">':'<div class="mc-img"></div>')+'</div>'+
     '<div class="mc-name">'+m.name+'</div>'+
-    '<div class="mc-hostname">'+m.id+' &mdash; '+m.model+'</div>'+
+    '<div class="mc-hostname">'+m.id+' &middot; '+m.model+'</div>'+
     '<div class="fill-wrap"><div class="fill-label"><span class="lab">Fill Level</span><span class="pct">'+m.fill+'%</span></div>'+
     '<div class="fill-bar"><div class="fill-bar-inner '+fillClass(m.fill)+'" style="width:'+m.fill+'%"></div></div></div>'+
     '<div class="mc-3stats">'+
@@ -639,13 +639,13 @@ function renderMachineCard(m){
     '<div class="mc-fill-item"><div class="lab">Profit</div><div class="val lime">$'+m.profit.toFixed(2)+'</div></div>'+
     '</div>'+
     '<div class="mc-chart" data-machine="'+m.id+'"></div>'+
-    '<div class="mc-last-vend">Last vend: <strong>'+m.lastVend+'</strong> <span class="tag">$'+m.slots[0].price.toFixed(2)+'</span> <span class="tag">Card</span> &mdash; '+m.lastTime+'</div>'+
+    '<div class="mc-last-vend">Last vend: <strong>'+m.lastVend+'</strong> <span class="tag">$'+m.slots[0].price.toFixed(2)+'</span> <span class="tag">Card</span> &middot; '+m.lastTime+'</div>'+
     '<button class="mc-edit" onclick="event.stopPropagation()">Edit</button>'+
     '</div>';
 }
 
 function renderSlotGrid(m){
-  var html='<div class="slot-section"><div class="slot-section-title">Inventory &mdash; '+m.name+'</div><div class="slot-grid">';
+  var html='<div class="slot-section"><div class="slot-section-title">Inventory: '+m.name+'</div><div class="slot-grid">';
   m.slots.forEach(function(s){
     var cls=slotClass(s.qty,s.cap);
     var qcls=qtyClass(s.qty,s.cap);
