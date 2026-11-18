@@ -4,6 +4,7 @@
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HLCWF822NZ"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-HLCWF822NZ");</script>
+<script src="/analytics.js?v=1" defer></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VendiQ | Beta Portal</title>
@@ -990,7 +991,7 @@ window.VENDIQ_ZOHO = {
       </div>
     </div>
 
-    <section class="offer-card" aria-labelledby="offer-title">
+    <section class="offer-card" aria-labelledby="offer-title" data-track-view="beta_offer">
       <div class="offer-head">
         <h2 id="offer-title">Beta Kit</h2>
         <div class="offer-price">$199</div>
@@ -1019,7 +1020,7 @@ window.VENDIQ_ZOHO = {
       </div>
     </section>
 
-    <a href="#apply" class="apply-cta">
+    <a href="#apply" class="apply-cta" data-track="cta_click" data-track-label="beta_apply_button">
       Apply for Beta Program
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
@@ -1552,10 +1553,18 @@ window.VENDIQ_ZOHO = {
       var deposit = g('depositAck');
       if (!deposit || !deposit.checked) { setError('f-deposit'); valid = false; } else clearError('f-deposit');
     }
+    if (!valid) track('beta_form_error', { step: step });
     return valid;
   }
 
+  function track(name, params) { if (window.vqTrack) window.vqTrack(name, params); else if (typeof gtag === 'function') gtag('event', name, params || {}); }
+
+  // Count the first time someone types into the application
+  var applyEl = g('apply');
+  if (applyEl) applyEl.addEventListener('focusin', function() { if (window.vqFormStart) window.vqFormStart('beta_application'); });
+
   function goTo(from, to) {
+    if (to > from) track('beta_step_complete', { step: from, step_name: stepLabels[from - 1].split(': ')[1] || '' });
     g('step' + from).classList.remove('active');
     g('step' + to).classList.add('active');
     currentStep = to;
@@ -1570,7 +1579,7 @@ window.VENDIQ_ZOHO = {
     function val(id){var el=document.getElementById(id);return el?el.value.trim():'';}
     function radio(n){var el=document.querySelector('input[name="'+n+'"]:checked');return el?el.value:'';}
     function checks(n){return Array.prototype.map.call(document.querySelectorAll('input[name="'+n+'"]:checked'),function(e){return e.value;}).join(', ');}
-    var summary=['BETA APPLICATION','Machine makes/models: '+val('makes'),'Total machines: '+val('machineCount'),'Machines for beta: '+val('betaCount'),'Average machine age: '+val('machineAge'),'Payment setup: '+radio('paymentType'),'Placements: '+checks('placement'),'Environment: '+radio('environment'),'Daily foot traffic: '+val('traffic'),'Tech comfort: '+radio('techComfort'),'Primary device: '+radio('deviceType'),'Vending software: '+val('vms'),'Readiness: '+val('readiness'),'Share revenue data: '+radio('revenueShare'),'Biggest frustration: '+val('frustration'),'Prior solutions: '+val('priorSolutions'),'Anything else: '+val('anythingElse'),'Heard about VendiQ: '+val('referral'),'Beta terms acknowledged: '+(document.getElementById('depositAck')&&document.getElementById('depositAck').checked?'Yes':'No')].join('\n');
+    var summary=['BETA APPLICATION','Machine makes/models: '+val('makes'),'Total machines: '+val('machineCount'),'Machines for beta: '+val('betaCount'),'Average machine age: '+val('machineAge'),'Payment setup: '+radio('paymentType'),'Placements: '+checks('placement'),'Environment: '+radio('environment'),'Daily foot traffic: '+val('traffic'),'Tech comfort: '+radio('techComfort'),'Primary device: '+radio('deviceType'),'Vending software: '+val('vms'),'Readiness: '+val('readiness'),'Share revenue data: '+radio('revenueShare'),'Biggest frustration: '+val('frustration'),'Prior solutions: '+val('priorSolutions'),'Anything else: '+val('anythingElse'),'Heard about VendiQ: '+val('referral'),'Beta terms acknowledged: '+(document.getElementById('depositAck')&&document.getElementById('depositAck').checked?'Yes':'No'),window.vqAttributionText?window.vqAttributionText():''].join('\n');
     // Zoho's State/Province picklist wants full names (two are suffixed to tell them apart from other countries' regions)
     var ZOHO_STATES={AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',CO:'Colorado',CT:'Connecticut',DE:'Delaware',FL:'Florida (United States)',GA:'Georgia',HI:'Hawaii',ID:'Idaho',IL:'Illinois',IN:'Indiana',IA:'Iowa',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',ME:'Maine',MD:'Maryland',MA:'Massachusetts',MI:'Michigan',MN:'Minnesota',MS:'Mississippi',MO:'Missouri',MT:'Montana (United States)',NE:'Nebraska',NV:'Nevada',NH:'New Hampshire',NJ:'New Jersey',NM:'New Mexico',NY:'New York',NC:'North Carolina',ND:'North Dakota',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',TX:'Texas',UT:'Utah',VT:'Vermont',VA:'Virginia',WA:'Washington',WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming'};
     var fields={xnQsjsdp:Z.xnQsjsdp,zc_gad:'',xmIwtLD:Z.xmIwtLD,actionType:Z.actionType,'First Name':val('firstName'),'Last Name':val('lastName'),'Company':(val('firstName')+' '+val('lastName')).trim()+' (Vending Operator)','Email':val('email'),'Phone':val('phone'),'Address - City':val('city'),'Address - State / Province':ZOHO_STATES[val('state')]||val('state'),'Lead Source':Z.leadSource,'Lead Status':Z.leadStatus,'Description':summary};
@@ -1592,7 +1601,11 @@ window.VENDIQ_ZOHO = {
     g('c-payment').textContent = pmt ? pmt.value : '-';
     g('c-readiness').textContent = g('readiness').value;
     g('step5').classList.remove('active');
-    if(typeof gtag==='function') gtag('event','beta_application',{event_category:'conversion',event_label:g('email').value});
+    // No email or name here: GA must never receive personal details
+    var leadInfo = { form_name: 'beta_application', machines_for_beta: g('betaCount').value, total_machines: g('machineCount').value, machine_age: g('machineAge').value, readiness: g('readiness').value };
+    track('beta_step_complete', { step: 5, step_name: 'Final Questions' });
+    track('beta_application', leadInfo);
+    track('generate_lead', leadInfo);
     g('confirmation').classList.add('active');
     g('progressFill').style.width = '100%';
     g('stepLabel').textContent = 'Application Complete';

@@ -9,6 +9,7 @@ RUN mkdir -p /var/www/certbot
 
 # Copy site files
 COPY index.html /usr/share/nginx/html/index.html
+COPY analytics.js /usr/share/nginx/html/analytics.js
 COPY beta/ /usr/share/nginx/html/beta/
 COPY compatibility/ /usr/share/nginx/html/compatibility/
 COPY demo/ /usr/share/nginx/html/demo/

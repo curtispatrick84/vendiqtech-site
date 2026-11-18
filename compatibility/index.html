@@ -4,6 +4,7 @@
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HLCWF822NZ"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-HLCWF822NZ");</script>
+<script src="/analytics.js?v=1" defer></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VendiQ | Machine Compatibility</title>
@@ -257,29 +258,29 @@ function checkCompat(){
   icon.style.color='';
   if(machine.v==='Yes'){
     r.classList.add('compat');
-    if(typeof gtag==='function') gtag('event','compat_check',{event_category:'engagement',event_label:machine.m+' '+machine.s,result:'compatible'});
+    if(typeof gtag==='function') gtag('event','compat_check',{event_category:'engagement',event_label:machine.m+' '+machine.s,result:'compatible',machine_manufacturer:machine.m,machine_model:machine.s,machine_category:machine.c});
     icon.textContent='✅';
     title.textContent='Fully Compatible!';
     title.style.color='var(--lime)';
     desc.textContent=machine.s+' is fully compatible with VendiQ. MDB and DEX confirmed.';
-    cta.innerHTML='<button class="result-cta primary" onclick="window.location.href=\'/\';setTimeout(function(){if(window.openWaitlist)window.openWaitlist();},500);">Join the Waitlist →</button>';
+    cta.innerHTML='<a class="result-cta primary" href="/?waitlist=1&amp;from=compatibility" data-track="cta_click" data-track-label="compat_result_join_waitlist">Join the Waitlist →</a>';
   } else if(machine.v==='Yes with Upgrade'){
     r.classList.add('upgrade');
-    if(typeof gtag==='function') gtag('event','compat_check',{event_category:'engagement',event_label:machine.m+' '+machine.s,result:'upgrade'});
+    if(typeof gtag==='function') gtag('event','compat_check',{event_category:'engagement',event_label:machine.m+' '+machine.s,result:'upgrade',machine_manufacturer:machine.m,machine_model:machine.s,machine_category:machine.c});
     icon.textContent='✓';
     icon.style.color='var(--gold)';
     title.textContent='Compatible with Upgrade*';
     title.style.color='var(--gold)';
     desc.textContent='*'+machine.s+' is compatible but may need a board or firmware upgrade first. We can help with that.';
-    cta.innerHTML='<button class="result-cta primary" onclick="window.location.href=\'/\';setTimeout(function(){if(window.openWaitlist)window.openWaitlist();},500);">Join the Waitlist →</button>';
+    cta.innerHTML='<a class="result-cta primary" href="/?waitlist=1&amp;from=compatibility" data-track="cta_click" data-track-label="compat_result_join_waitlist">Join the Waitlist →</a>';
   } else {
     r.classList.add('incompat');
-    if(typeof gtag==='function') gtag('event','compat_check',{event_category:'engagement',event_label:machine.m+' '+machine.s,result:'incompatible'});
+    if(typeof gtag==='function') gtag('event','compat_check',{event_category:'engagement',event_label:machine.m+' '+machine.s,result:'incompatible',machine_manufacturer:machine.m,machine_model:machine.s,machine_category:machine.c});
     icon.textContent='❌';
     title.textContent='Not Compatible';
     title.style.color='var(--coral)';
     desc.textContent=machine.s+' does not have MDB or DEX interfaces. Subscribe to our mailing list. We\'re working on support for more machines.';
-    cta.innerHTML='<a href="mailto:hello@vendiqtech.com?subject=Mailing%20List%20-%20Future%20Compatibility&body=Hi%20VendiQ,%0A%0AI%20have%20a%20'+encodeURIComponent(machine.s)+'.%20Please%20add%20me%20to%20your%20mailing%20list%20for%20future%20compatibility%20updates." class="result-cta secondary">Subscribe for Updates</a>';
+    cta.innerHTML='<a href="mailto:hello@vendiqtech.com?subject=Mailing%20List%20-%20Future%20Compatibility&body=Hi%20VendiQ,%0A%0AI%20have%20a%20'+encodeURIComponent(machine.s)+'.%20Please%20add%20me%20to%20your%20mailing%20list%20for%20future%20compatibility%20updates." class="result-cta secondary" data-track="cta_click" data-track-label="compat_result_subscribe">Subscribe for Updates</a>';
   }
 }
 
