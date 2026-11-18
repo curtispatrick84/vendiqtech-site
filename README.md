@@ -6,7 +6,7 @@ Marketing site for VendiQ — smart retrofit kits that add cashless payments, re
 
 ```
 index.html          Landing page (coming soon / waitlist)
-beta/index.html     Password-protected beta portal stub
+beta/index.html     Public beta portal and application form
 nginx.conf          Nginx config with SSL (HTTPS + ACME challenges)
 nginx-init.conf     HTTP-only config for initial cert provisioning
 Dockerfile          nginx:1.27-alpine container
