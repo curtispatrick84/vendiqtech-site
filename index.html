@@ -9,6 +9,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VendiQ | Legacy Vending, Revitalized.</title>
 <meta name="description" content="One plug-in device gives your vending machines cashless payments, real-time inventory tracking, and revenue reporting. No replacements needed. Starting at $349.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VendiQ">
+<meta property="og:url" content="https://www.vendiqtech.com/">
+<meta property="og:title" content="VendiQ | Legacy Vending, Revitalized.">
+<meta property="og:description" content="Take QR code payments on the vending machines you already own. No reader, no drilling, no cut of your sales. Plus live inventory and revenue reporting.">
+<meta property="og:image" content="https://www.vendiqtech.com/img/vendiq-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="VendiQ prototype board with MDB and DEX ports">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231A1D16'/><text x='4' y='24' font-family='sans-serif' font-weight='800' font-size='22' fill='%23BAEF5B'>iQ</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
@@ -247,6 +257,40 @@
     margin-bottom: 48px;
     animation: fadeUp 0.7s 0.55s ease-out both;
     font-style: italic;
+  }
+
+  /* ── HERO PHOTO ── */
+  .hero-photo {
+    margin: 0 0 28px;
+    animation: fadeUp 0.7s 0.5s ease-out both;
+  }
+
+  .hero-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    /* fade the photo's gray backdrop into the page */
+    -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 62%, transparent 100%);
+    mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 62%, transparent 100%);
+  }
+
+  .hero-photo figcaption {
+    font-size: 0.72rem;
+    color: var(--slate);
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+
+  @media (min-width: 900px) {
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: 24px;
+      align-content: center;
+    }
+    .hero > * { grid-column: 1; }
+    .hero > .hero-photo { grid-column: 2; grid-row: 1 / span 6; align-self: center; margin: 0 -24px 0 0; }
+    .hero-title { font-size: clamp(2.5rem, 3.8vw, 3.3rem); white-space: nowrap; }
   }
 
   /* ── CTA ROW ── */
@@ -666,6 +710,14 @@ window.VENDIQ_ZOHO_WAITLIST = {
   <main class="hero">
     <div class="hero-eyebrow"><span class="dot"></span>Pre-Orders Opening Soon</div>
     <h1 class="hero-title">One device.<br>Three <span>upgrades</span>.</h1>
+    <figure class="hero-photo">
+      <img src="/img/vendiq-prototype.jpg"
+           srcset="/img/vendiq-prototype-800.jpg 700w, /img/vendiq-prototype.jpg 1200w"
+           sizes="(min-width: 900px) 500px, 100vw"
+           width="1200" height="963"
+           alt="VendiQ prototype board with MDB and DEX ports and two green status lights">
+      <figcaption>VendiQ prototype &middot; plugs into your machine's MDB and DEX ports</figcaption>
+    </figure>
     <p class="hero-mission">Legacy Vending, Revitalized. Smart hardware + software platform converting legacy vending machines into connected, data-driven revenue engines.</p>
     <p class="hero-desc">
       VendiQ is a single plug-in retrofit kit that adds <strong>cashless payments, real-time inventory tracking, and revenue reporting</strong> to the vending machines you already own.* Customers scan a QR code and pay from their phone with no app to download, straight into your own Stripe or PayPal account.<br><strong class="hero-highlight">No reader. No drilling. No cut of your sales.</strong>
