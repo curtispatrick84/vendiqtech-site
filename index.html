@@ -693,7 +693,10 @@
 </style>
 <script>
 window.VENDIQ_ZOHO_WAITLIST = {
-  xnQsjsdp: "32e8f04864572b875086dee90e816fc47b889ca4d89b640041fcc14f1d6537bc", xmIwtLD: "839b1cd1ab17aefa0c68c309102672d88e96e292cc035e4961e13ba0fddbf4b95d9f4e6ab261f6d199c687eaffeb8b9a",   // from the Zoho "VendiQ Waitlist" webform embed code; blank = nothing is sent
+  // Zoho CRM Free allows only one active webform per module, so the waitlist posts through the
+  // active "VendiQ Beta Application" webform; Lead Source below keeps waitlist leads separate.
+  // (The "VendiQ Waitlist" webform exists in Zoho but can't be activated on the free plan.) Blank keys = nothing is sent.
+  xnQsjsdp: "0eed6b4590927149f7046c1bff952dd3f3c67038ad9b1c4cc8196f96ace17294", xmIwtLD: "be317d55ee2e3ec3131c80507e45b74ec971a399c7876bd9e976f135d53feb2b1d012ba0d4dca4340bcf6f44513668f1",
   actionType: "TGVhZHM=",
   endpoint: "https://crm.zoho.com/crm/WebToLeadForm",
   leadSource: "Website Waitlist",
