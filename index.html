@@ -289,7 +289,8 @@
       align-content: center;
     }
     .hero > * { grid-column: 1; }
-    .hero > .hero-photo { grid-column: 2; grid-row: 1 / span 6; align-self: center; margin: 0 -24px 0 0; }
+    .hero > .hero-photo { grid-column: 2; grid-row: 1 / span 5; align-self: center; margin: 0 -24px 0 0; }
+    .hero > .cta-row { grid-column: 1 / -1; }
     .hero-title { font-size: clamp(2.5rem, 3.8vw, 3.3rem); white-space: nowrap; }
   }
 
@@ -297,16 +298,26 @@
   .cta-row {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     flex-wrap: wrap;
     animation: fadeUp 0.7s 0.65s ease-out both;
+  }
+
+  /* shared pill shape so every hero button is the same height */
+  .btn-primary, .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    line-height: 1.2;
+    white-space: nowrap;
   }
 
   .btn-primary {
     background: var(--lime);
     color: var(--charcoal);
-    border: none;
-    padding: 14px 32px;
+    border: 1.5px solid var(--lime);
+    padding: 12px 26px;
     border-radius: 100px;
     font-family: 'Syne', sans-serif;
     font-weight: 700;
@@ -321,6 +332,7 @@
 
   .btn-primary:hover {
     background: var(--lime-dark);
+    border-color: var(--lime-dark);
     transform: translateY(-2px);
   }
 
@@ -331,7 +343,7 @@
     background: transparent;
     color: var(--warm-white);
     border: 1.5px solid rgba(255,255,255,0.15);
-    padding: 14px 28px;
+    padding: 12px 22px;
     border-radius: 100px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
@@ -724,12 +736,12 @@ window.VENDIQ_ZOHO_WAITLIST = {
     </p>
     <p class="hero-footnote">*Machines require MDB and/or DEX for compatibility</p>
     <div class="cta-row">
-      <button class="btn-primary" onclick="openWaitlist('hero')">
-        Join the Waitlist
+      <a href="/beta" class="btn-primary" data-track="cta_click" data-track-label="hero_join_beta">
+        Join Beta
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8h9M8.5 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
+      </a>
+      <button class="btn-secondary" onclick="openWaitlist('hero')">Join the Waitlist</button>
       <a href="/compatibility" class="btn-secondary" data-track="cta_click" data-track-label="hero_check_compatibility">Check Compatibility</a>
-      <a href="/beta" class="btn-secondary" data-track="cta_click" data-track-label="hero_beta_portal">Beta Portal</a>
     </div>
   </main>
 
